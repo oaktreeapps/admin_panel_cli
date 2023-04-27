@@ -9,12 +9,11 @@ export const kitSchema = z.object({
         z.object({
           name: z.string(),
           type: z.union([
-            z.literal("text-normal"),
-            z.literal("text-password"),
-            z.literal("text-big"),
-            z.literal("number"),
-            z.literal("date"),
-            z.literal("dropdown"),
+            z.literal("InputText"),
+            z.literal("InputTextarea"),
+            z.literal("InputNumber"),
+            // z.literal("date"),
+            // z.literal("dropdown"),
           ]),
         })
       ),

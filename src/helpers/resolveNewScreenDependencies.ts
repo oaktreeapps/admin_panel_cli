@@ -1,8 +1,43 @@
 import fs from "fs-extra";
-import { spinner } from "../index";
 import chalk from "chalk";
+import { spinner } from "../index";
+import { config } from "./config";
+import { InputNumber, InputText, InputTextarea } from "../templateStrings/fields";
 
 export default async function resolveNewScreenDependencies(capitalizedScreenName: string) {
+  let screenTypeInterface = "";
+  const jsxFields: string[] = [];
+
+  const screen = config?.screens?.find(
+    (screen) => screen.name.toLowerCase() === capitalizedScreenName.toLowerCase()
+  );
+  if (screen) {
+    screen.crudFields.forEach((field, index) => {
+      let interfacePropertyType = "";
+
+      switch (field.type) {
+        case "InputText":
+          jsxFields.push(InputText(field.name));
+          interfacePropertyType = "string";
+          break;
+
+        case "InputTextarea":
+          jsxFields.push(InputTextarea(field.name));
+          interfacePropertyType = "string";
+          break;
+
+        case "InputNumber":
+          jsxFields.push(InputNumber(field.name));
+          interfacePropertyType = "number";
+          break;
+      }
+
+      screenTypeInterface += `  ${field.name}: ${interfacePropertyType};\n`;
+
+      if (index === screen.crudFields.length - 1) screenTypeInterface += "}\n";
+    });
+  }
+
   const folderPath = `./src/screens/${capitalizedScreenName}`;
   const mainFilePath = `${folderPath}/${capitalizedScreenName}.tsx`;
   const createFilePath = `${folderPath}/Create${capitalizedScreenName}.tsx`;
@@ -21,12 +56,16 @@ export default async function resolveNewScreenDependencies(capitalizedScreenName
   const parsedMainScreenTemplateFile = mainScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase());
+
   const parsedCreateScreenTemplateFile = createScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
-    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase());
+    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
+    .replace(/INPUT\-FIELDS/g, jsxFields.join("\n"));
+
   const parsedEditScreenTemplateFile = editScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
-    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase());
+    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
+    .replace(/INPUT\-FIELDS/g, jsxFields.join("\n"));
 
   fs.writeFileSync(mainFilePath, parsedMainScreenTemplateFile);
   fs.writeFileSync(createFilePath, parsedCreateScreenTemplateFile);
@@ -53,9 +92,8 @@ export default async function resolveNewScreenDependencies(capitalizedScreenName
     "https://raw.githubusercontent.com/kuvamdazeus/admin-starter-react/main/src/types/xxxxx.d.ts"
   ).then((res) => res.text());
 
-  const parsedTypesTemplateFile = typesTemplateFile
-    .replace(/XXXXX/g, capitalizedScreenName)
-    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase());
+  const parsedTypesTemplateFile =
+    typesTemplateFile.replace(/XXXXX/g, capitalizedScreenName).split("\n")[0] + "\n" + screenTypeInterface;
 
   fs.writeFileSync(`./src/types/${capitalizedScreenName.toLowerCase()}.d.ts`, parsedTypesTemplateFile);
   spinner.succeed(`Created ${chalk.cyan(`types/${capitalizedScreenName}.d.ts`)}`);
