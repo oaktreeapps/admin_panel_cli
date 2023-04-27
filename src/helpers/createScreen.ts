@@ -9,6 +9,11 @@ export default async function createScreen(screenName: string) {
   spinner.start(`Creating screen: ${chalk.cyan(capitalizedScreenName)}`);
 
   const folderPath = `./src/screens/${capitalizedScreenName}`;
+  if (fs.existsSync(folderPath)) {
+    spinner.fail(`Screen ${chalk.cyan(capitalizedScreenName)} already exists`);
+    return;
+  }
+
   const filePath = `${folderPath}/${capitalizedScreenName}.tsx`;
   const createFilePath = `${folderPath}/Create${capitalizedScreenName}.tsx`;
   const editFilePath = `${folderPath}/Edit${capitalizedScreenName}.tsx`;
