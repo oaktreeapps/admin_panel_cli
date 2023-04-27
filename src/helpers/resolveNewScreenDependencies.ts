@@ -2,35 +2,7 @@ import fs from "fs-extra";
 import { spinner } from "../index";
 import chalk from "chalk";
 
-export const performCleanup = async () => {
-  const unwantedLines = [
-    // imports
-    `import XXXXXPage from "./screens/XXXXX/XXXXX"`,
-    `import EditXXXXXPage from "./screens/XXXXX/EditXXXXX"`,
-    `import CreateXXXXXPage from "./screens/XXXXX/CreateXXXXX"`,
-
-    // routes
-    `<Route path="xxxxx" element={<XXXXXPage />} />`,
-    `<Route path="xxxxx/create" element={<CreateXXXXXPage />} />`,
-    `<Route path="xxxxx/edit/:id" element={<EditXXXXXPage />} />`,
-  ];
-
-  fs.removeSync("./.git");
-  fs.removeSync("./src/service/XXXXXService.tsx");
-  fs.removeSync("./src/screens/XXXXX");
-  fs.removeSync("./src/types/xxxxx.d.ts");
-
-  const mainTsx = fs.readFileSync("./src/main.tsx").toString();
-  const mainTsxLines = mainTsx.split("\n");
-
-  const filteredLines = mainTsxLines.filter(
-    (line) => unwantedLines.filter((unwantedLine) => line.includes(unwantedLine)).length === 0
-  );
-
-  fs.writeFileSync("./src/main.tsx", filteredLines.join("\n"));
-};
-
-export const resolveNewScreenDependencies = async (capitalizedScreenName: string) => {
+export default async function resolveNewScreenDependencies(capitalizedScreenName: string) {
   const folderPath = `./src/screens/${capitalizedScreenName}`;
   const mainFilePath = `${folderPath}/${capitalizedScreenName}.tsx`;
   const createFilePath = `${folderPath}/Create${capitalizedScreenName}.tsx`;
@@ -120,4 +92,4 @@ export const resolveNewScreenDependencies = async (capitalizedScreenName: string
 
   fs.writeFileSync("./src/main.tsx", newMainTsxLines.join("\n"));
   spinner.succeed(`Created route: ${chalk.cyan(`/${capitalizedScreenName.toLowerCase()}`)}`);
-};
+}
