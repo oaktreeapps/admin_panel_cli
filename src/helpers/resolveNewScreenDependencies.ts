@@ -4,9 +4,11 @@ import { spinner } from "../index";
 import { config } from "./config";
 import { InputNumber, InputText, InputTextarea } from "../templateStrings/formFields";
 import { TextColumn } from "src/templateStrings/mainFileColumns";
+import addInitialState from "./addInitialState";
 
 export default async function resolveNewScreenDependencies(capitalizedScreenName: string) {
   let screenTypeInterface = "";
+  let initialState = "";
   const jsxFields: string[] = [];
   const tableColumns: string[] = [];
 
@@ -16,30 +18,41 @@ export default async function resolveNewScreenDependencies(capitalizedScreenName
   if (screen) {
     screen.crudFields.forEach((field, index) => {
       let interfacePropertyType = "";
+      let initialValue = "";
 
       switch (field.type) {
         case "InputText":
-          jsxFields.push(InputText(field.name));
-          tableColumns.push(TextColumn(field.name));
+          if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+          jsxFields.push(InputText(field.name, field.required));
           interfacePropertyType = "string";
+          initialValue = `""`;
           break;
 
         case "InputTextarea":
-          jsxFields.push(InputTextarea(field.name));
-          tableColumns.push(TextColumn(field.name));
+          if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+          jsxFields.push(InputTextarea(field.name, field.required));
           interfacePropertyType = "string";
+          initialValue = `""`;
           break;
 
         case "InputNumber":
-          jsxFields.push(InputNumber(field.name));
-          tableColumns.push(TextColumn(field.name));
+          if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+          jsxFields.push(InputNumber(field.name, field.required));
           interfacePropertyType = "number";
+          initialValue = `0`;
           break;
       }
 
-      if (index === 0) screenTypeInterface += `  id?: string;\n`;
+      if (index === 0) {
+        screenTypeInterface += `  id?: string;\n`;
+        initialState += `  id: "",\n`;
+      }
       screenTypeInterface += `  ${field.name}: ${interfacePropertyType};\n`;
-      if (index === screen.crudFields.length - 1) screenTypeInterface += "}\n";
+      initialState += `  ${field.name}: ${initialValue},\n`;
+      if (index === screen.crudFields.length - 1) {
+        screenTypeInterface += "}\n";
+        initialState += "};\n";
+      }
     });
   }
 
@@ -70,19 +83,26 @@ export default async function resolveNewScreenDependencies(capitalizedScreenName
     mainScreenTemplateFileLines.push(line);
   });
 
-  fs.writeFileSync(mainFilePath, mainScreenTemplateFileLines.join("\n"));
+  const newMainScreenTemplateFile = addInitialState(mainScreenTemplateFileLines, initialState);
+
+  fs.writeFileSync(mainFilePath, newMainScreenTemplateFile);
 
   const parsedCreateScreenTemplateFile = createScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
     .replace(/INPUT\-FIELDS/g, jsxFields.join("\n"));
-  fs.writeFileSync(createFilePath, parsedCreateScreenTemplateFile);
+  const newCreateScreenTemplateFile = addInitialState(
+    parsedCreateScreenTemplateFile.split("\n"),
+    initialState
+  );
+  fs.writeFileSync(createFilePath, newCreateScreenTemplateFile);
 
   const parsedEditScreenTemplateFile = editScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
     .replace(/INPUT\-FIELDS/g, jsxFields.join("\n"));
-  fs.writeFileSync(editFilePath, parsedEditScreenTemplateFile);
+  const newEditScreenTemplateFile = addInitialState(parsedEditScreenTemplateFile.split("\n"), initialState);
+  fs.writeFileSync(editFilePath, newEditScreenTemplateFile);
 
   spinner.start(`Creating service/${capitalizedScreenName}Service.tsx`);
   fs.createFile(`./src/service/${capitalizedScreenName}Service.tsx`);
