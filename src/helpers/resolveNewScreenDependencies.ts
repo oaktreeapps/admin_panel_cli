@@ -2,15 +2,17 @@ import fs from "fs-extra";
 import chalk from "chalk";
 import { spinner } from "../index";
 import { config } from "./config";
-import { InputNumber, InputText, InputTextarea } from "../templateStrings/formFields";
+import { Dropdown, InputNumber, InputText, InputTextarea } from "../templateStrings/formFields";
 import { TextColumn } from "src/templateStrings/mainFileColumns";
 import addInitialState from "./addInitialState";
 
 export default async function resolveNewScreenDependencies(capitalizedScreenName: string) {
   let screenTypeInterface = "";
   let initialState = "";
+  const requiredFields: string[] = [];
   const jsxFields: string[] = [];
   const tableColumns: string[] = [];
+  const dropdownOptions: { fieldName: string; options: any[] }[] = [];
 
   const screen = config?.screens?.find(
     (screen) => screen.name.toLowerCase() === capitalizedScreenName.toLowerCase()
@@ -19,6 +21,8 @@ export default async function resolveNewScreenDependencies(capitalizedScreenName
     screen.crudFields.forEach((field, index) => {
       let interfacePropertyType = "";
       let initialValue = "";
+
+      if (field.required) requiredFields.push(field.name);
 
       switch (field.type) {
         case "InputText":
@@ -40,6 +44,14 @@ export default async function resolveNewScreenDependencies(capitalizedScreenName
           jsxFields.push(InputNumber(field.name, field.required));
           interfacePropertyType = "number";
           initialValue = `0`;
+          break;
+
+        case "Dropdown":
+          if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+          jsxFields.push(Dropdown(field.name, field.required));
+          dropdownOptions.push({ fieldName: field.name, options: field.options || [] });
+          interfacePropertyType = "string";
+          initialValue = `""`;
           break;
       }
 
@@ -90,19 +102,51 @@ export default async function resolveNewScreenDependencies(capitalizedScreenName
   const parsedCreateScreenTemplateFile = createScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
-    .replace(/INPUT\-FIELDS/g, jsxFields.join("\n"));
+    .replace(/INPUT\-FIELDS/g, jsxFields.join("\n"))
+    .replace(
+      /if \(entity.name.trim\(\)\) \{/,
+      `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) {`
+    );
   const newCreateScreenTemplateFile = addInitialState(
     parsedCreateScreenTemplateFile.split("\n"),
     initialState
   );
-  fs.writeFileSync(createFilePath, newCreateScreenTemplateFile);
+  const finalCreateScreenTemplateFileLines: string[] = [];
+  newCreateScreenTemplateFile.split("\n").forEach((line) => {
+    if (line.includes("const saveEntity = async () => {")) {
+      dropdownOptions.forEach(({ fieldName, options }) => {
+        finalCreateScreenTemplateFileLines.push(
+          `const ${fieldName}Options = ${JSON.stringify(options, null, 2)};\n`
+        );
+      });
+    }
+
+    finalCreateScreenTemplateFileLines.push(line);
+  });
+  fs.writeFileSync(createFilePath, finalCreateScreenTemplateFileLines.join("\n"));
 
   const parsedEditScreenTemplateFile = editScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
-    .replace(/INPUT\-FIELDS/g, jsxFields.join("\n"));
+    .replace(/INPUT\-FIELDS/g, jsxFields.join("\n"))
+    .replace(
+      /if \(entity.name.trim\(\)\) \{/,
+      `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) {`
+    );
   const newEditScreenTemplateFile = addInitialState(parsedEditScreenTemplateFile.split("\n"), initialState);
-  fs.writeFileSync(editFilePath, newEditScreenTemplateFile);
+  const finalEditScreenTemplateFileLines: string[] = [];
+  newEditScreenTemplateFile.split("\n").forEach((line) => {
+    if (line.includes("const saveEntity = async () => {")) {
+      dropdownOptions.forEach(({ fieldName, options }) => {
+        finalEditScreenTemplateFileLines.push(
+          `const ${fieldName}Options = ${JSON.stringify(options, null, 2)};\n`
+        );
+      });
+    }
+
+    finalEditScreenTemplateFileLines.push(line);
+  });
+  fs.writeFileSync(editFilePath, finalEditScreenTemplateFileLines.join("\n"));
 
   spinner.start(`Creating service/${capitalizedScreenName}Service.tsx`);
   fs.createFile(`./src/service/${capitalizedScreenName}Service.tsx`);

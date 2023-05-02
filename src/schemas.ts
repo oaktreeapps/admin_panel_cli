@@ -14,9 +14,16 @@ export const kitSchema = z.object({
             z.literal("InputText"),
             z.literal("InputTextarea"),
             z.literal("InputNumber"),
-            // z.literal("date"),
-            // z.literal("dropdown"),
+            z.literal("Dropdown"),
           ]),
+          options: z
+            .array(
+              z.object({
+                name: z.string(),
+                value: z.string(),
+              })
+            )
+            .optional(),
         })
       ),
     })
