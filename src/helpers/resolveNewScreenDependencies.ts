@@ -2,7 +2,13 @@ import fs from "fs-extra";
 import chalk from "chalk";
 import { spinner } from "../index";
 import { config } from "./config";
-import { Dropdown, InputNumber, InputText, InputTextarea } from "../templateStrings/formFields";
+import {
+  Dropdown,
+  InputNumber,
+  InputText,
+  InputTextarea,
+  RadioButtonField,
+} from "../templateStrings/formFields";
 import { TextColumn } from "src/templateStrings/mainFileColumns";
 import addInitialState from "./addInitialState";
 
@@ -50,6 +56,13 @@ export default async function resolveNewScreenDependencies(capitalizedScreenName
           if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
           jsxFields.push(Dropdown(field.name, field.required));
           dropdownOptions.push({ fieldName: field.name, options: field.options || [] });
+          interfacePropertyType = "string";
+          initialValue = `""`;
+          break;
+
+        case "RadioButton":
+          if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+          jsxFields.push(RadioButtonField(field.name, field.options || [], field.required));
           interfacePropertyType = "string";
           initialValue = `""`;
           break;

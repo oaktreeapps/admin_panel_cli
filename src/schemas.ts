@@ -15,6 +15,7 @@ export const kitSchema = z.object({
             z.literal("InputTextarea"),
             z.literal("InputNumber"),
             z.literal("Dropdown"),
+            z.literal("RadioButton"),
           ]),
           options: z
             .array(
@@ -31,3 +32,5 @@ export const kitSchema = z.object({
 });
 
 export type KitConfig = z.infer<typeof kitSchema>;
+
+export type KitConfigOptions = { name: string; value: string }[];

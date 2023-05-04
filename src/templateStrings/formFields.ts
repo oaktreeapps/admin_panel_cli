@@ -1,3 +1,4 @@
+import { KitConfigOptions } from "../schemas";
 import { getLabel } from "../helpers/strings";
 
 const validationUi = (fieldName: string) => [
@@ -56,3 +57,33 @@ export const Dropdown = (fieldName: string, required = true) => `<div className=
 />
   ${required ? validationUi(fieldName)[1] : ""}
 </div>`;
+
+export const RadioButton = (
+  fieldName: string,
+  option: { name: string; value: string },
+  required: boolean
+) => `<div className="flex align-items-center">
+      <RadioButton
+        value="${option.value}"
+        onChange={(e) => onInputChange(e.value, "${fieldName}")}
+        checked={entity.${fieldName} === "${option.value}"}
+        ${required ? validationUi(fieldName)[0] : ""}
+      />
+      <label className="ml-2 text-sm">
+        ${option.name}
+      </label>
+    </div>
+`;
+
+export const RadioButtonField = (
+  fieldName: string,
+  options: KitConfigOptions,
+  required = true
+) => `<div className="field">
+  <p className="mt-5">Choose ${getLabel(fieldName)}</p>
+  <div className="flex flex-wrap gap-3">
+    ${options.map((opt) => RadioButton(fieldName, opt, required)).join("\n")}
+  </div>
+  ${required ? validationUi(fieldName)[1] : ""}
+</div>
+`;
