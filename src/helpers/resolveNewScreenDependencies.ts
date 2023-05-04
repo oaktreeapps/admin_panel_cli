@@ -85,6 +85,7 @@ export default async function resolveNewScreenDependencies(capitalizedScreenName
   const mainFilePath = `${folderPath}/${capitalizedScreenName}.tsx`;
   const createFilePath = `${folderPath}/Create${capitalizedScreenName}.tsx`;
   const editFilePath = `${folderPath}/Edit${capitalizedScreenName}.tsx`;
+  const appMenuItemsFilePath = `./src/layout/items.json`;
 
   const mainScreenTemplateFile = await fetch(
     "https://raw.githubusercontent.com/kuvamdazeus/admin-starter-react/main/src/screens/XXXXX/XXXXX.tsx"
@@ -160,6 +161,11 @@ export default async function resolveNewScreenDependencies(capitalizedScreenName
     finalEditScreenTemplateFileLines.push(line);
   });
   fs.writeFileSync(editFilePath, finalEditScreenTemplateFileLines.join("\n"));
+
+  const appMenuItemsFile = fs.readFileSync(appMenuItemsFilePath);
+  const appMenuItems = JSON.parse(appMenuItemsFile.toString());
+  appMenuItems[0].items.push({ label: capitalizedScreenName, to: `/${capitalizedScreenName.toLowerCase()}` });
+  fs.writeFileSync(appMenuItemsFilePath, JSON.stringify(appMenuItems, null, 2));
 
   spinner.start(`Creating service/${capitalizedScreenName}Service.tsx`);
   fs.createFile(`./src/service/${capitalizedScreenName}Service.tsx`);
