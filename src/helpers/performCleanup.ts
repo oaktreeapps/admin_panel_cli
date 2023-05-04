@@ -14,7 +14,7 @@ export default async function performCleanup() {
   ];
 
   fs.removeSync("./.git");
-  fs.removeSync("./src/service/XXXXXService.tsx");
+  fs.removeSync("./src/service/XXXXXService.ts");
   fs.removeSync("./src/screens/XXXXX");
   fs.removeSync("./src/types/xxxxx.d.ts");
 

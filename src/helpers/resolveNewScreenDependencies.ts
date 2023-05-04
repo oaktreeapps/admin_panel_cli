@@ -1,7 +1,6 @@
 import fs from "fs-extra";
 import chalk from "chalk";
 import { spinner } from "../index";
-import { config } from "./config";
 import {
   Dropdown,
   InputNumber,
@@ -11,8 +10,12 @@ import {
 } from "../templateStrings/formFields";
 import { TextColumn } from "src/templateStrings/mainFileColumns";
 import addInitialState from "./addInitialState";
+import { KitConfig } from "src/schemas";
 
-export default async function resolveNewScreenDependencies(capitalizedScreenName: string) {
+export default async function resolveNewScreenDependencies(
+  capitalizedScreenName: string,
+  screen: KitConfig["screens"][number]
+) {
   let screenTypeInterface = "";
   let initialState = "";
   const requiredFields: string[] = [];
@@ -20,66 +23,61 @@ export default async function resolveNewScreenDependencies(capitalizedScreenName
   const tableColumns: string[] = [];
   const dropdownOptions: { fieldName: string; options: any[] }[] = [];
 
-  const screen = config?.screens?.find(
-    (screen) => screen.name.toLowerCase() === capitalizedScreenName.toLowerCase()
-  );
-  if (screen) {
-    screen.crudFields.forEach((field, index) => {
-      let interfacePropertyType = "";
-      let initialValue = "";
+  screen.crudFields.forEach((field, index) => {
+    let interfacePropertyType = "";
+    let initialValue = "";
 
-      if (field.required) requiredFields.push(field.name);
+    if (field.required) requiredFields.push(field.name);
 
-      switch (field.type) {
-        case "InputText":
-          if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
-          jsxFields.push(InputText(field.name, field.required));
-          interfacePropertyType = "string";
-          initialValue = `""`;
-          break;
+    switch (field.type) {
+      case "InputText":
+        if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+        jsxFields.push(InputText(field.name, field.required));
+        interfacePropertyType = "string";
+        initialValue = `""`;
+        break;
 
-        case "InputTextarea":
-          if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
-          jsxFields.push(InputTextarea(field.name, field.required));
-          interfacePropertyType = "string";
-          initialValue = `""`;
-          break;
+      case "InputTextarea":
+        if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+        jsxFields.push(InputTextarea(field.name, field.required));
+        interfacePropertyType = "string";
+        initialValue = `""`;
+        break;
 
-        case "InputNumber":
-          if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
-          jsxFields.push(InputNumber(field.name, field.required));
-          interfacePropertyType = "number";
-          initialValue = `0`;
-          break;
+      case "InputNumber":
+        if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+        jsxFields.push(InputNumber(field.name, field.required));
+        interfacePropertyType = "number";
+        initialValue = `0`;
+        break;
 
-        case "Dropdown":
-          if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
-          jsxFields.push(Dropdown(field.name, field.required));
-          dropdownOptions.push({ fieldName: field.name, options: field.options || [] });
-          interfacePropertyType = "string";
-          initialValue = `""`;
-          break;
+      case "Dropdown":
+        if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+        jsxFields.push(Dropdown(field.name, field.required));
+        dropdownOptions.push({ fieldName: field.name, options: field.options || [] });
+        interfacePropertyType = "string";
+        initialValue = `""`;
+        break;
 
-        case "RadioButton":
-          if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
-          jsxFields.push(RadioButtonField(field.name, field.options || [], field.required));
-          interfacePropertyType = "string";
-          initialValue = `""`;
-          break;
-      }
+      case "RadioButton":
+        if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+        jsxFields.push(RadioButtonField(field.name, field.options || [], field.required));
+        interfacePropertyType = "string";
+        initialValue = `""`;
+        break;
+    }
 
-      if (index === 0) {
-        screenTypeInterface += `  id?: string;\n`;
-        initialState += `  id: "",\n`;
-      }
-      screenTypeInterface += `  ${field.name}: ${interfacePropertyType};\n`;
-      initialState += `  ${field.name}: ${initialValue},\n`;
-      if (index === screen.crudFields.length - 1) {
-        screenTypeInterface += "}\n";
-        initialState += "};\n";
-      }
-    });
-  }
+    if (index === 0) {
+      screenTypeInterface += `  id?: string;\n`;
+      initialState += `  id: "",\n`;
+    }
+    screenTypeInterface += `  ${field.name}: ${interfacePropertyType};\n`;
+    initialState += `  ${field.name}: ${initialValue},\n`;
+    if (index === screen.crudFields.length - 1) {
+      screenTypeInterface += "}\n";
+      initialState += "};\n";
+    }
+  });
 
   const folderPath = `./src/screens/${capitalizedScreenName}`;
   const mainFilePath = `${folderPath}/${capitalizedScreenName}.tsx`;
@@ -167,19 +165,18 @@ export default async function resolveNewScreenDependencies(capitalizedScreenName
   appMenuItems[0].items.push({ label: capitalizedScreenName, to: `/${capitalizedScreenName.toLowerCase()}` });
   fs.writeFileSync(appMenuItemsFilePath, JSON.stringify(appMenuItems, null, 2));
 
-  spinner.start(`Creating service/${capitalizedScreenName}Service.tsx`);
-  fs.createFile(`./src/service/${capitalizedScreenName}Service.tsx`);
+  spinner.start(`Creating service/${capitalizedScreenName}Service.ts`);
 
   const serviceTemplateFile = await fetch(
-    "https://raw.githubusercontent.com/kuvamdazeus/admin-starter-react/main/src/service/XXXXXService.tsx"
+    "https://raw.githubusercontent.com/kuvamdazeus/admin-starter-react/main/src/service/XXXXXService.ts"
   ).then((res) => res.text());
 
   const parsedServiceTemplateFile = serviceTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase());
 
-  fs.writeFileSync(`./src/service/${capitalizedScreenName}Service.tsx`, parsedServiceTemplateFile);
-  spinner.succeed(`Created ${chalk.cyan(`service/${capitalizedScreenName}Service.tsx`)}`);
+  fs.writeFileSync(`./src/service/${capitalizedScreenName}Service.ts`, parsedServiceTemplateFile);
+  spinner.succeed(`Created ${chalk.cyan(`service/${capitalizedScreenName}Service.ts`)}`);
 
   spinner.start(`Creating types/${capitalizedScreenName.toLowerCase()}.d.ts`);
   fs.createFile(`./src/types/${capitalizedScreenName.toLowerCase()}.d.ts`);

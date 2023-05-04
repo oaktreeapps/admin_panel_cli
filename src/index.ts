@@ -5,6 +5,7 @@ import { execAsync } from "./helpers/commands";
 import performCleanup from "./helpers/performCleanup";
 import syncConfigFile from "./helpers/syncConfigFile";
 import createScreen from "./helpers/createScreen";
+import removeScreen from "./helpers/removeScreen";
 
 export const spinner = ora({
   color: "blue",
@@ -36,10 +37,16 @@ program
   .action(setupProject);
 
 program
-  .command("screen")
+  .command("addscreen")
   .description("Create a new screen")
   .argument("<screenName>", "Name of the screen")
   .action(createScreen);
+
+program
+  .command("removescreen")
+  .description("Removes an existing screen")
+  .argument("<screenName>", "Name of the screen")
+  .action(removeScreen);
 
 program
   .command("sync")

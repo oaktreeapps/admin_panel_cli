@@ -2,8 +2,15 @@ import fs from "fs-extra";
 import chalk from "chalk";
 import { spinner } from "../index";
 import resolveNewScreenDependencies from "./resolveNewScreenDependencies";
+import { config } from "./config";
 
 export default async function createScreen(screenName: string) {
+  const screen = config?.screens?.find((screen) => screen.name.toLowerCase() === screenName.toLowerCase());
+  if (!screen) {
+    spinner.fail(`Screen ${chalk.cyan(screenName)} not found in config file`);
+    return;
+  }
+
   const capitalizedScreenName = screenName.charAt(0).toUpperCase() + screenName.slice(1);
 
   spinner.start(`Creating screen: ${chalk.cyan(capitalizedScreenName)}`);
@@ -21,7 +28,7 @@ export default async function createScreen(screenName: string) {
   fs.createFile(createFilePath);
   fs.createFile(editFilePath);
 
-  await resolveNewScreenDependencies(capitalizedScreenName);
+  await resolveNewScreenDependencies(capitalizedScreenName, screen);
 
   spinner.succeed(`Created screen: ${chalk.cyan(capitalizedScreenName)}`);
 }
