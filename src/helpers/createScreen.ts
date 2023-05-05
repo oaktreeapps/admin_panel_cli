@@ -24,9 +24,9 @@ export default async function createScreen(screenName: string) {
   const filePath = `${folderPath}/${capitalizedScreenName}.tsx`;
   const createFilePath = `${folderPath}/Create${capitalizedScreenName}.tsx`;
   const editFilePath = `${folderPath}/Edit${capitalizedScreenName}.tsx`;
-  fs.createFile(filePath);
-  fs.createFile(createFilePath);
-  fs.createFile(editFilePath);
+  fs.createFileSync(filePath);
+  fs.createFileSync(createFilePath);
+  fs.createFileSync(editFilePath);
 
   await resolveNewScreenDependencies(capitalizedScreenName, screen);
 

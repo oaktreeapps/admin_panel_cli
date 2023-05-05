@@ -6,6 +6,7 @@ import performCleanup from "./helpers/performCleanup";
 import syncConfigFile from "./helpers/syncConfigFile";
 import createScreen from "./helpers/createScreen";
 import removeScreen from "./helpers/removeScreen";
+import fs from "fs-extra";
 
 export const spinner = ora({
   color: "blue",
@@ -18,6 +19,12 @@ const setupProject = async (projectName: string) => {
   spinner.succeed("Cloned template successfully");
 
   process.chdir(projectName);
+  fs.ensureDirSync("./.adminkit");
+  fs.copyFileSync("./src/screens/XXXXX/XXXXX.tsx", "./.adminkit/XXXXX.tsx");
+  fs.copyFileSync("./src/screens/XXXXX/CreateXXXXX.tsx", "./.adminkit/CreateXXXXX.tsx");
+  fs.copyFileSync("./src/screens/XXXXX/EditXXXXX.tsx", "./.adminkit/EditXXXXX.tsx");
+  fs.copyFileSync("./src/service/XXXXXService.ts", "./.adminkit/XXXXXService.ts");
+  fs.copyFileSync("./src/types/xxxxx.d.ts", "./.adminkit/xxxxx.d.ts");
 
   spinner.start(`Installing dependencies`);
   await execAsync("yarn");

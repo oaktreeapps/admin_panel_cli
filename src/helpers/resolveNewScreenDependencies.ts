@@ -89,21 +89,16 @@ export default async function resolveNewScreenDependencies(
     }
   });
 
+  const adminKitPath = "./.adminkit";
   const folderPath = `./src/screens/${capitalizedScreenName}`;
   const mainFilePath = `${folderPath}/${capitalizedScreenName}.tsx`;
   const createFilePath = `${folderPath}/Create${capitalizedScreenName}.tsx`;
   const editFilePath = `${folderPath}/Edit${capitalizedScreenName}.tsx`;
   const appMenuItemsFilePath = `./src/layout/items.json`;
 
-  const mainScreenTemplateFile = await fetch(
-    "https://raw.githubusercontent.com/kuvamdazeus/admin-starter-react/main/src/screens/XXXXX/XXXXX.tsx"
-  ).then((res) => res.text());
-  const createScreenTemplateFile = await fetch(
-    "https://raw.githubusercontent.com/kuvamdazeus/admin-starter-react/main/src/screens/XXXXX/CreateXXXXX.tsx"
-  ).then((res) => res.text());
-  const editScreenTemplateFile = await fetch(
-    "https://raw.githubusercontent.com/kuvamdazeus/admin-starter-react/main/src/screens/XXXXX/EditXXXXX.tsx"
-  ).then((res) => res.text());
+  const mainScreenTemplateFile = fs.readFileSync(`${adminKitPath}/XXXXX.tsx`).toString();
+  const createScreenTemplateFile = fs.readFileSync(`${adminKitPath}/CreateXXXXX.tsx`).toString();
+  const editScreenTemplateFile = fs.readFileSync(`${adminKitPath}/EditXXXXX.tsx`).toString();
 
   const parsedMainScreenTemplateFile = mainScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
@@ -118,7 +113,6 @@ export default async function resolveNewScreenDependencies(
   });
 
   const newMainScreenTemplateFile = addInitialState(mainScreenTemplateFileLines, initialState);
-
   fs.writeFileSync(mainFilePath, newMainScreenTemplateFile);
 
   const parsedCreateScreenTemplateFile = createScreenTemplateFile
@@ -177,9 +171,7 @@ export default async function resolveNewScreenDependencies(
 
   spinner.start(`Creating service/${capitalizedScreenName}Service.ts`);
 
-  const serviceTemplateFile = await fetch(
-    "https://raw.githubusercontent.com/kuvamdazeus/admin-starter-react/main/src/service/XXXXXService.ts"
-  ).then((res) => res.text());
+  const serviceTemplateFile = fs.readFileSync(`${adminKitPath}/XXXXXService.ts`).toString();
 
   const parsedServiceTemplateFile = serviceTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
@@ -191,9 +183,7 @@ export default async function resolveNewScreenDependencies(
   spinner.start(`Creating types/${capitalizedScreenName.toLowerCase()}.d.ts`);
   fs.createFile(`./src/types/${capitalizedScreenName.toLowerCase()}.d.ts`);
 
-  const typesTemplateFile = await fetch(
-    "https://raw.githubusercontent.com/kuvamdazeus/admin-starter-react/main/src/types/xxxxx.d.ts"
-  ).then((res) => res.text());
+  const typesTemplateFile = fs.readFileSync(`${adminKitPath}/xxxxx.d.ts`).toString();
 
   const parsedTypesTemplateFile =
     typesTemplateFile.replace(/XXXXX/g, capitalizedScreenName).split("\n")[0] + "\n" + screenTypeInterface;
