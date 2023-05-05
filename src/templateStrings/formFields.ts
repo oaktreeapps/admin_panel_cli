@@ -87,3 +87,8 @@ export const RadioButtonField = (
   ${required ? validationUi(fieldName)[1] : ""}
 </div>
 `;
+
+export const InputSwitch = (fieldName: string) => `<div className="field flex items-center">
+  <p className="mr-2">${getLabel(fieldName)}</p>
+  <InputSwitch checked={entity.${fieldName}} onChange={(e) => onInputChange(e.value, "${fieldName}")} />
+</div>`;

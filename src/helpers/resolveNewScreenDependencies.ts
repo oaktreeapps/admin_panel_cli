@@ -4,6 +4,7 @@ import { spinner } from "../index";
 import {
   Dropdown,
   InputNumber,
+  InputSwitch,
   InputText,
   InputTextarea,
   RadioButtonField,
@@ -23,11 +24,13 @@ export default async function resolveNewScreenDependencies(
   const tableColumns: string[] = [];
   const dropdownOptions: { fieldName: string; options: any[] }[] = [];
 
+  const neverRequiredInputTypes = ["InputSwitch"];
+
   screen.crudFields.forEach((field, index) => {
     let interfacePropertyType = "";
     let initialValue = "";
 
-    if (field.required) requiredFields.push(field.name);
+    if (field.required && !neverRequiredInputTypes.includes(field.type)) requiredFields.push(field.name);
 
     switch (field.type) {
       case "InputText":
@@ -64,6 +67,13 @@ export default async function resolveNewScreenDependencies(
         jsxFields.push(RadioButtonField(field.name, field.options || [], field.required));
         interfacePropertyType = "string";
         initialValue = `""`;
+        break;
+
+      case "InputSwitch":
+        if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+        jsxFields.push(InputSwitch(field.name));
+        interfacePropertyType = "boolean";
+        initialValue = `false`;
         break;
     }
 

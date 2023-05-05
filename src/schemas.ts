@@ -16,6 +16,7 @@ export const kitSchema = z.object({
             z.literal("InputNumber"),
             z.literal("Dropdown"),
             z.literal("RadioButton"),
+            z.literal("InputSwitch"),
           ]),
           options: z
             .array(
