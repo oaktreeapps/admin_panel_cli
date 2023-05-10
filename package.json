@@ -4,10 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "type": "module",
+  "bin": "./dist/index.js",
   "scripts": {
     "start": "node ./dist/index.js",
-    "build": "tsup src/index.ts --format esm --minify",
-    "cli": "node ../dist/index.js"
+    "build": "tsup src/index.ts --format esm --minify"
   },
   "dependencies": {
     "chalk": "^5.2.0",
