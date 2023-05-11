@@ -3,3 +3,8 @@ node_modules
 .vscode
 test
 .DS_STORE
+
+# created project names
+admin
+test
+panel

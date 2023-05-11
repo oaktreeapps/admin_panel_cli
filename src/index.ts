@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 import { Command } from "commander";
 import ora from "ora";
 import simpleGit from "simple-git";
@@ -7,6 +9,7 @@ import syncConfigFile from "./helpers/syncConfigFile";
 import createScreen from "./helpers/createScreen";
 import removeScreen from "./helpers/removeScreen";
 import fs from "fs-extra";
+import chalk from "chalk";
 
 export const spinner = ora({
   color: "blue",
@@ -26,9 +29,7 @@ const setupProject = async (projectName: string) => {
   fs.copyFileSync("./src/service/XXXXXService.ts", "./.adminkit/XXXXXService.ts");
   fs.copyFileSync("./src/types/xxxxx.d.ts", "./.adminkit/xxxxx.d.ts");
 
-  spinner.start(`Installing dependencies`);
-  await execAsync("yarn");
-  spinner.succeed("Installed dependencies successfully");
+  console.log(`\nRun the following commands to get started:\ncd ${chalk.green(projectName)}\nnpm install\n`);
 
   performCleanup();
 };

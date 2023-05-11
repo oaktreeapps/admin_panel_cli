@@ -1,13 +1,13 @@
 {
   "name": "oaktree-admin-test",
-  "version": "0.1.0",
+  "version": "0.1.7",
   "main": "index.js",
   "license": "MIT",
   "type": "module",
-  "bin": "./dist/index.js",
+  "bin": "dist/index.js",
   "scripts": {
     "start": "node ./dist/index.js",
-    "build": "tsup src/index.ts --format esm --minify"
+    "build": "tsup src/index.ts --format esm --minify --treeshake recommended"
   },
   "dependencies": {
     "chalk": "^5.2.0",
