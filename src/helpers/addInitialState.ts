@@ -13,8 +13,6 @@ export default function addInitialState(fileLines: string[], initialStateRawStr:
     }
   });
 
-  console.log(initialStateIndices, fileLines.slice(0, 25));
-
   fileLines = [
     ...fileLines.slice(0, initialStateIndices[0]),
     initialState,

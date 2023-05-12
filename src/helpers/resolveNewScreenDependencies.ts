@@ -35,28 +35,28 @@ export default async function resolveNewScreenDependencies(
     switch (field.type) {
       case "InputText":
         if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
-        jsxFields.push(InputText(field.name, field.required));
+        jsxFields.push(InputText(field));
         interfacePropertyType = "string";
         initialValue = `""`;
         break;
 
       case "InputTextarea":
         if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
-        jsxFields.push(InputTextarea(field.name, field.required));
+        jsxFields.push(InputTextarea(field));
         interfacePropertyType = "string";
         initialValue = `""`;
         break;
 
       case "InputNumber":
         if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
-        jsxFields.push(InputNumber(field.name, field.required));
+        jsxFields.push(InputNumber(field));
         interfacePropertyType = "number";
         initialValue = `0`;
         break;
 
       case "Dropdown":
         if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
-        jsxFields.push(Dropdown(field.name, field.required));
+        jsxFields.push(Dropdown(field));
         dropdownOptions.push({ fieldName: field.name, options: field.options || [] });
         interfacePropertyType = "string";
         initialValue = `""`;
@@ -64,14 +64,14 @@ export default async function resolveNewScreenDependencies(
 
       case "RadioButton":
         if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
-        jsxFields.push(RadioButtonField(field.name, field.options || [], field.required));
+        jsxFields.push(RadioButtonField(field, field.options || []));
         interfacePropertyType = "string";
         initialValue = `""`;
         break;
 
       case "InputSwitch":
         if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
-        jsxFields.push(InputSwitch(field.name));
+        jsxFields.push(InputSwitch(field));
         interfacePropertyType = "boolean";
         initialValue = `false`;
         break;

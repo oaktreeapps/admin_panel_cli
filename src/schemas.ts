@@ -10,6 +10,7 @@ export const kitSchema = z.object({
           name: z.string(),
           required: z.boolean().optional().default(true),
           tableDisplay: z.boolean().optional().default(true),
+          inline: z.boolean().optional().default(false),
           type: z.union([
             z.literal("InputText"),
             z.literal("InputTextarea"),
@@ -35,3 +36,5 @@ export const kitSchema = z.object({
 export type KitConfig = z.infer<typeof kitSchema>;
 
 export type KitConfigOptions = { name: string; value: string }[];
+
+export type KitConfigField = KitConfig["screens"][number]["crudFields"][number];
