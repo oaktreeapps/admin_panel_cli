@@ -5,8 +5,7 @@ import { config } from "./config";
 export default async function syncConfigFile() {
   await performCleanup();
 
-  if (config)
-    config.screens.map((screen) => {
-      createScreen(screen.name);
-    });
+  config()?.screens.map((screen) => {
+    createScreen(screen.name);
+  });
 }

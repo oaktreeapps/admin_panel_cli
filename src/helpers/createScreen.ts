@@ -5,7 +5,7 @@ import resolveNewScreenDependencies from "./resolveNewScreenDependencies";
 import { config } from "./config";
 
 export default async function createScreen(screenName: string) {
-  const screen = config?.screens?.find((screen) => screen.name.toLowerCase() === screenName.toLowerCase());
+  const screen = config()?.screens?.find((screen) => screen.name.toLowerCase() === screenName.toLowerCase());
   if (!screen) {
     spinner.fail(`Screen ${chalk.cyan(screenName)} not found in config file`);
     return;

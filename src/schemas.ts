@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const kitSchema = z.object({
+  backendUrl: z.string().optional().default("http://localhost:3000"),
   screens: z.array(
     z.object({
       name: z.string(),

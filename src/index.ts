@@ -3,13 +3,13 @@
 import { Command } from "commander";
 import ora from "ora";
 import simpleGit from "simple-git";
-import { execAsync } from "./helpers/commands";
 import performCleanup from "./helpers/performCleanup";
 import syncConfigFile from "./helpers/syncConfigFile";
 import createScreen from "./helpers/createScreen";
 import removeScreen from "./helpers/removeScreen";
 import fs from "fs-extra";
 import chalk from "chalk";
+import { config } from "./helpers/config";
 
 export const spinner = ora({
   color: "blue",
@@ -28,10 +28,11 @@ const setupProject = async (projectName: string) => {
   fs.copyFileSync("./src/screens/XXXXX/EditXXXXX.tsx", "./.adminkit/EditXXXXX.tsx");
   fs.copyFileSync("./src/service/XXXXXService.ts", "./.adminkit/XXXXXService.ts");
   fs.copyFileSync("./src/types/xxxxx.d.ts", "./.adminkit/xxxxx.d.ts");
-
-  console.log(`\nRun the following commands to get started:\ncd ${chalk.green(projectName)}\nnpm install\n`);
+  fs.writeFileSync("./.env", `VITE_BASE_URL = "${config()?.backendUrl}"`);
 
   performCleanup();
+
+  console.log(`\nRun the following commands to get started:\ncd ${chalk.green(projectName)}\nnpm install\n`);
 };
 
 const program = new Command();
