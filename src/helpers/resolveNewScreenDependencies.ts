@@ -1,6 +1,6 @@
 import fs from "fs-extra";
 import chalk from "chalk";
-import { spinner } from "../index";
+import { adminKitPath, spinner } from "../index";
 import {
   Dropdown,
   InputNumber,
@@ -89,7 +89,6 @@ export default async function resolveNewScreenDependencies(
     }
   });
 
-  const adminKitPath = "./.adminkit";
   const folderPath = `./src/screens/${capitalizedScreenName}`;
   const mainFilePath = `${folderPath}/${capitalizedScreenName}.tsx`;
   const createFilePath = `${folderPath}/Create${capitalizedScreenName}.tsx`;
