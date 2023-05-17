@@ -1,5 +1,5 @@
 import { KitConfigField, KitConfigOptions } from "../schemas";
-import { getLabel } from "../commands/strings";
+import { getLabel } from "../helpers/strings";
 
 const validationUi = (fieldName: string) => [
   `className={classNames({ "p-invalid": submitted && !entity.${fieldName} })}`,

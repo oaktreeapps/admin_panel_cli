@@ -1,7 +1,7 @@
 import simpleGit from "simple-git";
 import fs from "fs-extra";
 import { adminKitPath, spinner } from "src/index";
-import performCleanup from "src/commands/performCleanup";
+import performCleanup from "src/helpers/performCleanup";
 import chalk from "chalk";
 import { config } from "src/config";
 

@@ -1,7 +1,7 @@
 import fs from "fs-extra";
 import chalk from "chalk";
 import { spinner } from "src/index";
-import resolveNewScreenDependencies from "src/commands/resolveNewScreenDependencies";
+import resolveNewScreenDependencies from "src/helpers/resolveNewScreenDependencies";
 import { config } from "src/config";
 
 export default async function addScreen(screenName: string) {

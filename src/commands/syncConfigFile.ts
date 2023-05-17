@@ -1,4 +1,4 @@
-import performCleanup from "src/commands/performCleanup";
+import performCleanup from "src/helpers/performCleanup";
 import addScreen from "src/commands/addScreen";
 import { config } from "src/config";
 
