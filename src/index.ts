@@ -21,7 +21,7 @@ program.name("admin-starter").description("CLI to setup & manager admin UIs").ve
 
 program
   .command("scaffold")
-  .description("Scaffold a new admin UI project by using template")
+  .description("Scaffold a new admin project by using templates")
   .argument("<projectName>", "Name of the project")
   .action(scaffold);
 

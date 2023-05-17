@@ -94,9 +94,10 @@ export default async function resolveNewScreenDependencies(
   const editFilePath = `${folderPath}/Edit${capitalizedScreenName}.tsx`;
   const appMenuItemsFilePath = `./src/layout/items.json`;
 
-  const mainScreenTemplateFile = fs.readFileSync(`${adminKitPath}/XXXXX.tsx`).toString();
-  const createScreenTemplateFile = fs.readFileSync(`${adminKitPath}/CreateXXXXX.tsx`).toString();
-  const editScreenTemplateFile = fs.readFileSync(`${adminKitPath}/EditXXXXX.tsx`).toString();
+  const mainScreenTemplateFile = fs.readFileSync(`${adminKitPath}/webapp/XXXXX.tsx`).toString();
+  const createScreenTemplateFile = fs.readFileSync(`${adminKitPath}/webapp/CreateXXXXX.tsx`).toString();
+  const editScreenTemplateFile = fs.readFileSync(`${adminKitPath}/webapp/EditXXXXX.tsx`).toString();
+  const typesTemplateFile = fs.readFileSync(`${adminKitPath}/webapp/xxxxx.d.ts`).toString();
 
   const parsedMainScreenTemplateFile = mainScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
@@ -181,9 +182,6 @@ export default async function resolveNewScreenDependencies(
   fs.writeFileSync(appMenuItemsFilePath, JSON.stringify(appMenuItems, null, 2));
 
   spinner.start(`Creating types/${capitalizedScreenName.toLowerCase()}.d.ts`);
-  fs.createFile(`./src/types/${capitalizedScreenName.toLowerCase()}.d.ts`);
-
-  const typesTemplateFile = fs.readFileSync(`${adminKitPath}/xxxxx.d.ts`).toString();
 
   const parsedTypesTemplateFile =
     typesTemplateFile.replace(/XXXXX/g, capitalizedScreenName).split("\n")[0] + "\n" + screenTypeInterface;
