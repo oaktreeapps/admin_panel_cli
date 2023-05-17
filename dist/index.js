@@ -1,25 +1,25 @@
 #! /usr/bin/env node
 import { Command } from 'commander';
-import ye from 'os';
+import $e from 'os';
 import xe from 'ora';
-import c from 'fs-extra';
+import l from 'fs-extra';
 import D from 'chalk';
 import { z } from 'zod';
-import Xe from 'simple-git';
+import ue from 'simple-git';
 
-var y=(e,n,s)=>new Promise((i,X)=>{var a=m=>{try{p(s.next(m));}catch($){X($);}},l=m=>{try{p(s.throw(m));}catch($){X($);}},p=m=>m.done?i(m.value):Promise.resolve(m.value).then(a,l);p((s=s.apply(e,n)).next());});function E(){return y(this,null,function*(){let e=['import XXXXXPage from "./screens/XXXXX/XXXXX"','import EditXXXXXPage from "./screens/XXXXX/EditXXXXX"','import CreateXXXXXPage from "./screens/XXXXX/CreateXXXXX"','<Route path="xxxxx" element={<XXXXXPage />} />','<Route path="xxxxx/create" element={<CreateXXXXXPage />} />','<Route path="xxxxx/edit/:id" element={<EditXXXXXPage />} />'];c.removeSync("./.git"),c.removeSync("./yarn.lock"),c.removeSync("./src/service/XXXXXService.ts"),c.removeSync("./src/screens/XXXXX"),c.removeSync("./src/types/xxxxx.d.ts");let i=c.readFileSync("./src/main.tsx").toString().split(`
-`).filter(X=>e.filter(a=>X.includes(a)).length===0);c.writeFileSync("./src/main.tsx",i.join(`
-`));})}var f=e=>{let n=e.replace(/([A-Z])/g," $1");return n.charAt(0).toUpperCase()+n.slice(1)},W=e=>e.charAt(0).toUpperCase()+e.slice(1);var x=e=>[`className={classNames({ "p-invalid": submitted && !entity.${e} })}`,`{submitted && !entity.${e} && <small className="p-invalid">${f(e)} is required.</small>}`],_=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
+var x=(e,n,s)=>new Promise((r,p)=>{var i=m=>{try{u(s.next(m));}catch(g){p(g);}},c=m=>{try{u(s.throw(m));}catch(g){p(g);}},u=m=>m.done?r(m.value):Promise.resolve(m.value).then(i,c);u((s=s.apply(e,n)).next());});function E(){return x(this,null,function*(){let e=['import XXXXXPage from "./screens/XXXXX/XXXXX"','import EditXXXXXPage from "./screens/XXXXX/EditXXXXX"','import CreateXXXXXPage from "./screens/XXXXX/CreateXXXXX"','<Route path="xxxxx" element={<XXXXXPage />} />','<Route path="xxxxx/create" element={<CreateXXXXXPage />} />','<Route path="xxxxx/edit/:id" element={<EditXXXXXPage />} />'];l.removeSync("./.git"),l.removeSync("./yarn.lock"),l.removeSync("./src/screens/XXXXX"),l.removeSync("./src/types/xxxxx.d.ts");let r=l.readFileSync("./src/main.tsx").toString().split(`
+`).filter(p=>e.filter(i=>p.includes(i)).length===0);l.writeFileSync("./src/main.tsx",r.join(`
+`));})}var f=e=>{let n=e.replace(/([A-Z])/g," $1");return n.charAt(0).toUpperCase()+n.slice(1)},M=e=>e.charAt(0).toUpperCase()+e.slice(1);var y=e=>[`className={classNames({ "p-invalid": submitted && !entity.${e} })}`,`{submitted && !entity.${e} && <small className="p-invalid">${f(e)} is required.</small>}`],V=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
 <p>${f(e.name)}</p>
 <InputNumber
   id="${e.name}"
   value={entity.${e.name}}
   onValueChange={(e) => onInputNumberChange(e.value, "${e.name}")}
   style={{ width: "100%" }}
-  ${e.required?x(e.name)[0]:""}
+  ${e.required?y(e.name)[0]:""}
   />
-  ${e.required?x(e.name)[1]:""}
-</div>`,G=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
+  ${e.required?y(e.name)[1]:""}
+</div>`,W=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
 <p>${f(e.name)}</p>
 <InputText
   id="${e.name}"
@@ -28,23 +28,23 @@ var y=(e,n,s)=>new Promise((i,X)=>{var a=m=>{try{p(s.next(m));}catch($){X($);}},
   required
   autoFocus
   style={{ width: "100%" }}
-  ${e.required?x(e.name)[0]:""}
+  ${e.required?y(e.name)[0]:""}
 />
-  ${e.required?x(e.name)[1]:""}
-</div>`,Z=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
+  ${e.required?y(e.name)[1]:""}
+</div>`,_=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
 <p>${f(e.name)}</p>
 <InputTextarea
   id="${e.name}"
   value={entity.${e.name}}
   onChange={(e) => onInputChange(e.target.value, "${e.name}")}
   style={{ width: "100%" }}
-  ${e.required?x(e.name)[0]:""}
+  ${e.required?y(e.name)[0]:""}
   required
   rows={3}
   cols={20}
 />
-  ${e.required?x(e.name)[1]:""}
-</div>`,H=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
+  ${e.required?y(e.name)[1]:""}
+</div>`,G=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
 <Dropdown
   value={entity.${e.name}}
   onChange={(e: DropdownChangeEvent) => onInputChange(e.value, "${e.name}")}
@@ -52,63 +52,63 @@ var y=(e,n,s)=>new Promise((i,X)=>{var a=m=>{try{p(s.next(m));}catch($){X($);}},
   optionLabel="name"
   placeholder="Select a ${f(e.name)}"
   style={{ width: "100%" }}
-  ${e.required?x(e.name)[0]:""}
+  ${e.required?y(e.name)[0]:""}
 />
-  ${e.required?x(e.name)[1]:""}
-</div>`,ue=(e,n)=>`<div className="flex align-items-center">
+  ${e.required?y(e.name)[1]:""}
+</div>`,le=(e,n)=>`<div className="flex align-items-center">
       <RadioButton
         value="${n.value}"
         onChange={(e) => onInputChange(e.value, "${e.name}")}
         checked={entity.${e.name} === "${n.value}"}
-        ${e.required?x(e.name)[0]:""}
+        ${e.required?y(e.name)[0]:""}
       />
       <p className="ml-2 text-sm">
         ${n.name}
       </p>
     </div>
-`,Q=(e,n)=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
+`,Z=(e,n)=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
   <p>Choose ${f(e.name)}</p>
   <div className="flex flex-wrap gap-3">
-    ${n.map(s=>ue(e,s)).join(`
+    ${n.map(s=>le(e,s)).join(`
 `)}
   </div>
-  ${e.required?x(e.name)[1]:""}
+  ${e.required?y(e.name)[1]:""}
 </div>
-`,Y=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"} flex items-center">
+`,H=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"} flex items-center">
   <p className="mr-2">${f(e.name)}</p>
   <InputSwitch checked={entity.${e.name}} onChange={(e) => onInputChange(e.value, "${e.name}")} />
-</div>`;var w=e=>`<Column
+</div>`;var C=e=>`<Column
   field="${e}"
-  header="${W(e)}"
+  header="${M(e)}"
   sortable
   body={(rowData) => textBodyTemplate(rowData, "${e}")}
   headerStyle={{ minWidth: "15rem" }}
-></Column>`;function U(e,n){return y(this,null,function*(){let s="",i="",X=[],a=[],l=[],p=[],m=["InputSwitch"];n.crudFields.forEach((t,d)=>{let g="",h="";switch(t.required&&!m.includes(t.type)&&X.push(t.name),t.type){case"InputText":t.tableDisplay&&l.push(w(t.name)),a.push(G(t)),g="string",h='""';break;case"InputTextarea":t.tableDisplay&&l.push(w(t.name)),a.push(Z(t)),g="string",h='""';break;case"InputNumber":t.tableDisplay&&l.push(w(t.name)),a.push(_(t)),g="number",h="0";break;case"Dropdown":t.tableDisplay&&l.push(w(t.name)),a.push(H(t)),p.push({fieldName:t.name,options:t.options||[]}),g="string",h='""';break;case"RadioButton":t.tableDisplay&&l.push(w(t.name)),a.push(Q(t,t.options||[])),g="string",h='""';break;case"InputSwitch":t.tableDisplay&&l.push(w(t.name)),a.push(Y(t)),g="boolean",h="false";break}d===0&&(s+=`  id?: string;
-`,i+=`  id: "",
-`),s+=`  ${t.name}: ${g};
-`,i+=`  ${t.name}: ${h},
+></Column>`;function q(e,n){return x(this,null,function*(){let s="",r="",p=[],i=[],c=[],u=[],m=["InputSwitch"];n.crudFields.forEach((t,d)=>{let X="",h="";switch(t.required&&!m.includes(t.type)&&p.push(t.name),t.type){case"InputText":t.tableDisplay&&c.push(C(t.name)),i.push(W(t)),X="string",h='""';break;case"InputTextarea":t.tableDisplay&&c.push(C(t.name)),i.push(_(t)),X="string",h='""';break;case"InputNumber":t.tableDisplay&&c.push(C(t.name)),i.push(V(t)),X="number",h="0";break;case"Dropdown":t.tableDisplay&&c.push(C(t.name)),i.push(G(t)),u.push({fieldName:t.name,options:t.options||[]}),X="string",h='""';break;case"RadioButton":t.tableDisplay&&c.push(C(t.name)),i.push(Z(t,t.options||[])),X="string",h='""';break;case"InputSwitch":t.tableDisplay&&c.push(C(t.name)),i.push(H(t)),X="boolean",h="false";break}d===0&&(s+=`  id?: string;
+`,r+=`  id: "",
+`),s+=`  ${t.name}: ${X};
+`,r+=`  ${t.name}: ${h},
 `,d===n.crudFields.length-1&&(s+=`}
-`,i+=`};
-`);});let $=`./src/screens/${e}`,K=`${$}/${e}.tsx`,P=`${$}/Create${e}.tsx`,q=`${$}/Edit${e}.tsx`,M="./src/layout/items.json",ee=c.readFileSync(`${u}/XXXXX.tsx`).toString(),te=c.readFileSync(`${u}/CreateXXXXX.tsx`).toString(),ne=c.readFileSync(`${u}/EditXXXXX.tsx`).toString(),se=ee.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()),S=[];se.split(`
-`).forEach(t=>{t.includes('<Column body={actionBodyTemplate} headerStyle={{ minWidth: "10rem" }}></Column>')?(S.push(...l),S.push(t)):t.includes(`const initialState: ${e}Type = {};`)?(S.push(`const initialState: ${e}Type = {`),S.push(i)):S.push(t);}),c.writeFileSync(K,S.join(`
-`));let re=te.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(/INPUT\-FIELDS/g,a.join(`
-`)).replace(/if \(entity.name.trim\(\)\) \{/,`if (${X.map(t=>`entity.${t}`).join(" && ")}) {`),T=[];re.split(`
-`).forEach(t=>{t.includes("const saveEntity = async () => {")?(p.forEach(({fieldName:d,options:g})=>{T.push(`const ${d}Options = ${JSON.stringify(g,null,2)};
-`);}),T.push(t)):t.includes(`const initialState: ${e}Type = {};`)?(T.push(`const initialState: ${e}Type = {`),T.push(i)):T.push(t);}),c.writeFileSync(P,T.join(`
-`));let oe=ne.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(/INPUT\-FIELDS/g,a.join(`
-`)).replace(/if \(entity.name.trim\(\)\) \{/,`if (${X.map(t=>`entity.${t}`).join(" && ")}) {`),b=[];oe.split(`
-`).forEach(t=>{t.includes("const saveEntity = async () => {")?(p.forEach(({fieldName:d,options:g})=>{b.push(`const ${d}Options = ${JSON.stringify(g,null,2)};
-`);}),b.push(t)):t.includes(`const initialState: ${e}Type = {};`)?(b.push(`const initialState: ${e}Type = {`),b.push(i)):b.push(t);}),c.writeFileSync(q,b.join(`
-`));let ie=c.readFileSync(M),V=JSON.parse(ie.toString());V[0].items.push({label:e,to:`/${e.toLowerCase()}`}),c.writeFileSync(M,JSON.stringify(V,null,2)),o.start(`Creating service/${e}Service.ts`);let ae=c.readFileSync(`${u}/XXXXXService.ts`).toString().replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase());c.writeFileSync(`./src/service/${e}Service.ts`,ae),o.succeed(`Created ${D.cyan(`service/${e}Service.ts`)}`),o.start(`Creating types/${e.toLowerCase()}.d.ts`),c.createFile(`./src/types/${e.toLowerCase()}.d.ts`);let ce=c.readFileSync(`${u}/xxxxx.d.ts`).toString().replace(/XXXXX/g,e).split(`
+`,r+=`};
+`);});let g=`./src/screens/${e}`,P=`${g}/${e}.tsx`,K=`${g}/Create${e}.tsx`,z=`${g}/Edit${e}.tsx`,A="./src/layout/items.json",ee=l.readFileSync(`${$}/XXXXX.tsx`).toString(),te=l.readFileSync(`${$}/CreateXXXXX.tsx`).toString(),ne=l.readFileSync(`${$}/EditXXXXX.tsx`).toString(),se=ee.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()),w=[];se.split(`
+`).forEach(t=>{t.includes('<Column body={actionBodyTemplate} headerStyle={{ minWidth: "10rem" }}></Column>')?(w.push(...c),w.push(t)):t.includes(`const initialState: ${e}Type = {};`)?(w.push(`const initialState: ${e}Type = {`),w.push(r)):w.push(t);}),l.writeFileSync(P,w.join(`
+`));let oe=te.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(/INPUT\-FIELDS/g,i.join(`
+`)).replace(/if \(entity.name.trim\(\)\) \{/,`if (${p.map(t=>`entity.${t}`).join(" && ")}) {`),F=[];oe.split(`
+`).forEach(t=>{t.includes("const saveEntity = async () => {")?(u.forEach(({fieldName:d,options:X})=>{F.push(`const ${d}Options = ${JSON.stringify(X,null,2)};
+`);}),F.push(t)):t.includes(`const initialState: ${e}Type = {};`)?(F.push(`const initialState: ${e}Type = {`),F.push(r)):F.push(t);}),l.writeFileSync(K,F.join(`
+`));let re=ne.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(/INPUT\-FIELDS/g,i.join(`
+`)).replace(/if \(entity.name.trim\(\)\) \{/,`if (${p.map(t=>`entity.${t}`).join(" && ")}) {`),v=[];re.split(`
+`).forEach(t=>{t.includes("const saveEntity = async () => {")?(u.forEach(({fieldName:d,options:X})=>{v.push(`const ${d}Options = ${JSON.stringify(X,null,2)};
+`);}),v.push(t)):t.includes(`const initialState: ${e}Type = {};`)?(v.push(`const initialState: ${e}Type = {`),v.push(r)):v.push(t);}),l.writeFileSync(z,v.join(`
+`));let ie=l.readFileSync(A),J=JSON.parse(ie.toString());J[0].items.push({label:e,to:`/${e.toLowerCase()}`}),l.writeFileSync(A,JSON.stringify(J,null,2)),a.start(`Creating types/${e.toLowerCase()}.d.ts`),l.createFile(`./src/types/${e.toLowerCase()}.d.ts`);let ae=l.readFileSync(`${$}/xxxxx.d.ts`).toString().replace(/XXXXX/g,e).split(`
 `)[0]+`
-`+s;c.writeFileSync(`./src/types/${e.toLowerCase()}.d.ts`,ce),o.succeed(`Created ${D.cyan(`types/${e}.d.ts`)}`),o.start(`Creating route for ${e}`);let pe=c.readFileSync("./src/main.tsx").toString().split(`
-`),me=[`      <Route path="${e.toLowerCase()}" element={<${e}Page />} />`,`      <Route path="${e.toLowerCase()}/create" element={<Create${e}Page />} />`,`      <Route path="${e.toLowerCase()}/edit/:id" element={<Edit${e}Page />} />`],le=[`import ${e}Page from "./screens/${e}/${e}"`,`import Edit${e}Page from "./screens/${e}/Edit${e}"`,`import Create${e}Page from "./screens/${e}/Create${e}"`],j=[];j.push(...le),pe.forEach(t=>{t.includes("</Route>")&&me.forEach(d=>{j.push(d);}),j.push(t);}),c.writeFileSync("./src/main.tsx",j.join(`
-`)),o.succeed(`Created route: ${D.cyan(`/${e.toLowerCase()}`)}`);})}var N=z.object({backendUrl:z.string().optional().default("http://localhost:3000"),screens:z.array(z.object({name:z.string(),url:z.string(),crudFields:z.array(z.object({name:z.string(),required:z.boolean().optional().default(!0),tableDisplay:z.boolean().optional().default(!0),inline:z.boolean().optional().default(!1),type:z.union([z.literal("InputText"),z.literal("InputTextarea"),z.literal("InputNumber"),z.literal("Dropdown"),z.literal("RadioButton"),z.literal("InputSwitch")]),options:z.array(z.object({name:z.string(),value:z.string()})).optional()}))}))});var I=()=>{if(!c.existsSync("kit.config.json"))return null;let e=JSON.parse(c.readFileSync("kit.config.json").toString());return N.parse(e)};function R(e){return y(this,null,function*(){var p,m;let n=(m=(p=I())==null?void 0:p.screens)==null?void 0:m.find($=>$.name.toLowerCase()===e.toLowerCase());if(!n){o.fail(`Screen ${D.cyan(e)} not found in config file`);return}let s=e.charAt(0).toUpperCase()+e.slice(1);o.start(`Creating screen: ${D.cyan(s)}`);let i=`./src/screens/${s}`;if(c.existsSync(i)){o.fail(`Screen ${D.cyan(s)} already exists`);return}let X=`${i}/${s}.tsx`,a=`${i}/Create${s}.tsx`,l=`${i}/Edit${s}.tsx`;c.createFileSync(X),c.createFileSync(a),c.createFileSync(l),yield U(s,n),o.succeed(`Created screen: ${D.cyan(s)}`);})}function B(){return y(this,null,function*(){var e;yield E(),(e=I())==null||e.screens.map(n=>{R(n.name);});})}function A(e){let n=e.charAt(0).toUpperCase()+e.slice(1);o.start(`Removing screen: ${e}`);let s=`./src/types/${e}.d.ts`,i=`./src/service/${n}Service.ts`,X=`./src/screens/${n}`,a="./src/layout/items.json",l=c.readFileSync(a),p=JSON.parse(l.toString());p[0].items=p[0].items.filter(P=>P.label.toLowerCase()!==n.toLowerCase()),c.writeFileSync(a,JSON.stringify(p,null,2)),c.removeSync(s),c.removeSync(i),c.removeSync(X);let m=[`<Route path="${n.toLowerCase()}" element={<${n}Page />} />`,`<Route path="${n.toLowerCase()}/create" element={<Create${n}Page />} />`,`<Route path="${n.toLowerCase()}/edit/:id" element={<Edit${n}Page />} />`,`import ${n}Page from "./screens/${n}/${n}"`,`import Edit${n}Page from "./screens/${n}/Edit${n}"`,`import Create${n}Page from "./screens/${n}/Create${n}"`],K=c.readFileSync("./src/main.tsx").toString().split(`
-`).filter(P=>m.filter(q=>P.includes(q)).length===0);c.writeFileSync("./src/main.tsx",K.join(`
-`)),o.succeed(`Removed screen: ${e}`);}function J(e){return y(this,null,function*(){var n;o.start("Cloning template"),yield Xe().clone("https://github.com/kuvamdazeus/admin-starter-react","./"+e),o.succeed("Cloned template successfully"),process.chdir(e),c.ensureDirSync(`${u}`),c.copyFileSync("./src/screens/XXXXX/XXXXX.tsx",`${u}/XXXXX.tsx`),c.copyFileSync("./src/screens/XXXXX/CreateXXXXX.tsx",`${u}/CreateXXXXX.tsx`),c.copyFileSync("./src/screens/XXXXX/EditXXXXX.tsx",`${u}/EditXXXXX.tsx`),c.copyFileSync("./src/service/XXXXXService.ts",`${u}/XXXXXService.ts`),c.copyFileSync("./src/types/xxxxx.d.ts",`${u}/xxxxx.d.ts`),c.writeFileSync("./.env",`VITE_BASE_URL = "${(n=I())==null?void 0:n.backendUrl}"`),E(),console.log(`
+`+s;l.writeFileSync(`./src/types/${e.toLowerCase()}.d.ts`,ae),a.succeed(`Created ${D.cyan(`types/${e}.d.ts`)}`),a.start(`Creating route for ${e}`);let ce=l.readFileSync("./src/main.tsx").toString().split(`
+`),pe=[`      <Route path="${e.toLowerCase()}" element={<${e}Page />} />`,`      <Route path="${e.toLowerCase()}/create" element={<Create${e}Page />} />`,`      <Route path="${e.toLowerCase()}/edit/:id" element={<Edit${e}Page />} />`],me=[`import ${e}Page from "./screens/${e}/${e}"`,`import Edit${e}Page from "./screens/${e}/Edit${e}"`,`import Create${e}Page from "./screens/${e}/Create${e}"`],j=[];j.push(...me),ce.forEach(t=>{t.includes("</Route>")&&pe.forEach(d=>{j.push(d);}),j.push(t);}),l.writeFileSync("./src/main.tsx",j.join(`
+`)),a.succeed(`Created route: ${D.cyan(`/${e.toLowerCase()}`)}`);})}var Y=z.object({backendUrl:z.string().optional().default("http://localhost:3000"),screens:z.array(z.object({name:z.string(),url:z.string(),crudFields:z.array(z.object({name:z.string(),required:z.boolean().optional().default(!0),tableDisplay:z.boolean().optional().default(!0),inline:z.boolean().optional().default(!1),type:z.union([z.literal("InputText"),z.literal("InputTextarea"),z.literal("InputNumber"),z.literal("Dropdown"),z.literal("RadioButton"),z.literal("InputSwitch")]),options:z.array(z.object({name:z.string(),value:z.string()})).optional()}))}))});var T=()=>{if(!l.existsSync("kit.config.json"))return null;let e=JSON.parse(l.readFileSync("kit.config.json").toString());return Y.parse(e)};function R(e){return x(this,null,function*(){var u,m;let n=(m=(u=T())==null?void 0:u.screens)==null?void 0:m.find(g=>g.name.toLowerCase()===e.toLowerCase());if(!n){a.fail(`Screen ${D.cyan(e)} not found in config file`);return}let s=e.charAt(0).toUpperCase()+e.slice(1);a.start(`Creating screen: ${D.cyan(s)}`);let r=`./src/screens/${s}`;if(l.existsSync(r)){a.fail(`Screen ${D.cyan(s)} already exists`);return}let p=`${r}/${s}.tsx`,i=`${r}/Create${s}.tsx`,c=`${r}/Edit${s}.tsx`;l.createFileSync(p),l.createFileSync(i),l.createFileSync(c),yield q(s,n),a.succeed(`Created screen: ${D.cyan(s)}`);})}function O(){return x(this,null,function*(){var e;yield E(),(e=T())==null||e.screens.map(n=>{R(n.name);});})}function U(e){let n=e.charAt(0).toUpperCase()+e.slice(1);a.start(`Removing screen: ${e}`);let s=`./src/types/${e}.d.ts`,r=`./src/screens/${n}`,p="./src/layout/items.json",i=l.readFileSync(p),c=JSON.parse(i.toString());c[0].items=c[0].items.filter(P=>P.label.toLowerCase()!==n.toLowerCase()),l.writeFileSync(p,JSON.stringify(c,null,2)),l.removeSync(s),l.removeSync(r);let u=[`<Route path="${n.toLowerCase()}" element={<${n}Page />} />`,`<Route path="${n.toLowerCase()}/create" element={<Create${n}Page />} />`,`<Route path="${n.toLowerCase()}/edit/:id" element={<Edit${n}Page />} />`,`import ${n}Page from "./screens/${n}/${n}"`,`import Edit${n}Page from "./screens/${n}/Edit${n}"`,`import Create${n}Page from "./screens/${n}/Create${n}"`],g=l.readFileSync("./src/main.tsx").toString().split(`
+`).filter(P=>u.filter(K=>P.includes(K)).length===0);l.writeFileSync("./src/main.tsx",g.join(`
+`)),a.succeed(`Removed screen: ${e}`);}function B(e){return x(this,null,function*(){var n;a.start("Cloning template"),yield ue().clone("https://github.com/kuvamdazeus/admin-starter-react","./"+e),a.succeed("Cloned template successfully"),process.chdir(e),l.ensureDirSync(`${$}`),l.copyFileSync("./src/screens/XXXXX/XXXXX.tsx",`${$}/XXXXX.tsx`),l.copyFileSync("./src/screens/XXXXX/CreateXXXXX.tsx",`${$}/CreateXXXXX.tsx`),l.copyFileSync("./src/screens/XXXXX/EditXXXXX.tsx",`${$}/EditXXXXX.tsx`),l.copyFileSync("./src/types/xxxxx.d.ts",`${$}/xxxxx.d.ts`),l.writeFileSync("./.env",`VITE_BASE_URL = "${(n=T())==null?void 0:n.backendUrl}"`),E(),console.log(`
 Run the following commands to get started:
 cd ${D.green(e)}
 npm install
-`);})}var u=ye.homedir()+"/.adminkit",o=xe({color:"blue",indent:2}),L=new Command;L.name("admin-starter").description("CLI to setup & manager admin UIs").version("0.1.0");L.command("scaffold").description("Scaffold a new admin UI project by using template").argument("<projectName>","Name of the project").action(J);L.command("addscreen").description("Add a new screen").argument("<screenName>","Name of the screen").action(R);L.command("removescreen").description("Removes an existing screen").argument("<screenName>","Name of the screen").action(A);L.command("sync").description('Add screens defined in "kit.config.json" to the project').action(B);L.parse();
+`);})}var $=$e.homedir()+"/.adminkit",a=xe({color:"blue",indent:2}),L=new Command;L.name("admin-starter").description("CLI to setup & manager admin UIs").version("0.1.0");L.command("scaffold").description("Scaffold a new admin UI project by using template").argument("<projectName>","Name of the project").action(B);L.command("addscreen").description("Add a new screen").argument("<screenName>","Name of the screen").action(R);L.command("removescreen").description("Removes an existing screen").argument("<screenName>","Name of the screen").action(U);L.command("sync").description('Add screens defined in "kit.config.json" to the project').action(O);L.parse();
 
-export { u as adminKitPath, o as spinner };
+export { $ as adminKitPath, a as spinner };

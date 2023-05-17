@@ -180,17 +180,6 @@ export default async function resolveNewScreenDependencies(
   appMenuItems[0].items.push({ label: capitalizedScreenName, to: `/${capitalizedScreenName.toLowerCase()}` });
   fs.writeFileSync(appMenuItemsFilePath, JSON.stringify(appMenuItems, null, 2));
 
-  spinner.start(`Creating service/${capitalizedScreenName}Service.ts`);
-
-  const serviceTemplateFile = fs.readFileSync(`${adminKitPath}/XXXXXService.ts`).toString();
-
-  const parsedServiceTemplateFile = serviceTemplateFile
-    .replace(/XXXXX/g, capitalizedScreenName)
-    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase());
-
-  fs.writeFileSync(`./src/service/${capitalizedScreenName}Service.ts`, parsedServiceTemplateFile);
-  spinner.succeed(`Created ${chalk.cyan(`service/${capitalizedScreenName}Service.ts`)}`);
-
   spinner.start(`Creating types/${capitalizedScreenName.toLowerCase()}.d.ts`);
   fs.createFile(`./src/types/${capitalizedScreenName.toLowerCase()}.d.ts`);
 

@@ -6,7 +6,6 @@ export default function removeScreen(screenName: string) {
   spinner.start(`Removing screen: ${screenName}`);
 
   const typeFilePath = `./src/types/${screenName}.d.ts`;
-  const serviceFilePath = `./src/service/${capitalizedScreenName}Service.ts`;
   const screensFolderPath = `./src/screens/${capitalizedScreenName}`;
   const menuItemsFilePath = `./src/layout/items.json`;
 
@@ -18,7 +17,6 @@ export default function removeScreen(screenName: string) {
   fs.writeFileSync(menuItemsFilePath, JSON.stringify(menuItems, null, 2));
 
   fs.removeSync(typeFilePath);
-  fs.removeSync(serviceFilePath);
   fs.removeSync(screensFolderPath);
 
   const unwantedLines = [

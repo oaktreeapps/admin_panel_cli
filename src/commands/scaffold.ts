@@ -15,7 +15,6 @@ export default async function scaffold(projectName: string) {
   fs.copyFileSync(`./src/screens/XXXXX/XXXXX.tsx`, `${adminKitPath}/XXXXX.tsx`);
   fs.copyFileSync(`./src/screens/XXXXX/CreateXXXXX.tsx`, `${adminKitPath}/CreateXXXXX.tsx`);
   fs.copyFileSync(`./src/screens/XXXXX/EditXXXXX.tsx`, `${adminKitPath}/EditXXXXX.tsx`);
-  fs.copyFileSync(`./src/service/XXXXXService.ts`, `${adminKitPath}/XXXXXService.ts`);
   fs.copyFileSync(`./src/types/xxxxx.d.ts`, `${adminKitPath}/xxxxx.d.ts`);
   fs.writeFileSync("./.env", `VITE_BASE_URL = "${config()?.backendUrl}"`);
 
