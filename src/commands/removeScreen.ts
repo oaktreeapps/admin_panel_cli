@@ -1,4 +1,4 @@
-import { spinner } from "../index";
+import { spinner } from "src/index";
 import fs from "fs-extra";
 
 export default function removeScreen(screenName: string) {

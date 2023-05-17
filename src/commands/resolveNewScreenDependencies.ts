@@ -1,6 +1,6 @@
 import fs from "fs-extra";
 import chalk from "chalk";
-import { adminKitPath, spinner } from "../index";
+import { adminKitPath, spinner } from "src/index";
 import {
   Dropdown,
   InputNumber,
@@ -8,9 +8,8 @@ import {
   InputText,
   InputTextarea,
   RadioButtonField,
-} from "../templateStrings/formFields";
+} from "src/templateStrings/formFields";
 import { TextColumn } from "src/templateStrings/mainFileColumns";
-import addInitialState from "./addInitialState";
 import { KitConfig } from "src/schemas";
 
 export default async function resolveNewScreenDependencies(
@@ -107,12 +106,16 @@ export default async function resolveNewScreenDependencies(
   parsedMainScreenTemplateFile.split("\n").forEach((line) => {
     if (line.includes(`<Column body={actionBodyTemplate} headerStyle={{ minWidth: "10rem" }}></Column>`)) {
       mainScreenTemplateFileLines.push(...tableColumns);
+      mainScreenTemplateFileLines.push(line);
+    } else if (line.includes(`const initialState: ${capitalizedScreenName}Type = {};`)) {
+      mainScreenTemplateFileLines.push(`const initialState: ${capitalizedScreenName}Type = {`);
+      mainScreenTemplateFileLines.push(initialState);
+    } else {
+      mainScreenTemplateFileLines.push(line);
     }
-    mainScreenTemplateFileLines.push(line);
   });
 
-  const newMainScreenTemplateFile = addInitialState(mainScreenTemplateFileLines, initialState);
-  fs.writeFileSync(mainFilePath, newMainScreenTemplateFile);
+  fs.writeFileSync(mainFilePath, mainScreenTemplateFileLines.join("\n"));
 
   const parsedCreateScreenTemplateFile = createScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
@@ -122,23 +125,26 @@ export default async function resolveNewScreenDependencies(
       /if \(entity.name.trim\(\)\) \{/,
       `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) {`
     );
-  const newCreateScreenTemplateFile = addInitialState(
-    parsedCreateScreenTemplateFile.split("\n"),
-    initialState
-  );
-  const finalCreateScreenTemplateFileLines: string[] = [];
-  newCreateScreenTemplateFile.split("\n").forEach((line) => {
+
+  const createScreenTemplateFileLines: string[] = [];
+  parsedCreateScreenTemplateFile.split("\n").forEach((line) => {
     if (line.includes("const saveEntity = async () => {")) {
       dropdownOptions.forEach(({ fieldName, options }) => {
-        finalCreateScreenTemplateFileLines.push(
+        createScreenTemplateFileLines.push(
           `const ${fieldName}Options = ${JSON.stringify(options, null, 2)};\n`
         );
       });
-    }
 
-    finalCreateScreenTemplateFileLines.push(line);
+      createScreenTemplateFileLines.push(line);
+    } else if (line.includes(`const initialState: ${capitalizedScreenName}Type = {};`)) {
+      createScreenTemplateFileLines.push(`const initialState: ${capitalizedScreenName}Type = {`);
+      createScreenTemplateFileLines.push(initialState);
+    } else {
+      createScreenTemplateFileLines.push(line);
+    }
   });
-  fs.writeFileSync(createFilePath, finalCreateScreenTemplateFileLines.join("\n"));
+
+  fs.writeFileSync(createFilePath, createScreenTemplateFileLines.join("\n"));
 
   const parsedEditScreenTemplateFile = editScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
@@ -148,20 +154,26 @@ export default async function resolveNewScreenDependencies(
       /if \(entity.name.trim\(\)\) \{/,
       `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) {`
     );
-  const newEditScreenTemplateFile = addInitialState(parsedEditScreenTemplateFile.split("\n"), initialState);
-  const finalEditScreenTemplateFileLines: string[] = [];
-  newEditScreenTemplateFile.split("\n").forEach((line) => {
+
+  const editScreenTemplateFileLines: string[] = [];
+  parsedEditScreenTemplateFile.split("\n").forEach((line) => {
     if (line.includes("const saveEntity = async () => {")) {
       dropdownOptions.forEach(({ fieldName, options }) => {
-        finalEditScreenTemplateFileLines.push(
+        editScreenTemplateFileLines.push(
           `const ${fieldName}Options = ${JSON.stringify(options, null, 2)};\n`
         );
       });
-    }
 
-    finalEditScreenTemplateFileLines.push(line);
+      editScreenTemplateFileLines.push(line);
+    } else if (line.includes(`const initialState: ${capitalizedScreenName}Type = {};`)) {
+      editScreenTemplateFileLines.push(`const initialState: ${capitalizedScreenName}Type = {`);
+      editScreenTemplateFileLines.push(initialState);
+    } else {
+      editScreenTemplateFileLines.push(line);
+    }
   });
-  fs.writeFileSync(editFilePath, finalEditScreenTemplateFileLines.join("\n"));
+
+  fs.writeFileSync(editFilePath, editScreenTemplateFileLines.join("\n"));
 
   const appMenuItemsFile = fs.readFileSync(appMenuItemsFilePath);
   const appMenuItems = JSON.parse(appMenuItemsFile.toString());

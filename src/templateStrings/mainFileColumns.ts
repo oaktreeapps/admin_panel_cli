@@ -1,4 +1,4 @@
-import { capitalize } from "src/helpers/strings";
+import { capitalize } from "src/commands/strings";
 
 export const TextColumn = (fieldName: string) => `<Column
   field="${fieldName}"

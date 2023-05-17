@@ -1,16 +1,12 @@
 #! /usr/bin/env node
 
 import { Command } from "commander";
-import ora from "ora";
-import simpleGit from "simple-git";
-import performCleanup from "./helpers/performCleanup";
-import syncConfigFile from "./helpers/syncConfigFile";
-import createScreen from "./helpers/createScreen";
-import removeScreen from "./helpers/removeScreen";
-import fs from "fs-extra";
-import chalk from "chalk";
 import os from "os";
-import { config } from "./helpers/config";
+import ora from "ora";
+import syncConfigFile from "./commands/syncConfigFile";
+import addScreen from "./commands/addScreen";
+import removeScreen from "./commands/removeScreen";
+import scaffold from "./commands/scaffold";
 
 export const adminKitPath = os.homedir() + "/.adminkit";
 
@@ -18,25 +14,6 @@ export const spinner = ora({
   color: "blue",
   indent: 2,
 });
-
-const setupProject = async (projectName: string) => {
-  spinner.start("Cloning template");
-  await simpleGit().clone("https://github.com/kuvamdazeus/admin-starter-react", "./" + projectName);
-  spinner.succeed("Cloned template successfully");
-
-  process.chdir(projectName);
-  fs.ensureDirSync(`${adminKitPath}`);
-  fs.copyFileSync(`./src/screens/XXXXX/XXXXX.tsx`, `${adminKitPath}/XXXXX.tsx`);
-  fs.copyFileSync(`./src/screens/XXXXX/CreateXXXXX.tsx`, `${adminKitPath}/CreateXXXXX.tsx`);
-  fs.copyFileSync(`./src/screens/XXXXX/EditXXXXX.tsx`, `${adminKitPath}/EditXXXXX.tsx`);
-  fs.copyFileSync(`./src/service/XXXXXService.ts`, `${adminKitPath}/XXXXXService.ts`);
-  fs.copyFileSync(`./src/types/xxxxx.d.ts`, `${adminKitPath}/xxxxx.d.ts`);
-  fs.writeFileSync("./.env", `VITE_BASE_URL = "${config()?.backendUrl}"`);
-
-  performCleanup();
-
-  console.log(`\nRun the following commands to get started:\ncd ${chalk.green(projectName)}\nnpm install\n`);
-};
 
 const program = new Command();
 
@@ -46,13 +23,13 @@ program
   .command("scaffold")
   .description("Scaffold a new admin UI project by using template")
   .argument("<projectName>", "Name of the project")
-  .action(setupProject);
+  .action(scaffold);
 
 program
   .command("addscreen")
-  .description("Create a new screen")
+  .description("Add a new screen")
   .argument("<screenName>", "Name of the screen")
-  .action(createScreen);
+  .action(addScreen);
 
 program
   .command("removescreen")

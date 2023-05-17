@@ -1,5 +1,5 @@
 import fs from "fs-extra";
-import { kitSchema } from "../schemas";
+import { kitSchema } from "./schemas";
 
 export const config = () => {
   if (!fs.existsSync("kit.config.json")) return null;

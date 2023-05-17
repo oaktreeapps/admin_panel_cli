@@ -1,10 +1,10 @@
 import fs from "fs-extra";
 import chalk from "chalk";
-import { spinner } from "../index";
-import resolveNewScreenDependencies from "./resolveNewScreenDependencies";
-import { config } from "./config";
+import { spinner } from "src/index";
+import resolveNewScreenDependencies from "src/commands/resolveNewScreenDependencies";
+import { config } from "src/config";
 
-export default async function createScreen(screenName: string) {
+export default async function addScreen(screenName: string) {
   const screen = config()?.screens?.find((screen) => screen.name.toLowerCase() === screenName.toLowerCase());
   if (!screen) {
     spinner.fail(`Screen ${chalk.cyan(screenName)} not found in config file`);
