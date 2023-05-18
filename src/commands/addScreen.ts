@@ -1,22 +1,20 @@
 import fs from "fs-extra";
 import chalk from "chalk";
 import { spinner } from "src/index";
-import resolveNewScreenDependencies from "src/helpers/resolveNewScreenDependencies";
+import resolveNewScreenDependencies from "src/helpers/webapp/resolveNewScreenDependencies";
 import { config } from "src/config";
-import { runInFolder } from "src/helpers/folders";
+import { runInFolderAsync } from "src/helpers/folders";
 
 export default async function addScreen(screenName: string) {
-  await runInFolder("webapp", async () => {
-    const screen = config()?.screens?.find(
-      (screen) => screen.name.toLowerCase() === screenName.toLowerCase()
-    );
-    if (!screen) {
-      spinner.fail(`Screen ${chalk.cyan(screenName)} not found in config file`);
-      return;
-    }
+  const screen = config()?.screens?.find((screen) => screen.name.toLowerCase() === screenName.toLowerCase());
+  if (!screen) {
+    spinner.fail(`Screen ${chalk.cyan(screenName)} not found in config file`);
+    return;
+  }
 
-    const capitalizedScreenName = screenName.charAt(0).toUpperCase() + screenName.slice(1);
+  const capitalizedScreenName = screenName.charAt(0).toUpperCase() + screenName.slice(1);
 
+  runInFolderAsync("webapp", async () => {
     spinner.start(`Creating screen: ${chalk.cyan(capitalizedScreenName)}`);
 
     const folderPath = `./src/screens/${capitalizedScreenName}`;
@@ -38,4 +36,6 @@ export default async function addScreen(screenName: string) {
 
     spinner.succeed(`Created screen: ${chalk.cyan(capitalizedScreenName)}`);
   });
+
+  runInFolderAsync("server", async () => {});
 }

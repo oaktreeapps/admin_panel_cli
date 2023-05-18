@@ -1,6 +1,6 @@
 import fs from "fs-extra";
 
-export default async function performCleanup() {
+export default function performCleanupWebapp() {
   const unwantedLines = [
     // imports
     `import XXXXXPage from "./screens/XXXXX/XXXXX"`,

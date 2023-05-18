@@ -1,9 +1,9 @@
-import performCleanup from "src/helpers/performCleanup";
+import performCleanupWebapp from "src/helpers/webapp/performCleanupWebapp";
 import addScreen from "src/commands/addScreen";
 import { config } from "src/config";
 
 export default async function syncConfigFile() {
-  await performCleanup();
+  await performCleanupWebapp();
 
   config()?.screens.map((screen) => {
     addScreen(screen.name);

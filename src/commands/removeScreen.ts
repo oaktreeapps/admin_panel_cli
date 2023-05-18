@@ -1,9 +1,9 @@
 import { spinner } from "src/index";
 import fs from "fs-extra";
-import { runInFolder } from "src/helpers/folders";
+import { runInFolderAsync } from "src/helpers/folders";
 
 export default function removeScreen(screenName: string) {
-  runInFolder("webapp", async () => {
+  runInFolderAsync("webapp", async () => {
     const capitalizedScreenName = screenName.charAt(0).toUpperCase() + screenName.slice(1);
     spinner.start(`Removing screen: ${screenName}`);
 
