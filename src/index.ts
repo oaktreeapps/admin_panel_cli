@@ -2,18 +2,12 @@
 
 import { Command } from "commander";
 import os from "os";
-import ora from "ora";
 import syncConfigFile from "./commands/syncConfigFile";
 import addScreen from "./commands/addScreen";
 import removeScreen from "./commands/removeScreen";
 import scaffold from "./commands/scaffold";
 
 export const adminKitPath = os.homedir() + "/.adminkit";
-
-export const spinner = ora({
-  color: "blue",
-  indent: 2,
-});
 
 const program = new Command();
 

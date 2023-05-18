@@ -1,6 +1,6 @@
 import fs from "fs-extra";
 import chalk from "chalk";
-import { adminKitPath, spinner } from "src/index";
+import { adminKitPath } from "src/index";
 import {
   Dropdown,
   InputNumber,
@@ -11,6 +11,12 @@ import {
 } from "src/templateStrings/formFields";
 import { TextColumn } from "src/templateStrings/mainFileColumns";
 import { KitConfig } from "src/schemas";
+import ora from "ora";
+
+const spinner = ora({
+  color: "blue",
+  indent: 2,
+});
 
 export default async function resolveNewScreenDependencies(
   capitalizedScreenName: string,

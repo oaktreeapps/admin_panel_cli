@@ -1,6 +1,11 @@
-import { spinner } from "src/index";
 import fs from "fs-extra";
 import { runInFolderAsync } from "src/helpers/folders";
+import ora from "ora";
+
+const spinner = ora({
+  color: "blue",
+  indent: 2,
+});
 
 export default function removeScreen(screenName: string) {
   runInFolderAsync("webapp", async () => {

@@ -1,25 +1,38 @@
 import fs from "fs-extra";
 import chalk from "chalk";
-import { spinner } from "src/index";
 import resolveNewScreenDependencies from "src/helpers/webapp/resolveNewScreenDependencies";
 import { config } from "src/config";
 import { runInFolderAsync } from "src/helpers/folders";
+import resolveNewCrudDependencies from "src/helpers/server/resolveNewCrudDependencies";
+import ora from "ora";
 
-export default async function addScreen(screenName: string) {
+const webappSpinner = ora({
+  color: "blue",
+  indent: 2,
+});
+const serverSpinner = ora({
+  color: "blue",
+  indent: 2,
+});
+
+export default async function addScreen(screenNameArg: string) {
+  const screenName = screenNameArg.toLowerCase();
+
   const screen = config()?.screens?.find((screen) => screen.name.toLowerCase() === screenName.toLowerCase());
   if (!screen) {
-    spinner.fail(`Screen ${chalk.cyan(screenName)} not found in config file`);
+    webappSpinner.fail(`Screen ${chalk.cyan(screenName)} not found in config file`);
     return;
   }
 
   const capitalizedScreenName = screenName.charAt(0).toUpperCase() + screenName.slice(1);
 
-  runInFolderAsync("webapp", async () => {
-    spinner.start(`Creating screen: ${chalk.cyan(capitalizedScreenName)}`);
+  console.log("initial", process.cwd());
+  await runInFolderAsync("webapp", async () => {
+    webappSpinner.start(`Creating screen: ${chalk.cyan(capitalizedScreenName)}`);
 
     const folderPath = `./src/screens/${capitalizedScreenName}`;
     if (fs.existsSync(folderPath)) {
-      spinner.fail(`Screen ${chalk.cyan(capitalizedScreenName)} already exists`);
+      webappSpinner.fail(`Screen ${chalk.cyan(capitalizedScreenName)} already exists`);
       return;
     }
 
@@ -34,8 +47,30 @@ export default async function addScreen(screenName: string) {
 
     await resolveNewScreenDependencies(capitalizedScreenName, screen);
 
-    spinner.succeed(`Created screen: ${chalk.cyan(capitalizedScreenName)}`);
+    webappSpinner.succeed(`Created screen: ${chalk.cyan(capitalizedScreenName)}`);
   });
 
-  runInFolderAsync("server", async () => {});
+  console.log("s", process.cwd());
+  await runInFolderAsync("server", async () => {
+    serverSpinner.start(`Creating CRUD for: ${chalk.cyan(capitalizedScreenName)}`);
+
+    const folderPath = `./src/Microservices/${capitalizedScreenName}`;
+    if (fs.existsSync(folderPath)) {
+      serverSpinner.fail(`CRUD for ${chalk.cyan(capitalizedScreenName)} already exists`);
+      return;
+    }
+
+    const controllerFilePath = `${folderPath}/${capitalizedScreenName}Controller.ts`;
+    const routerFilePath = `${folderPath}/${capitalizedScreenName}Router.ts`;
+    const dtoFilePath = `${folderPath}/${capitalizedScreenName}.dto.ts`;
+
+    fs.createFileSync(controllerFilePath);
+    fs.createFileSync(routerFilePath);
+    fs.createFileSync(dtoFilePath);
+
+    await resolveNewCrudDependencies(capitalizedScreenName, screen);
+
+    serverSpinner.succeed(`Created CRUD for: ${chalk.cyan(capitalizedScreenName)}`);
+    console.log("f", process.cwd());
+  });
 }

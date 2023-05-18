@@ -15,9 +15,12 @@ export const runInFolderAsync = async <T>(
   if (currentDirName === folderName || (isRootFolder() && folderName === "root")) {
     returnValue = await callback();
   } else if (isRootFolder()) {
+    console.log("root");
+    console.log("start cwd", process.cwd());
     process.chdir(folderName);
     returnValue = await callback();
     process.chdir("..");
+    console.log("end cwd", process.cwd());
   } else if (folderName === "root") {
     process.chdir("..");
     returnValue = await callback();

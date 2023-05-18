@@ -6,6 +6,7 @@ export const kitSchema = z.object({
     z.object({
       name: z.string(),
       url: z.string(),
+      collectionName: z.string(),
       crudFields: z.array(
         z.object({
           name: z.string(),

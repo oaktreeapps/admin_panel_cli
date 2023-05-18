@@ -1,11 +1,17 @@
 import simpleGit from "simple-git";
 import fs from "fs-extra";
 import fetch from "node-fetch";
-import { adminKitPath, spinner } from "src/index";
+import { adminKitPath } from "src/index";
 import performCleanupWebapp from "src/helpers/webapp/performCleanupWebapp";
 import { config } from "src/config";
 import { runInFolderSync } from "src/helpers/folders";
 import performCleanupServer from "src/helpers/server/performCleanupServer";
+import ora from "ora";
+
+const spinner = ora({
+  color: "blue",
+  indent: 2,
+});
 
 export default async function scaffold(argProjectName: string) {
   const projectName = argProjectName.toLowerCase();
@@ -19,7 +25,7 @@ export default async function scaffold(argProjectName: string) {
     simpleGit().clone("https://github.com/kuvamdazeus/admin-starter-react", "webapp"),
     simpleGit().clone("https://github.com/kuvamdazeus/node-starter-kit", "server"),
     fetch(
-      "https://gist.githubusercontent.com/kuvamdazeus/89117514d4ef61f9a09e1cd9bf0cba4f/raw/f1b60f6fc25cb111424f824bc455358abbfacc38/kit.config.json"
+      "https://gist.githubusercontent.com/kuvamdazeus/89117514d4ef61f9a09e1cd9bf0cba4f/raw/4786bd0357978c40489f2c087b2ae601c3062220/kit.config.json"
     ).then((res) => res.text()),
     fetch(
       "https://gist.githubusercontent.com/kuvamdazeus/08e407c3188c08c0d29012f85dd3c9d9/raw/f4d6b2e429063bf454e5d2d805f3a7806b56d491/node-starter-kit-env.txt"
