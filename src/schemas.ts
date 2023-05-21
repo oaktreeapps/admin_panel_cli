@@ -11,6 +11,7 @@ export const kitSchema = z.object({
         z.object({
           name: z.string(),
           required: z.boolean().optional().default(true),
+          unique: z.boolean().optional().default(false),
           tableDisplay: z.boolean().optional().default(true),
           inline: z.boolean().optional().default(false),
           type: z.union([

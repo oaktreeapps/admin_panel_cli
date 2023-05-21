@@ -1,18 +1,26 @@
 import fs from "fs-extra";
 import { adminKitPath } from "src";
 import { KitConfig } from "src/schemas";
+import {
+  checkExistingCreateEntity,
+  checkExistingUpdateEntity,
+} from "src/templateStrings/server/codeTemplates";
 
-enum FieldsPlaceholder {
-  interface = "/*INTERFACE_FIELDS*/",
-  schema = "/*SCHEMA_FIELDS*/",
-  entity = "/*ENTITY_FIELDS*/",
-  zod = "/*ZOD_FIELDS*/",
-}
+const templatePlaceholders = {
+  interface: "/*INTERFACE_FIELDS*/",
+  schema: "/*SCHEMA_FIELDS*/",
+  entity: "/*ENTITY_FIELDS*/",
+  zod: "/*ZOD_FIELDS*/",
+  uniqueField: "/*UNIQUE_FIELD*/",
+  checkExistingUpdateEntity: "/*CHECK_EXISTING_UPDATE_ENTITY*/",
+  checkExistingCreateEntity: "/*CHECK_EXISTING_CREATE_ENTITY*/",
+};
 
 export default async function resolveNewCrudDependencies(
   capitalizedScreenName: string,
   screen: KitConfig["screens"][number]
 ) {
+  let uniqueField = screen.crudFields.filter((field) => field.unique)?.[0]?.name || "";
   const entityFields: string[] = [];
   const interfaceFields: string[] = [];
   const schemafields: string[] = [];
@@ -43,40 +51,76 @@ export default async function resolveNewCrudDependencies(
     .toString()
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
-    .replace(FieldsPlaceholder.interface, interfaceFields.join("\n"))
-    .replace(FieldsPlaceholder.schema, schemafields.join("\n"))
-    .replace(FieldsPlaceholder.entity, entityFields.join("\n"))
-    .replace(FieldsPlaceholder.zod, zodFields.join("\n"));
+    .replace(templatePlaceholders.interface, interfaceFields.join("\n"))
+    .replace(templatePlaceholders.schema, schemafields.join("\n"))
+    .replace(templatePlaceholders.entity, entityFields.join("\n"))
+    .replace(templatePlaceholders.zod, zodFields.join("\n"))
+    .replace(templatePlaceholders.uniqueField, uniqueField)
+    .replace(
+      templatePlaceholders.checkExistingCreateEntity,
+      checkExistingCreateEntity(capitalizedScreenName, uniqueField)
+    )
+    .replace(
+      templatePlaceholders.checkExistingUpdateEntity,
+      checkExistingUpdateEntity(capitalizedScreenName, uniqueField)
+    );
 
   const adminKitRouterFileContent = fs
     .readFileSync(`${adminKitPath}/server/XXXXXRouter.ts`)
     .toString()
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
-    .replace(FieldsPlaceholder.interface, interfaceFields.join("\n"))
-    .replace(FieldsPlaceholder.schema, schemafields.join("\n"))
-    .replace(FieldsPlaceholder.entity, entityFields.join("\n"))
-    .replace(FieldsPlaceholder.zod, zodFields.join("\n"));
+    .replace(templatePlaceholders.interface, interfaceFields.join("\n"))
+    .replace(templatePlaceholders.schema, schemafields.join("\n"))
+    .replace(templatePlaceholders.entity, entityFields.join("\n"))
+    .replace(templatePlaceholders.zod, zodFields.join("\n"))
+    .replace(templatePlaceholders.uniqueField, uniqueField)
+    .replace(
+      templatePlaceholders.checkExistingCreateEntity,
+      checkExistingCreateEntity(capitalizedScreenName, uniqueField)
+    )
+    .replace(
+      templatePlaceholders.checkExistingUpdateEntity,
+      checkExistingUpdateEntity(capitalizedScreenName, uniqueField)
+    );
 
   const adminKitDtoFileContent = fs
     .readFileSync(`${adminKitPath}/server/XXXXX.dto.ts`)
     .toString()
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
-    .replace(FieldsPlaceholder.interface, interfaceFields.join("\n"))
-    .replace(FieldsPlaceholder.schema, schemafields.join("\n"))
-    .replace(FieldsPlaceholder.entity, entityFields.join("\n"))
-    .replace(FieldsPlaceholder.zod, zodFields.join("\n"));
+    .replace(templatePlaceholders.interface, interfaceFields.join("\n"))
+    .replace(templatePlaceholders.schema, schemafields.join("\n"))
+    .replace(templatePlaceholders.entity, entityFields.join("\n"))
+    .replace(templatePlaceholders.zod, zodFields.join("\n"))
+    .replace(templatePlaceholders.uniqueField, uniqueField)
+    .replace(
+      templatePlaceholders.checkExistingCreateEntity,
+      checkExistingCreateEntity(capitalizedScreenName, uniqueField)
+    )
+    .replace(
+      templatePlaceholders.checkExistingUpdateEntity,
+      checkExistingUpdateEntity(capitalizedScreenName, uniqueField)
+    );
 
   const adminKitEntityFileContent = fs
     .readFileSync(`${adminKitPath}/server/XXXXXEntity.ts`)
     .toString()
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
-    .replace(FieldsPlaceholder.interface, interfaceFields.join("\n"))
-    .replace(FieldsPlaceholder.schema, schemafields.join("\n"))
-    .replace(FieldsPlaceholder.entity, entityFields.join("\n"))
-    .replace(FieldsPlaceholder.zod, zodFields.join("\n"));
+    .replace(templatePlaceholders.interface, interfaceFields.join("\n"))
+    .replace(templatePlaceholders.schema, schemafields.join("\n"))
+    .replace(templatePlaceholders.entity, entityFields.join("\n"))
+    .replace(templatePlaceholders.zod, zodFields.join("\n"))
+    .replace(templatePlaceholders.uniqueField, uniqueField)
+    .replace(
+      templatePlaceholders.checkExistingCreateEntity,
+      checkExistingCreateEntity(capitalizedScreenName, uniqueField)
+    )
+    .replace(
+      templatePlaceholders.checkExistingUpdateEntity,
+      checkExistingUpdateEntity(capitalizedScreenName, uniqueField)
+    );
 
   const controllerFilePath = `${folderPath}/${capitalizedScreenName}Controller.ts`;
   const routerFilePath = `${folderPath}/${capitalizedScreenName}Router.ts`;
