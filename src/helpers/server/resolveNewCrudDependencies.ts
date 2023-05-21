@@ -2,35 +2,81 @@ import fs from "fs-extra";
 import { adminKitPath } from "src";
 import { KitConfig } from "src/schemas";
 
+enum FieldsPlaceholder {
+  interface = "/*INTERFACE_FIELDS*/",
+  schema = "/*SCHEMA_FIELDS*/",
+  entity = "/*ENTITY_FIELDS*/",
+  zod = "/*ZOD_FIELDS*/",
+}
+
 export default async function resolveNewCrudDependencies(
   capitalizedScreenName: string,
   screen: KitConfig["screens"][number]
 ) {
+  const entityFields: string[] = [];
+  const interfaceFields: string[] = [];
+  const schemafields: string[] = [];
+  const zodFields: string[] = [];
+
+  screen.crudFields.forEach(({ name, type, required }) => {
+    entityFields.push(`${name}: entity.${name},`);
+
+    if (type === "InputText" || type === "InputTextarea" || type === "Dropdown" || type === "RadioButton") {
+      interfaceFields.push(`${name}${required ? "" : "?"}: string;`);
+      schemafields.push(`${name}: { type: String, required: ${required} },`);
+      zodFields.push(`${name}: z.string()${required ? ".nonempty()" : ".optional()"},`);
+    } else if (type === "InputNumber") {
+      interfaceFields.push(`${name}${required ? "" : "?"}: number;`);
+      schemafields.push(`${name}: { type: Number, required: ${required} },`);
+      zodFields.push(`${name}: z.number()${required ? "" : ".optional()"},`);
+    } else if (type === "InputSwitch") {
+      interfaceFields.push(`${name}${required ? "" : "?"}: boolean;`);
+      schemafields.push(`${name}: { type: Boolean, required: ${required} },`);
+      zodFields.push(`${name}: z.boolean()${required ? "" : ".optional()"},`);
+    }
+  });
+
   const folderPath = `./src/Microservices/${capitalizedScreenName}`;
 
   const adminKitControllerFileContent = fs
     .readFileSync(`${adminKitPath}/server/XXXXXController.ts`)
     .toString()
     .replace(/XXXXX/g, capitalizedScreenName)
-    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase());
+    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
+    .replace(FieldsPlaceholder.interface, interfaceFields.join("\n"))
+    .replace(FieldsPlaceholder.schema, schemafields.join("\n"))
+    .replace(FieldsPlaceholder.entity, entityFields.join("\n"))
+    .replace(FieldsPlaceholder.zod, zodFields.join("\n"));
 
   const adminKitRouterFileContent = fs
     .readFileSync(`${adminKitPath}/server/XXXXXRouter.ts`)
     .toString()
     .replace(/XXXXX/g, capitalizedScreenName)
-    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase());
+    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
+    .replace(FieldsPlaceholder.interface, interfaceFields.join("\n"))
+    .replace(FieldsPlaceholder.schema, schemafields.join("\n"))
+    .replace(FieldsPlaceholder.entity, entityFields.join("\n"))
+    .replace(FieldsPlaceholder.zod, zodFields.join("\n"));
 
   const adminKitDtoFileContent = fs
     .readFileSync(`${adminKitPath}/server/XXXXX.dto.ts`)
     .toString()
     .replace(/XXXXX/g, capitalizedScreenName)
-    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase());
+    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
+    .replace(FieldsPlaceholder.interface, interfaceFields.join("\n"))
+    .replace(FieldsPlaceholder.schema, schemafields.join("\n"))
+    .replace(FieldsPlaceholder.entity, entityFields.join("\n"))
+    .replace(FieldsPlaceholder.zod, zodFields.join("\n"));
 
   const adminKitEntityFileContent = fs
     .readFileSync(`${adminKitPath}/server/XXXXXEntity.ts`)
     .toString()
     .replace(/XXXXX/g, capitalizedScreenName)
-    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase());
+    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
+    .replace(FieldsPlaceholder.interface, interfaceFields.join("\n"))
+    .replace(FieldsPlaceholder.schema, schemafields.join("\n"))
+    .replace(FieldsPlaceholder.entity, entityFields.join("\n"))
+    .replace(FieldsPlaceholder.zod, zodFields.join("\n"));
 
   const controllerFilePath = `${folderPath}/${capitalizedScreenName}Controller.ts`;
   const routerFilePath = `${folderPath}/${capitalizedScreenName}Router.ts`;
