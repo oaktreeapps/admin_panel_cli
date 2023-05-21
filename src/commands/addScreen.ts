@@ -26,7 +26,6 @@ export default async function addScreen(screenNameArg: string) {
 
   const capitalizedScreenName = screenName.charAt(0).toUpperCase() + screenName.slice(1);
 
-  console.log("initial", process.cwd());
   await runInFolderAsync("webapp", async () => {
     webappSpinner.start(`Creating screen: ${chalk.cyan(capitalizedScreenName)}`);
 
@@ -50,7 +49,6 @@ export default async function addScreen(screenNameArg: string) {
     webappSpinner.succeed(`Created screen: ${chalk.cyan(capitalizedScreenName)}`);
   });
 
-  console.log("s", process.cwd());
   await runInFolderAsync("server", async () => {
     serverSpinner.start(`Creating CRUD for: ${chalk.cyan(capitalizedScreenName)}`);
 
@@ -71,6 +69,5 @@ export default async function addScreen(screenNameArg: string) {
     await resolveNewCrudDependencies(capitalizedScreenName, screen);
 
     serverSpinner.succeed(`Created CRUD for: ${chalk.cyan(capitalizedScreenName)}`);
-    console.log("f", process.cwd());
   });
 }
