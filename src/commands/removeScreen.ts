@@ -7,9 +7,10 @@ const spinner = ora({
   indent: 2,
 });
 
-export default function removeScreen(screenName: string) {
-  runInFolderAsync("webapp", async () => {
-    const capitalizedScreenName = screenName.charAt(0).toUpperCase() + screenName.slice(1);
+export default async function removeScreen(screenName: string) {
+  const capitalizedScreenName = screenName.charAt(0).toUpperCase() + screenName.slice(1);
+
+  await runInFolderAsync("webapp", async () => {
     spinner.start(`Removing screen: ${screenName}`);
 
     const typeFilePath = `./src/types/${screenName}.d.ts`;
@@ -42,5 +43,37 @@ export default function removeScreen(screenName: string) {
     fs.writeFileSync("./src/main.tsx", filteredLines.join("\n"));
 
     spinner.succeed(`Removed screen: ${screenName}`);
+  });
+
+  await runInFolderAsync("server", async () => {
+    spinner.start(`Removing CRUD: ${capitalizedScreenName}`);
+
+    const microserviceFolderPath = `./src/Microservices/${capitalizedScreenName}`;
+    const entityFilePath = `./src/Database/Entities/${capitalizedScreenName}Entity.ts`;
+
+    const collectionNamesFilePath = `./src/Database/CollectionNames.ts`;
+    const apiRouterFilePath = `./src/Microservices/ApiRouter.ts`;
+
+    fs.removeSync(microserviceFolderPath);
+    fs.removeSync(entityFilePath);
+
+    const collectionNamesFileContent = fs
+      .readFileSync(collectionNamesFilePath)
+      .toString()
+      .split("\n")
+      .filter((line) => !line.includes(`${capitalizedScreenName}Collection`))
+      .join("\n");
+
+    const apiRouterFileContent = fs
+      .readFileSync(apiRouterFilePath)
+      .toString()
+      .split("\n")
+      .filter((line) => !line.includes(`/${capitalizedScreenName.toLowerCase()}`))
+      .join("\n");
+
+    fs.writeFileSync(collectionNamesFilePath, collectionNamesFileContent);
+    fs.writeFileSync(apiRouterFilePath, apiRouterFileContent);
+
+    spinner.succeed(`Removed CRUD: ${capitalizedScreenName}`);
   });
 }
