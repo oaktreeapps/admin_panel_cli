@@ -68,7 +68,7 @@ export default async function removeScreen(screenName: string) {
       .readFileSync(apiRouterFilePath)
       .toString()
       .split("\n")
-      .filter((line) => !line.includes(`/${capitalizedScreenName.toLowerCase()}`))
+      .filter((line) => !line.includes(`${capitalizedScreenName}Router`))
       .join("\n");
 
     fs.writeFileSync(collectionNamesFilePath, collectionNamesFileContent);
