@@ -1,34 +1,51 @@
-export const checkExistingUpdateEntity = (capitalizedScreenName: string, uniqueFieldName: string) => {
-  if (uniqueFieldName)
-    return `const existingUpdateEntity: I${capitalizedScreenName}Entity | null =
-  await ${capitalizedScreenName}Model().findOne({
-    ${uniqueFieldName},
-    _id: { $ne: id },
-  });
+import { capitalize } from "src/helpers/strings";
 
-  if (existingUpdateEntity) {
+export const checkExistingUpdateEntity = (capitalizedScreenName: string, uniqueFieldNames: string[]) => {
+  let checkString = ``;
+
+  uniqueFieldNames
+    .filter((value) => !!value)
+    .forEach((uniqueFieldName) => {
+      checkString += `const existing${capitalize(
+        uniqueFieldName
+      )}UpdateEntity: I${capitalizedScreenName}Entity | null =
+await ${capitalizedScreenName}Model().findOne({
+  ${uniqueFieldName},
+  _id: { $ne: id },
+});
+
+if (existing${capitalize(uniqueFieldName)}UpdateEntity) {
   return {
     status: HttpStatusCodes.BAD_REQUEST,
     message: "Entity with this '${uniqueFieldName}' already exists",
   };
-}`;
-  else return "";
+}
+`;
+    });
+
+  return checkString;
 };
 
-export const checkExistingCreateEntity = (capitalizedScreenName: string, uniqueFieldName: string) => {
-  if (uniqueFieldName)
-    return `const { ${uniqueFieldName} } = input;
+export const checkExistingCreateEntity = (capitalizedScreenName: string, uniqueFieldNames: string[]) => {
+  let checkString = `const { ${uniqueFieldNames.join(", ")} } = input;\n`;
 
-const existingCreateEntity: I${capitalizedScreenName}Entity | null =
+  uniqueFieldNames
+    .filter((value) => !!value)
+    .forEach((uniqueFieldName) => {
+      checkString += `
+const existing${capitalize(uniqueFieldName)}CreateEntity: I${capitalizedScreenName}Entity | null =
   await ${capitalizedScreenName}Model().findOne({
     ${uniqueFieldName},
   });
 
-if (existingCreateEntity) {
+if (existing${capitalize(uniqueFieldName)}CreateEntity) {
   return {
     status: HttpStatusCodes.BAD_REQUEST,
     message: "Entity with this '${uniqueFieldName}' already exists",
   };
-}`;
-  else return "";
+}
+`;
+    });
+
+  return checkString;
 };

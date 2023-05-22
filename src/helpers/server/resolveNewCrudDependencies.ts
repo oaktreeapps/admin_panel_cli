@@ -11,7 +11,7 @@ const templatePlaceholders = {
   schema: "/*SCHEMA_FIELDS*/",
   entity: "/*ENTITY_FIELDS*/",
   zod: "/*ZOD_FIELDS*/",
-  uniqueField: "/*UNIQUE_FIELD*/",
+  uniqueFields: "/*UNIQUE_FIELDS*/",
   checkExistingUpdateEntity: "/*CHECK_EXISTING_UPDATE_ENTITY*/",
   checkExistingCreateEntity: "/*CHECK_EXISTING_CREATE_ENTITY*/",
 };
@@ -20,26 +20,26 @@ export default async function resolveNewCrudDependencies(
   capitalizedScreenName: string,
   screen: KitConfig["screens"][number]
 ) {
-  let uniqueField = screen.crudFields.filter((field) => field.unique)?.[0]?.name || "";
+  let uniqueFields = screen.crudFields.filter((field) => field.unique).map((field) => field.name);
   const entityFields: string[] = [];
   const interfaceFields: string[] = [];
   const schemafields: string[] = [];
   const zodFields: string[] = [];
 
-  screen.crudFields.forEach(({ name, type, required }) => {
+  screen.crudFields.forEach(({ name, type, required, unique }) => {
     entityFields.push(`${name}: entity.${name},`);
 
     if (type === "InputText" || type === "InputTextarea" || type === "Dropdown" || type === "RadioButton") {
       interfaceFields.push(`${name}${required ? "" : "?"}: string;`);
-      schemafields.push(`${name}: { type: String, required: ${required} },`);
+      schemafields.push(`${name}: { type: String, required: ${required}, unique: ${unique} },`);
       zodFields.push(`${name}: z.string()${required ? ".nonempty()" : ".optional()"},`);
     } else if (type === "InputNumber") {
       interfaceFields.push(`${name}${required ? "" : "?"}: number;`);
-      schemafields.push(`${name}: { type: Number, required: ${required} },`);
+      schemafields.push(`${name}: { type: Number, required: ${required}, unique: ${unique} },`);
       zodFields.push(`${name}: z.number()${required ? "" : ".optional()"},`);
     } else if (type === "InputSwitch") {
       interfaceFields.push(`${name}${required ? "" : "?"}: boolean;`);
-      schemafields.push(`${name}: { type: Boolean, required: ${required} },`);
+      schemafields.push(`${name}: { type: Boolean, required: ${required}, unique: ${unique} },`);
       zodFields.push(`${name}: z.boolean()${required ? "" : ".optional()"},`);
     }
   });
@@ -55,14 +55,14 @@ export default async function resolveNewCrudDependencies(
     .replace(templatePlaceholders.schema, schemafields.join("\n"))
     .replace(templatePlaceholders.entity, entityFields.join("\n"))
     .replace(templatePlaceholders.zod, zodFields.join("\n"))
-    .replace(templatePlaceholders.uniqueField, uniqueField)
+    .replace(templatePlaceholders.uniqueFields, uniqueFields.join(", "))
     .replace(
       templatePlaceholders.checkExistingCreateEntity,
-      checkExistingCreateEntity(capitalizedScreenName, uniqueField)
+      checkExistingCreateEntity(capitalizedScreenName, uniqueFields)
     )
     .replace(
       templatePlaceholders.checkExistingUpdateEntity,
-      checkExistingUpdateEntity(capitalizedScreenName, uniqueField)
+      checkExistingUpdateEntity(capitalizedScreenName, uniqueFields)
     );
 
   const adminKitRouterFileContent = fs
@@ -74,14 +74,14 @@ export default async function resolveNewCrudDependencies(
     .replace(templatePlaceholders.schema, schemafields.join("\n"))
     .replace(templatePlaceholders.entity, entityFields.join("\n"))
     .replace(templatePlaceholders.zod, zodFields.join("\n"))
-    .replace(templatePlaceholders.uniqueField, uniqueField)
+    .replace(templatePlaceholders.uniqueFields, uniqueFields.join(", "))
     .replace(
       templatePlaceholders.checkExistingCreateEntity,
-      checkExistingCreateEntity(capitalizedScreenName, uniqueField)
+      checkExistingCreateEntity(capitalizedScreenName, uniqueFields)
     )
     .replace(
       templatePlaceholders.checkExistingUpdateEntity,
-      checkExistingUpdateEntity(capitalizedScreenName, uniqueField)
+      checkExistingUpdateEntity(capitalizedScreenName, uniqueFields)
     );
 
   const adminKitDtoFileContent = fs
@@ -93,14 +93,14 @@ export default async function resolveNewCrudDependencies(
     .replace(templatePlaceholders.schema, schemafields.join("\n"))
     .replace(templatePlaceholders.entity, entityFields.join("\n"))
     .replace(templatePlaceholders.zod, zodFields.join("\n"))
-    .replace(templatePlaceholders.uniqueField, uniqueField)
+    .replace(templatePlaceholders.uniqueFields, uniqueFields.join(", "))
     .replace(
       templatePlaceholders.checkExistingCreateEntity,
-      checkExistingCreateEntity(capitalizedScreenName, uniqueField)
+      checkExistingCreateEntity(capitalizedScreenName, uniqueFields)
     )
     .replace(
       templatePlaceholders.checkExistingUpdateEntity,
-      checkExistingUpdateEntity(capitalizedScreenName, uniqueField)
+      checkExistingUpdateEntity(capitalizedScreenName, uniqueFields)
     );
 
   const adminKitEntityFileContent = fs
@@ -112,14 +112,14 @@ export default async function resolveNewCrudDependencies(
     .replace(templatePlaceholders.schema, schemafields.join("\n"))
     .replace(templatePlaceholders.entity, entityFields.join("\n"))
     .replace(templatePlaceholders.zod, zodFields.join("\n"))
-    .replace(templatePlaceholders.uniqueField, uniqueField)
+    .replace(templatePlaceholders.uniqueFields, uniqueFields.join(", "))
     .replace(
       templatePlaceholders.checkExistingCreateEntity,
-      checkExistingCreateEntity(capitalizedScreenName, uniqueField)
+      checkExistingCreateEntity(capitalizedScreenName, uniqueFields)
     )
     .replace(
       templatePlaceholders.checkExistingUpdateEntity,
-      checkExistingUpdateEntity(capitalizedScreenName, uniqueField)
+      checkExistingUpdateEntity(capitalizedScreenName, uniqueFields)
     );
 
   const controllerFilePath = `${folderPath}/${capitalizedScreenName}Controller.ts`;
