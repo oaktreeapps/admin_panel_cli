@@ -1,12 +1,13 @@
 import simpleGit from "simple-git";
 import fs from "fs-extra";
 import fetch from "node-fetch";
+import ora from "ora";
 import { adminKitPath } from "src/index";
 import performCleanupWebapp from "src/helpers/webapp/performCleanupWebapp";
 import { config } from "src/config";
-import { runInFolderSync } from "src/helpers/folders";
+import { runInFolderAsync, runInFolderSync } from "src/helpers/folders";
 import performCleanupServer from "src/helpers/server/performCleanupServer";
-import ora from "ora";
+import execAsync from "src/helpers/exec";
 
 const spinner = ora({
   color: "blue",
@@ -61,4 +62,16 @@ export default async function scaffold(argProjectName: string) {
   });
 
   spinner.succeed(`Created "${projectName}" successfully!`);
+
+  spinner.start("Installing dependencies...");
+
+  await runInFolderAsync("webapp", async () => {
+    await execAsync("yarn install");
+  });
+
+  await runInFolderAsync("server", async () => {
+    await execAsync("yarn install");
+  });
+
+  spinner.succeed(`Installed dependencies successfully!`);
 }
