@@ -216,7 +216,7 @@ export default async function resolveNewScreenDependencies(
   newMainTsxLines.push(...newImports);
 
   mainTsxLines.forEach((line) => {
-    if (line.includes("</Route>")) {
+    if (line.includes("{/* --ROUTES-- */}")) {
       newRoutes.forEach((newRoute) => {
         newMainTsxLines.push(newRoute);
       });
