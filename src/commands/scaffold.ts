@@ -26,7 +26,7 @@ export default async function scaffold(argProjectName: string) {
     simpleGit().clone("https://github.com/kuvamdazeus/admin-starter-react", "webapp"),
     simpleGit().clone("https://github.com/kuvamdazeus/node-starter-kit", "server"),
     fetch(
-      "https://gist.githubusercontent.com/kuvamdazeus/89117514d4ef61f9a09e1cd9bf0cba4f/raw/518902ae29b1a38b9a448bc5cf66a3eb8e908327/kit.config.json"
+      "https://gist.githubusercontent.com/kuvamdazeus/89117514d4ef61f9a09e1cd9bf0cba4f/raw/9bcab9214ae606f0eace15ffb18557914058f208/kit.config.json"
     ).then((res) => res.text()),
     fetch(
       "https://gist.githubusercontent.com/kuvamdazeus/08e407c3188c08c0d29012f85dd3c9d9/raw/f4d6b2e429063bf454e5d2d805f3a7806b56d491/node-starter-kit-env.txt"
