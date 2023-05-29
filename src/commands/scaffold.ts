@@ -19,25 +19,22 @@ export default async function scaffold(argProjectName: string) {
 
   spinner.start("Scaffolding project...");
 
-  fs.ensureDirSync(projectName);
-  process.chdir(projectName);
-
-  const [, , kitConfigFile, nodeStarterKitEnv] = await Promise.all([
-    simpleGit().clone("https://github.com/kuvamdazeus/admin-starter-react", "webapp"),
-    simpleGit().clone("https://github.com/kuvamdazeus/node-starter-kit", "server"),
-    fetch(
-      "https://gist.githubusercontent.com/kuvamdazeus/89117514d4ef61f9a09e1cd9bf0cba4f/raw/9bcab9214ae606f0eace15ffb18557914058f208/kit.config.json"
-    ).then((res) => res.text()),
+  const [, nodeStarterKitEnv] = await Promise.all([
+    simpleGit().clone("https://github.com/kuvamdazeus/adminkit-template", projectName),
     fetch(
       "https://gist.githubusercontent.com/kuvamdazeus/08e407c3188c08c0d29012f85dd3c9d9/raw/f4d6b2e429063bf454e5d2d805f3a7806b56d491/node-starter-kit-env.txt"
     ).then((res) => res.text()),
   ]);
 
-  fs.writeFileSync("./kit.config.json", kitConfigFile);
+  console.log(process.cwd());
+  process.chdir(projectName);
+  console.log(process.cwd());
 
   fs.ensureDirSync(`${adminKitPath}`);
   fs.ensureDirSync(`${adminKitPath}/webapp`);
   fs.ensureDirSync(`${adminKitPath}/server`);
+
+  fs.removeSync("./.git");
 
   runInFolderSync("webapp", () => {
     fs.copyFileSync(`./src/screens/XXXXX/XXXXX.tsx`, `${adminKitPath}/webapp/XXXXX.tsx`);

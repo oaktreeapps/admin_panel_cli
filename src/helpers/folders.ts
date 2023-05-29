@@ -1,7 +1,7 @@
 import fs from "fs-extra";
 
 export const isRootFolder = (absolutePath = process.cwd()) => {
-  return fs.readdirSync(absolutePath).includes("kit.config.json");
+  return fs.readdirSync(absolutePath).includes("kitconfig");
 };
 
 export const runInFolderAsync = async <T>(
