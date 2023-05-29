@@ -23,6 +23,7 @@ const templatePlaceholders = {
   initialState: "/*INITIAL_STATE_FIELDS*/",
   interface: "/*INTERFACE_FIELDS*/",
   input: "{/*INPUT_FIELDS*/}",
+  validate: "/*VALIDATE_FIELDS*/",
 };
 
 export default async function resolveNewScreenDependencies(
@@ -131,8 +132,8 @@ export default async function resolveNewScreenDependencies(
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
     .replace(templatePlaceholders.input, jsxFields.join("\n"))
     .replace(
-      /if \(entity.name.trim\(\)\) \{/,
-      `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) {`
+      templatePlaceholders.validate,
+      `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) `
     );
 
   const createScreenTemplateFileLines: string[] = [];
@@ -160,8 +161,8 @@ export default async function resolveNewScreenDependencies(
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
     .replace(templatePlaceholders.input, jsxFields.join("\n"))
     .replace(
-      /if \(entity.name.trim\(\)\) \{/,
-      `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) {`
+      templatePlaceholders.validate,
+      `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) `
     );
 
   const editScreenTemplateFileLines: string[] = [];
