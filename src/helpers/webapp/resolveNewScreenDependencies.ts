@@ -18,12 +18,19 @@ const spinner = ora({
   indent: 2,
 });
 
+const templatePlaceholders = {
+  tableColumns: "{/*TABLE_COLUMNS*/}",
+  initialState: "/*INITIAL_STATE_FIELDS*/",
+  interface: "/*INTERFACE_FIELDS*/",
+  input: "{/*INPUT_FIELDS*/}",
+};
+
 export default async function resolveNewScreenDependencies(
   capitalizedScreenName: string,
   screen: KitConfig["screens"][number]
 ) {
-  let screenTypeInterface = "";
-  let initialState = "";
+  let interfaceFields = "";
+  let initialStateFields = "";
   const requiredFields: string[] = [];
   const jsxFields: string[] = [];
   const tableColumns: string[] = [];
@@ -83,15 +90,12 @@ export default async function resolveNewScreenDependencies(
     }
 
     if (index === 0) {
-      screenTypeInterface += `  id?: string;\n`;
-      initialState += `  id: "",\n`;
+      interfaceFields += `id?: string;\n`;
+      initialStateFields += `id: undefined,\n`;
     }
-    screenTypeInterface += `  ${field.name}: ${interfacePropertyType};\n`;
-    initialState += `  ${field.name}: ${initialValue},\n`;
-    if (index === screen.crudFields.length - 1) {
-      screenTypeInterface += "}\n";
-      initialState += "};\n";
-    }
+
+    interfaceFields += `${field.name}: ${interfacePropertyType};\n`;
+    initialStateFields += `${field.name}: ${initialValue},\n`;
   });
 
   const folderPath = `./src/screens/${capitalizedScreenName}`;
@@ -107,16 +111,14 @@ export default async function resolveNewScreenDependencies(
 
   const parsedMainScreenTemplateFile = mainScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
-    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase());
+    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
+    .replace(templatePlaceholders.initialState, initialStateFields);
 
   let mainScreenTemplateFileLines: string[] = [];
   parsedMainScreenTemplateFile.split("\n").forEach((line) => {
-    if (line.includes(`<Column body={actionBodyTemplate} headerStyle={{ minWidth: "10rem" }}></Column>`)) {
+    if (line.includes(templatePlaceholders.tableColumns)) {
       mainScreenTemplateFileLines.push(...tableColumns);
       mainScreenTemplateFileLines.push(line);
-    } else if (line.includes(`const initialState: ${capitalizedScreenName}Type = {};`)) {
-      mainScreenTemplateFileLines.push(`const initialState: ${capitalizedScreenName}Type = {`);
-      mainScreenTemplateFileLines.push(initialState);
     } else {
       mainScreenTemplateFileLines.push(line);
     }
@@ -127,7 +129,7 @@ export default async function resolveNewScreenDependencies(
   const parsedCreateScreenTemplateFile = createScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
-    .replace(/INPUT\-FIELDS/g, jsxFields.join("\n"))
+    .replace(templatePlaceholders.input, jsxFields.join("\n"))
     .replace(
       /if \(entity.name.trim\(\)\) \{/,
       `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) {`
@@ -143,9 +145,9 @@ export default async function resolveNewScreenDependencies(
       });
 
       createScreenTemplateFileLines.push(line);
-    } else if (line.includes(`const initialState: ${capitalizedScreenName}Type = {};`)) {
-      createScreenTemplateFileLines.push(`const initialState: ${capitalizedScreenName}Type = {`);
-      createScreenTemplateFileLines.push(initialState);
+    } else if (line.includes(templatePlaceholders.initialState)) {
+      createScreenTemplateFileLines.push(initialStateFields);
+      createScreenTemplateFileLines.push(line);
     } else {
       createScreenTemplateFileLines.push(line);
     }
@@ -156,7 +158,7 @@ export default async function resolveNewScreenDependencies(
   const parsedEditScreenTemplateFile = editScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
-    .replace(/INPUT\-FIELDS/g, jsxFields.join("\n"))
+    .replace(templatePlaceholders.input, jsxFields.join("\n"))
     .replace(
       /if \(entity.name.trim\(\)\) \{/,
       `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) {`
@@ -172,9 +174,9 @@ export default async function resolveNewScreenDependencies(
       });
 
       editScreenTemplateFileLines.push(line);
-    } else if (line.includes(`const initialState: ${capitalizedScreenName}Type = {};`)) {
-      editScreenTemplateFileLines.push(`const initialState: ${capitalizedScreenName}Type = {`);
-      editScreenTemplateFileLines.push(initialState);
+    } else if (line.includes(templatePlaceholders.initialState)) {
+      editScreenTemplateFileLines.push(initialStateFields);
+      editScreenTemplateFileLines.push(line);
     } else {
       editScreenTemplateFileLines.push(line);
     }
@@ -189,8 +191,9 @@ export default async function resolveNewScreenDependencies(
 
   spinner.start(`Creating types/${capitalizedScreenName.toLowerCase()}.d.ts`);
 
-  const parsedTypesTemplateFile =
-    typesTemplateFile.replace(/XXXXX/g, capitalizedScreenName).split("\n")[0] + "\n" + screenTypeInterface;
+  const parsedTypesTemplateFile = typesTemplateFile
+    .replace(/XXXXX/g, capitalizedScreenName)
+    .replace(templatePlaceholders.interface, interfaceFields);
 
   fs.writeFileSync(`./src/types/${capitalizedScreenName.toLowerCase()}.d.ts`, parsedTypesTemplateFile);
   spinner.succeed(`Created ${chalk.cyan(`types/${capitalizedScreenName}.d.ts`)}`);
@@ -200,9 +203,9 @@ export default async function resolveNewScreenDependencies(
   const mainTsxLines = mainTsx.split("\n");
 
   const newRoutes = [
-    `      <Route path="${capitalizedScreenName.toLowerCase()}" element={<${capitalizedScreenName}Page />} />`,
-    `      <Route path="${capitalizedScreenName.toLowerCase()}/create" element={<Create${capitalizedScreenName}Page />} />`,
-    `      <Route path="${capitalizedScreenName.toLowerCase()}/edit/:id" element={<Edit${capitalizedScreenName}Page />} />`,
+    `<Route path="${capitalizedScreenName.toLowerCase()}" element={<${capitalizedScreenName}Page />} />`,
+    `<Route path="${capitalizedScreenName.toLowerCase()}/create" element={<Create${capitalizedScreenName}Page />} />`,
+    `<Route path="${capitalizedScreenName.toLowerCase()}/edit/:id" element={<Edit${capitalizedScreenName}Page />} />`,
   ];
 
   const newImports = [
