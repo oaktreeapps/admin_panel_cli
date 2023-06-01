@@ -15,6 +15,8 @@ program.name("admin-starter").description("CLI to setup & manager admin UIs").ve
 
 program
   .command("scaffold")
+  .option("--only-webapp", "Only scaffold the webapp")
+  .option("--only-server", "Only scaffold the server")
   .description("Scaffold a new admin project by using templates")
   .argument("<projectName>", "Name of the project")
   .action(scaffold);
@@ -33,7 +35,7 @@ program
 
 program
   .command("sync")
-  .description(`Add screens defined in "kit.config.json" to the project`)
+  .description(`Add screens defined in "kitconfig" to the project`)
   .action(syncConfigFile);
 
 program.parse();

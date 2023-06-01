@@ -14,7 +14,12 @@ const spinner = ora({
   indent: 2,
 });
 
-export default async function scaffold(argProjectName: string) {
+interface Opts {
+  onlyWebapp?: boolean;
+  onlyServer?: boolean;
+}
+
+export default async function scaffold(argProjectName: string, opts: Opts) {
   const projectName = argProjectName.toLowerCase();
 
   spinner.start("Scaffolding project...");
@@ -26,9 +31,7 @@ export default async function scaffold(argProjectName: string) {
     ).then((res) => res.text()),
   ]);
 
-  console.log(process.cwd());
   process.chdir(projectName);
-  console.log(process.cwd());
 
   fs.ensureDirSync(`${adminKitPath}`);
   fs.ensureDirSync(`${adminKitPath}/webapp`);
@@ -60,15 +63,22 @@ export default async function scaffold(argProjectName: string) {
 
   spinner.succeed(`Created "${projectName}" successfully!`);
 
+  if (opts.onlyServer) fs.removeSync("webapp");
+  if (opts.onlyWebapp) fs.removeSync("server");
+
   spinner.start("Installing dependencies...");
 
-  await runInFolderAsync("webapp", async () => {
-    await execAsync("yarn install");
-  });
+  if (!opts.onlyServer) {
+    await runInFolderAsync("webapp", async () => {
+      await execAsync("yarn install");
+    });
+  }
 
-  await runInFolderAsync("server", async () => {
-    await execAsync("yarn install");
-  });
+  if (!opts.onlyWebapp) {
+    await runInFolderAsync("server", async () => {
+      await execAsync("yarn install");
+    });
+  }
 
   spinner.succeed(`Installed dependencies successfully!`);
 }
