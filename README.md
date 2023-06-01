@@ -41,6 +41,44 @@ npx <npm-package> removescreen <screen-name>
 
 This will go ahead & remove any traces of the screen from the Frontend & Backend folders.
 
+## Environment file
+
+### Frontend
+
+The `.env` file in the frontend folder expects only 1 variable i.e base url of the corresponding backend server.
+
+```python
+VITE_BASE_URL = "http://localhost:3005/api"
+```
+
+### Backend
+
+The `.env` file in the backend folder expects various variables, here's a sample `.env` file that goes with the server.
+
+```python
+REST_API_PORT=3005 #REQUIRED
+MONGO_CONNECTION_URL=mongodb+srv://<username>:<password>@cluster.mongodb.net/?retryWrites=true&w=majority #REQUIRED
+
+
+AUTH_PRIVATE_BASE64= #REQUIRED
+AUTH_PUBLIC_BASE64= #REQUIRED
+
+SMTP_HOST=
+SMTP_PORT=
+SMTP_USER=
+SMTP_PASSWORD=
+SMTP_FROM_EMAIL=
+SMTP_FROM_NAME=
+
+S3_REGION=
+S3_ACCESS_KEY=
+S3_ACCESS_ID=
+S3_BUCKET_NAME=
+
+STATIC_S3_REGION=
+STATIC_S3_BUCKET_NAME=
+```
+
 ## Kit Config
 
 ### Folder Structure
