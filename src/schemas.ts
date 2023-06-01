@@ -17,10 +17,13 @@ export const kitSchema = z.object({
           type: z.union([
             z.literal("InputText"),
             z.literal("InputTextarea"),
-            z.literal("InputNumber"),
-            z.literal("Dropdown"),
             z.literal("RadioButton"),
+            z.literal("Dropdown"),
+            z.literal("String"),
             z.literal("InputSwitch"),
+            z.literal("Boolean"),
+            z.literal("InputNumber"),
+            z.literal("Number"),
           ]),
           options: z
             .array(

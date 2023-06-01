@@ -29,15 +29,21 @@ export default async function resolveNewCrudDependencies(
   screen.crudFields.forEach(({ name, type, required, unique }) => {
     entityFields.push(`${name}: entity.${name},`);
 
-    if (type === "InputText" || type === "InputTextarea" || type === "Dropdown" || type === "RadioButton") {
+    if (
+      type === "InputText" ||
+      type === "InputTextarea" ||
+      type === "Dropdown" ||
+      type === "RadioButton" ||
+      type === "String"
+    ) {
       interfaceFields.push(`${name}${required ? "" : "?"}: string;`);
       schemafields.push(`${name}: { type: String, required: ${required}, unique: ${unique} },`);
       zodFields.push(`${name}: z.string()${required ? ".nonempty()" : ".optional()"},`);
-    } else if (type === "InputNumber") {
+    } else if (type === "InputNumber" || type === "Number") {
       interfaceFields.push(`${name}${required ? "" : "?"}: number;`);
       schemafields.push(`${name}: { type: Number, required: ${required}, unique: ${unique} },`);
       zodFields.push(`${name}: z.number()${required ? "" : ".optional()"},`);
-    } else if (type === "InputSwitch") {
+    } else if (type === "InputSwitch" || type === "Boolean") {
       interfaceFields.push(`${name}${required ? "" : "?"}: boolean;`);
       schemafields.push(`${name}: { type: Boolean, required: ${required}, unique: ${unique} },`);
       zodFields.push(`${name}: z.boolean()${required ? "" : ".optional()"},`);
