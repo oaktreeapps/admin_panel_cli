@@ -1,6 +1,6 @@
 import fs from "fs-extra";
 import { adminKitPath } from "src";
-import { KitConfig } from "src/schemas";
+import { KitConfigScreen } from "src/schemas";
 import {
   checkExistingCreateEntity,
   checkExistingUpdateEntity,
@@ -18,7 +18,7 @@ const templatePlaceholders = {
 
 export default async function resolveNewCrudDependencies(
   capitalizedScreenName: string,
-  screen: KitConfig["screens"][number]
+  screen: KitConfigScreen
 ) {
   let uniqueFields = screen.crudFields.filter((field) => field.unique).map((field) => field.name);
   const entityFields: string[] = [];

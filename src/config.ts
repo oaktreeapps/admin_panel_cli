@@ -6,7 +6,7 @@ import { runInFolderAsync } from "./helpers/folders";
 export const configAsync: () => Promise<KitConfig | null> = async () =>
   runInFolderAsync("root", async () => {
     const config: KitConfig = {
-      screens: [],
+      resources: [],
     };
 
     if (!fs.existsSync("kitconfig")) {
@@ -23,7 +23,7 @@ export const configAsync: () => Promise<KitConfig | null> = async () =>
         const parsedScreen = kitScreenSchema.safeParse(configFileJsImport.default);
 
         if (parsedScreen.success) {
-          config.screens.push(parsedScreen.data);
+          config.resources.push(parsedScreen.data);
         } else {
           console.log(`Couldn't parse screen '${screenFile}':`, parsedScreen.error.format());
         }

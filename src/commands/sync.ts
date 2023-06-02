@@ -3,7 +3,7 @@ import { configAsync } from "src/config";
 
 const addScreens = () => {
   return new Promise<void>(async (resolve, _) => {
-    const screens = (await configAsync())?.screens;
+    const screens = (await configAsync())?.resources;
 
     screens?.map(async (screen, index) => {
       await add(screen.name);

@@ -35,13 +35,13 @@ export const kitScreenSchema = z.object({
 });
 
 export const kitSchema = z.object({
-  screens: z.array(kitScreenSchema),
+  resources: z.array(kitScreenSchema),
 });
 
 export type KitConfig = z.infer<typeof kitSchema>;
 
 export type KitConfigOptions = { name: string; value: string }[];
 
-export type KitConfigField = KitConfig["screens"][number]["crudFields"][number];
+export type KitConfigField = KitConfig["resources"][number]["crudFields"][number];
 
-export type KitConfigScreen = KitConfig["screens"][number];
+export type KitConfigScreen = KitConfig["resources"][number];

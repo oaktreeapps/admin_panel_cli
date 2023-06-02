@@ -4,7 +4,7 @@
 
 This is a simple CLI application to quickly setup MERN stack admin project with Express backend & React frontend.
 
-The CLI allows you to create screens at the frontend and corresponding routes & models at the backend with one command.
+The CLI allows you to create resources at the frontend and corresponding routes & models at the backend with one command.
 
 Everything is controlled in the `kitconfig` folder.
 
@@ -28,7 +28,7 @@ npx <npm-package> [commands...]
 
 Creates a new admin project containing the following folders:
 
-1. **kitconfig** - folder containing the `.cjs` files for configuring the project (also comes with sample files `screens/products.cjs` & `screens/students.cjs`).
+1. **kitconfig** - folder containing the `.cjs` files for configuring the project (also comes with sample files `resources/products.cjs` & `resources/students.cjs`).
 
 2. **webapp** - React.js project containing the UI.
 
@@ -56,7 +56,7 @@ Creates UI & corresponding backend (models, routes & controllers).
 
 For example, let's say we need to create backend & UI for our "posts" model.
 
-we'll first go into the `kitconfig/screens` folder, create a file named `posts.cjs` and define properties & fields this resource needs. (refer types autocomplete & sample files for defining new fields & other properties),
+we'll first go into the `kitconfig/resources` folder, create a file named `posts.cjs` and define properties & fields this resource needs. (refer types autocomplete & sample files for defining new fields & other properties),
 
 And then, while we're in the admin directory, we can run the following command:
 
@@ -78,7 +78,7 @@ npx <npm-package> remove posts
 
 ### `sync`
 
-_Adds_ all the resources defined in `kitconfig/screens` folder, without overriding any of the existing resources.
+_Adds_ all the resources defined in `kitconfig/resources` folder, without overriding any of the existing resources.
 
 #### Usage
 
@@ -131,7 +131,7 @@ STATIC_S3_BUCKET_NAME=
 ```
   |-kitconfig
     |-index.json
-    |-screens
+    |-resources
       |-<screen-name>.json
       |-<screen-name>.json
       ...

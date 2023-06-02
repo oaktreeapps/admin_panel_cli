@@ -20,7 +20,7 @@ export default async function add(screenNameArg: string) {
 
   const screenName = screenNameArg.toLowerCase();
 
-  const screen = (await configAsync())?.screens?.find(
+  const screen = (await configAsync())?.resources?.find(
     (screen) => screen.name.toLowerCase() === screenName.toLowerCase()
   );
   if (!screen) {

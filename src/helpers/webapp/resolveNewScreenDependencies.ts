@@ -9,7 +9,7 @@ import {
   RadioButtonField,
 } from "src/templateStrings/formFields";
 import { TextColumn } from "src/templateStrings/mainFileColumns";
-import { KitConfig } from "src/schemas";
+import { KitConfigScreen } from "src/schemas";
 
 const templatePlaceholders = {
   tableColumns: "{/*TABLE_COLUMNS*/}",
@@ -21,7 +21,7 @@ const templatePlaceholders = {
 
 export default async function resolveNewScreenDependencies(
   capitalizedScreenName: string,
-  screen: KitConfig["screens"][number]
+  screen: KitConfigScreen
 ) {
   let interfaceFields = "";
   let initialStateFields = "";
