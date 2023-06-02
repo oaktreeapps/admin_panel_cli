@@ -10,6 +10,12 @@ const spinner = ora({
 });
 
 export default async function addconfig(screenNameArg: string) {
+  const isValidScreenName = /^[a-z]+$/.test(screenNameArg.trim());
+  if (!isValidScreenName) {
+    console.log(`${chalk.red("Error:")} "${screenNameArg}" is invalid, names with only alphabets are valid.`);
+    return;
+  }
+
   const screenName = screenNameArg.toLowerCase();
 
   const configFile = getConfigFile(screenName);
