@@ -1,12 +1,12 @@
 import simpleGit from "simple-git";
 import fs from "fs-extra";
-import fetch from "node-fetch";
 import ora from "ora";
 import { adminKitPath } from "src/index";
 import performCleanupWebapp from "src/helpers/webapp/performCleanupWebapp";
 import { runInFolderAsync, runInFolderSync } from "src/helpers/folders";
 import performCleanupServer from "src/helpers/server/performCleanupServer";
 import execAsync from "src/helpers/exec";
+import { getServerEnvFile } from "src/templates";
 
 const spinner = ora({
   color: "blue",
@@ -23,12 +23,7 @@ export default async function scaffold(argProjectName: string, opts: Opts) {
 
   spinner.start("Scaffolding project...");
 
-  const [, nodeStarterKitEnv] = await Promise.all([
-    simpleGit().clone("https://github.com/kuvamdazeus/adminkit-template", projectName),
-    fetch(
-      "https://gist.githubusercontent.com/kuvamdazeus/08e407c3188c08c0d29012f85dd3c9d9/raw/f4d6b2e429063bf454e5d2d805f3a7806b56d491/node-starter-kit-env.txt"
-    ).then((res) => res.text()),
-  ]);
+  await simpleGit().clone("https://github.com/kuvamdazeus/adminkit-template", projectName);
 
   process.chdir(projectName);
 
@@ -56,7 +51,7 @@ export default async function scaffold(argProjectName: string, opts: Opts) {
     fs.copyFileSync(`./src/Microservices/XXXXX/XXXXX.dto.ts`, `${adminKitPath}/server/XXXXX.dto.ts`);
     fs.copyFileSync(`./src/Database/Entities/XXXXXEntity.ts`, `${adminKitPath}/server/XXXXXEntity.ts`);
 
-    fs.writeFileSync("./.env", nodeStarterKitEnv);
+    fs.writeFileSync("./.env", getServerEnvFile());
     performCleanupServer();
   });
 
