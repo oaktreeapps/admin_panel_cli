@@ -2,9 +2,9 @@
 
 import { Command } from "commander";
 import os from "os";
-import syncConfigFile from "./commands/syncConfigFile";
-import addScreen from "./commands/addScreen";
-import removeScreen from "./commands/removeScreen";
+import sync from "./commands/sync";
+import add from "./commands/add";
+import remove from "./commands/remove";
 import scaffold from "./commands/scaffold";
 
 export const adminKitPath = os.homedir() + "/.adminkit";
@@ -22,20 +22,17 @@ program
   .action(scaffold);
 
 program
-  .command("addscreen")
+  .command("add")
   .description("Add a new screen")
   .argument("<screenName>", "Name of the screen")
-  .action(addScreen);
+  .action(add);
 
 program
-  .command("removescreen")
+  .command("remove")
   .description("Removes an existing screen")
   .argument("<screenName>", "Name of the screen")
-  .action(removeScreen);
+  .action(remove);
 
-program
-  .command("sync")
-  .description(`Add screens defined in "kitconfig" to the project`)
-  .action(syncConfigFile);
+program.command("sync").description(`Add screens defined in "kitconfig" to the project`).action(sync);
 
 program.parse();

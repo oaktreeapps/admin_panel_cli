@@ -1,7 +1,7 @@
 import fs from "fs-extra";
 import chalk from "chalk";
 import resolveNewScreenDependencies from "src/helpers/webapp/resolveNewScreenDependencies";
-import { config } from "src/config";
+import { configAsync } from "src/config";
 import { getActiveFolderState, runInFolderAsync } from "src/helpers/folders";
 import resolveNewCrudDependencies from "src/helpers/server/resolveNewCrudDependencies";
 import ora from "ora";
@@ -15,12 +15,14 @@ const serverSpinner = ora({
   indent: 2,
 });
 
-export default async function addScreen(screenNameArg: string) {
+export default async function add(screenNameArg: string) {
   const activeFolderState = getActiveFolderState();
 
   const screenName = screenNameArg.toLowerCase();
 
-  const screen = config()?.screens?.find((screen) => screen.name.toLowerCase() === screenName.toLowerCase());
+  const screen = (await configAsync())?.screens?.find(
+    (screen) => screen.name.toLowerCase() === screenName.toLowerCase()
+  );
   if (!screen) {
     webappSpinner.fail(`Screen ${chalk.cyan(screenName)} not found in config file`);
     return;
@@ -30,13 +32,12 @@ export default async function addScreen(screenNameArg: string) {
 
   if (activeFolderState === "both" || activeFolderState === "webapp") {
     await runInFolderAsync("webapp", async () => {
-      webappSpinner.start(`Creating screen: ${chalk.cyan(capitalizedScreenName)}`);
-
       const folderPath = `./src/screens/${capitalizedScreenName}`;
       if (fs.existsSync(folderPath)) {
-        webappSpinner.fail(`Screen ${chalk.cyan(capitalizedScreenName)} already exists`);
         return;
       }
+
+      webappSpinner.start(`Creating screen: ${chalk.cyan(capitalizedScreenName)}`);
 
       const filePath = `${folderPath}/${capitalizedScreenName}.tsx`;
       const createFilePath = `${folderPath}/Create${capitalizedScreenName}.tsx`;
@@ -55,13 +56,12 @@ export default async function addScreen(screenNameArg: string) {
 
   if (activeFolderState === "both" || activeFolderState === "server") {
     await runInFolderAsync("server", async () => {
-      serverSpinner.start(`Creating CRUD for: ${chalk.cyan(capitalizedScreenName)}`);
-
       const folderPath = `./src/Microservices/${capitalizedScreenName}`;
       if (fs.existsSync(folderPath)) {
-        serverSpinner.fail(`CRUD for ${chalk.cyan(capitalizedScreenName)} already exists`);
         return;
       }
+
+      serverSpinner.start(`Creating CRUD for: ${chalk.cyan(capitalizedScreenName)}`);
 
       const controllerFilePath = `${folderPath}/${capitalizedScreenName}Controller.ts`;
       const routerFilePath = `${folderPath}/${capitalizedScreenName}Router.ts`;

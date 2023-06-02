@@ -1,5 +1,4 @@
 import fs from "fs-extra";
-import chalk from "chalk";
 import { adminKitPath } from "src/index";
 import {
   Dropdown,
@@ -11,12 +10,6 @@ import {
 } from "src/templateStrings/formFields";
 import { TextColumn } from "src/templateStrings/mainFileColumns";
 import { KitConfig } from "src/schemas";
-import ora from "ora";
-
-const spinner = ora({
-  color: "blue",
-  indent: 2,
-});
 
 const templatePlaceholders = {
   tableColumns: "{/*TABLE_COLUMNS*/}",
@@ -178,16 +171,12 @@ export default async function resolveNewScreenDependencies(
   appMenuItems[0].items.push({ label: capitalizedScreenName, to: `/${capitalizedScreenName.toLowerCase()}` });
   fs.writeFileSync(appMenuItemsFilePath, JSON.stringify(appMenuItems, null, 2));
 
-  spinner.start(`Creating types/${capitalizedScreenName.toLowerCase()}.d.ts`);
-
   const parsedTypesTemplateFile = typesTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(templatePlaceholders.interface, interfaceFields);
 
   fs.writeFileSync(`./src/types/${capitalizedScreenName.toLowerCase()}.d.ts`, parsedTypesTemplateFile);
-  spinner.succeed(`Created ${chalk.cyan(`types/${capitalizedScreenName}.d.ts`)}`);
 
-  spinner.start(`Creating route for ${capitalizedScreenName}`);
   const mainTsx = fs.readFileSync("./src/main.tsx").toString();
   const mainTsxLines = mainTsx.split("\n");
 
@@ -218,5 +207,4 @@ export default async function resolveNewScreenDependencies(
   });
 
   fs.writeFileSync("./src/main.tsx", newMainTsxLines.join("\n"));
-  spinner.succeed(`Created route: ${chalk.cyan(`/${capitalizedScreenName.toLowerCase()}`)}`);
 }

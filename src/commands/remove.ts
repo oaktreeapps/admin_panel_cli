@@ -7,18 +7,23 @@ const spinner = ora({
   indent: 2,
 });
 
-export default async function removeScreen(screenName: string) {
+export default async function remove(screenName: string) {
   const activeFolderState = getActiveFolderState();
 
   const capitalizedScreenName = screenName.charAt(0).toUpperCase() + screenName.slice(1);
 
   if (activeFolderState === "both" || activeFolderState === "webapp") {
     await runInFolderAsync("webapp", async () => {
-      spinner.start(`Removing screen: ${screenName}`);
-
       const typeFilePath = `./src/types/${screenName}.d.ts`;
       const screensFolderPath = `./src/screens/${capitalizedScreenName}`;
       const menuItemsFilePath = `./src/layout/items.json`;
+
+      if (!fs.existsSync(screensFolderPath)) {
+        console.log(`  Nothing to remove in webapp.`);
+        return;
+      }
+
+      spinner.start(`Removing screen: ${screenName}`);
 
       const menuItemsFile = fs.readFileSync(menuItemsFilePath);
       const menuItems = JSON.parse(menuItemsFile.toString());
@@ -51,13 +56,18 @@ export default async function removeScreen(screenName: string) {
 
   if (activeFolderState === "both" || activeFolderState === "server") {
     await runInFolderAsync("server", async () => {
-      spinner.start(`Removing CRUD: ${capitalizedScreenName}`);
-
       const microserviceFolderPath = `./src/Microservices/${capitalizedScreenName}`;
       const entityFilePath = `./src/Database/Entities/${capitalizedScreenName}Entity.ts`;
 
       const collectionNamesFilePath = `./src/Database/CollectionNames.ts`;
       const apiRouterFilePath = `./src/Microservices/ApiRouter.ts`;
+
+      if (!fs.existsSync(microserviceFolderPath)) {
+        console.log(`  Nothing to remove in server.`);
+        return;
+      }
+
+      spinner.start(`Removing CRUD: ${capitalizedScreenName}`);
 
       fs.removeSync(microserviceFolderPath);
       fs.removeSync(entityFilePath);

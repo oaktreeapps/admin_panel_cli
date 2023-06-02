@@ -20,7 +20,6 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@esbuild/darwin-arm64": "^0.17.18",
     "@types/fs-extra": "^11.0.1",
     "@types/node": "^18.15.13",
     "react": "^18.2.0",

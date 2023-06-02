@@ -4,7 +4,6 @@ import fetch from "node-fetch";
 import ora from "ora";
 import { adminKitPath } from "src/index";
 import performCleanupWebapp from "src/helpers/webapp/performCleanupWebapp";
-import { config } from "src/config";
 import { runInFolderAsync, runInFolderSync } from "src/helpers/folders";
 import performCleanupServer from "src/helpers/server/performCleanupServer";
 import execAsync from "src/helpers/exec";
@@ -44,7 +43,7 @@ export default async function scaffold(argProjectName: string, opts: Opts) {
     fs.copyFileSync(`./src/screens/XXXXX/CreateXXXXX.tsx`, `${adminKitPath}/webapp/CreateXXXXX.tsx`);
     fs.copyFileSync(`./src/screens/XXXXX/EditXXXXX.tsx`, `${adminKitPath}/webapp/EditXXXXX.tsx`);
     fs.copyFileSync(`./src/types/xxxxx.d.ts`, `${adminKitPath}/webapp/xxxxx.d.ts`);
-    fs.writeFileSync("./.env", `VITE_BASE_URL = "${config()?.backendUrl}"`);
+    fs.writeFileSync("./.env", `VITE_BASE_URL = "http://localhost:3005/api"`);
     performCleanupWebapp();
   });
 

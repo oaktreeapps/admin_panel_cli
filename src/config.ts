@@ -1,26 +1,34 @@
 import fs from "fs-extra";
-import { KitConfig, kitSchema } from "./schemas";
-import { runInFolderSync } from "./helpers/folders";
+import path from "path";
+import { KitConfig, kitSchema, kitScreenSchema } from "./schemas";
+import { runInFolderAsync } from "./helpers/folders";
 
-export const config: () => KitConfig | null = () =>
-  runInFolderSync("root", () => {
+export const configAsync: () => Promise<KitConfig | null> = async () =>
+  runInFolderAsync("root", async () => {
     const config: KitConfig = {
-      backendUrl: "",
       screens: [],
     };
 
-    if (!fs.existsSync("kitconfig") || !fs.existsSync("kitconfig/index.json")) {
+    if (!fs.existsSync("kitconfig")) {
+      console.log(`No 'kitconfig' was found! please make sure the current directory is an adminkit project.`);
       return null;
     }
 
-    const kitConfigIndex = fs.readJSONSync("kitconfig/index.json");
-    config.backendUrl = kitConfigIndex.backendUrl;
+    const kitConfigAbsolutePath = path.join(process.cwd(), "kitconfig");
 
     const screenFiles = fs.readdirSync("kitconfig/screens");
-    screenFiles.map((screenFile) => {
-      const screen = fs.readJSONSync(`kitconfig/screens/${screenFile}`);
-      config.screens.push(screen);
-    });
+    await Promise.all(
+      screenFiles.map(async (screenFile) => {
+        const configFileJsImport = await import(`${kitConfigAbsolutePath}/screens/${screenFile}`);
+        const parsedScreen = kitScreenSchema.safeParse(configFileJsImport.default);
+
+        if (parsedScreen.success) {
+          config.screens.push(parsedScreen.data);
+        } else {
+          console.log(`Couldn't parse screen '${screenFile}':`, parsedScreen.error.format());
+        }
+      })
+    );
 
     const parsedConfig = kitSchema.safeParse(config);
 

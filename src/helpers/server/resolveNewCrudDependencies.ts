@@ -38,15 +38,15 @@ export default async function resolveNewCrudDependencies(
     ) {
       interfaceFields.push(`${name}${required ? "" : "?"}: string;`);
       schemafields.push(`${name}: { type: String, required: ${required}, unique: ${unique} },`);
-      zodFields.push(`${name}: z.string()${required ? ".nonempty()" : ".optional()"},`);
+      zodFields.push(`${name}: z.string()${required ? ".nonempty()" : ".optional().nullable()"},`);
     } else if (type === "InputNumber" || type === "Number") {
       interfaceFields.push(`${name}${required ? "" : "?"}: number;`);
       schemafields.push(`${name}: { type: Number, required: ${required}, unique: ${unique} },`);
-      zodFields.push(`${name}: z.number()${required ? "" : ".optional()"},`);
+      zodFields.push(`${name}: z.number()${required ? "" : ".optional().nullable()"},`);
     } else if (type === "InputSwitch" || type === "Boolean") {
       interfaceFields.push(`${name}${required ? "" : "?"}: boolean;`);
       schemafields.push(`${name}: { type: Boolean, required: ${required}, unique: ${unique} },`);
-      zodFields.push(`${name}: z.boolean()${required ? "" : ".optional()"},`);
+      zodFields.push(`${name}: z.boolean()${required ? "" : ".optional().nullable()"},`);
     }
   });
 
