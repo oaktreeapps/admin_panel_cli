@@ -1,4 +1,3 @@
-// function to convert camelCase to Sentence Case
 export const getLabel = (fieldName: string) => {
   const result = fieldName.replace(/([A-Z])/g, " $1");
   const finalResult = result.charAt(0).toUpperCase() + result.slice(1);

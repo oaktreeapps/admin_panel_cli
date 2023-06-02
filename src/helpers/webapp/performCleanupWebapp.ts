@@ -1,6 +1,6 @@
 import fs from "fs-extra";
 
-export default async function performCleanup() {
+export default function performCleanupWebapp() {
   const unwantedLines = [
     // imports
     `import XXXXXPage from "./screens/XXXXX/XXXXX"`,
@@ -14,7 +14,6 @@ export default async function performCleanup() {
   ];
 
   fs.removeSync("./.git");
-  fs.removeSync("./src/service/XXXXXService.ts");
   fs.removeSync("./src/screens/XXXXX");
   fs.removeSync("./src/types/xxxxx.d.ts");
 

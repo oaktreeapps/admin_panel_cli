@@ -1,0 +1,87 @@
+import fs from "fs-extra";
+import chalk from "chalk";
+import resolveNewScreenDependencies from "src/helpers/webapp/resolveNewScreenDependencies";
+import { configAsync } from "src/config";
+import { getActiveFolderState, runInFolderAsync } from "src/helpers/folders";
+import resolveNewCrudDependencies from "src/helpers/server/resolveNewCrudDependencies";
+import ora from "ora";
+
+const webappSpinner = ora({
+  color: "blue",
+  indent: 2,
+});
+const serverSpinner = ora({
+  color: "blue",
+  indent: 2,
+});
+
+export default async function add(screenNameArg: string) {
+  const isValidScreenName = /^[a-z]+$/.test(screenNameArg.trim());
+  if (!isValidScreenName) {
+    console.log(
+      `${chalk.red("Error:")} "${screenNameArg}" is invalid, names consisting of only alphabets are valid.`
+    );
+    return;
+  }
+
+  const activeFolderState = getActiveFolderState();
+
+  const screenName = screenNameArg.toLowerCase();
+
+  const screen = (await configAsync())?.resources?.find(
+    (screen) => screen.name.toLowerCase() === screenName.toLowerCase()
+  );
+  if (!screen) {
+    webappSpinner.fail(`Screen ${chalk.cyan(screenName)} not found in config file`);
+    return;
+  }
+
+  const capitalizedScreenName = screenName.charAt(0).toUpperCase() + screenName.slice(1);
+
+  if (activeFolderState === "both" || activeFolderState === "webapp") {
+    await runInFolderAsync("webapp", async () => {
+      const folderPath = `./src/screens/${capitalizedScreenName}`;
+      if (fs.existsSync(folderPath)) {
+        return;
+      }
+
+      webappSpinner.start(`Creating screen: ${chalk.cyan(capitalizedScreenName)}`);
+
+      const filePath = `${folderPath}/${capitalizedScreenName}.tsx`;
+      const createFilePath = `${folderPath}/Create${capitalizedScreenName}.tsx`;
+      const editFilePath = `${folderPath}/Edit${capitalizedScreenName}.tsx`;
+      const typesFilePath = `./src/types/${capitalizedScreenName.toLowerCase()}.d.ts`;
+      fs.createFileSync(filePath);
+      fs.createFileSync(createFilePath);
+      fs.createFileSync(editFilePath);
+      fs.createFileSync(typesFilePath);
+
+      await resolveNewScreenDependencies(capitalizedScreenName, screen);
+
+      webappSpinner.succeed(`Created screen: ${chalk.cyan(capitalizedScreenName)}`);
+    });
+  }
+
+  if (activeFolderState === "both" || activeFolderState === "server") {
+    await runInFolderAsync("server", async () => {
+      const folderPath = `./src/Microservices/${capitalizedScreenName}`;
+      if (fs.existsSync(folderPath)) {
+        return;
+      }
+
+      serverSpinner.start(`Creating CRUD for: ${chalk.cyan(capitalizedScreenName)}`);
+
+      const controllerFilePath = `${folderPath}/${capitalizedScreenName}Controller.ts`;
+      const routerFilePath = `${folderPath}/${capitalizedScreenName}Router.ts`;
+      const dtoFilePath = `${folderPath}/${capitalizedScreenName}.dto.ts`;
+
+      fs.createFileSync(controllerFilePath);
+      fs.createFileSync(routerFilePath);
+      fs.createFileSync(dtoFilePath);
+
+      await resolveNewCrudDependencies(capitalizedScreenName, screen);
+
+      serverSpinner.succeed(`Created CRUD for: ${chalk.cyan(capitalizedScreenName)}`);
+    });
+  }
+}

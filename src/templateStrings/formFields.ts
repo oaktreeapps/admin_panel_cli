@@ -1,4 +1,4 @@
-import { KitConfigOptions } from "../schemas";
+import { KitConfigField, KitConfigOptions } from "../schemas";
 import { getLabel } from "../helpers/strings";
 
 const validationUi = (fieldName: string) => [
@@ -8,87 +8,101 @@ const validationUi = (fieldName: string) => [
   )} is required.</small>}`,
 ];
 
-export const InputNumber = (fieldName: string, required = true) => `<div className="field">
-<label htmlFor="${fieldName}">${getLabel(fieldName)}</label>
+export const InputNumber = (field: KitConfigField) => `<div className="field ${
+  field.inline ? "flex-grow-1" : "w-full"
+}">
+<p>${getLabel(field.name)}</p>
 <InputNumber
-  id="${fieldName}"
-  value={entity.${fieldName}}
-  onValueChange={(e) => onInputNumberChange(e.value, "${fieldName}")}
-  ${required ? validationUi(fieldName)[0] : ""}
+  id="${field.name}"
+  value={entity.${field.name}}
+  onValueChange={(e) => onInputNumberChange(e.value, "${field.name}")}
+  style={{ width: "100%" }}
+  useGrouping={false}
+  maxFractionDigits={5}
+  ${field.required ? validationUi(field.name)[0] : ""}
   />
-  ${required ? validationUi(fieldName)[1] : ""}
+  ${field.required ? validationUi(field.name)[1] : ""}
 </div>`;
 
-export const InputText = (fieldName: string, required = true) => `<div className="field">
-<label htmlFor="${fieldName}">${getLabel(fieldName)}</label>
+export const InputText = (field: KitConfigField) => `<div className="field ${
+  field.inline ? "flex-grow-1" : "w-full"
+}">
+<p>${getLabel(field.name)}</p>
 <InputText
-  id="${fieldName}"
-  value={entity.${fieldName}}
-  onChange={(e) => onInputChange(e.target.value, "${fieldName}")}
+  id="${field.name}"
+  value={entity.${field.name}}
+  onChange={(e) => onInputChange(e.target.value, "${field.name}")}
   required
   autoFocus
-  ${required ? validationUi(fieldName)[0] : ""}
+  style={{ width: "100%" }}
+  ${field.required ? validationUi(field.name)[0] : ""}
 />
-  ${required ? validationUi(fieldName)[1] : ""}
+  ${field.required ? validationUi(field.name)[1] : ""}
 </div>`;
 
-export const InputTextarea = (fieldName: string, required = true) => `<div className="field">
-<label htmlFor="${fieldName}">${getLabel(fieldName)}</label>
+export const InputTextarea = (field: KitConfigField) => `<div className="field ${
+  field.inline ? "flex-grow-1" : "w-full"
+}">
+<p>${getLabel(field.name)}</p>
 <InputTextarea
-  id="${fieldName}"
-  value={entity.${fieldName}}
-  onChange={(e) => onInputChange(e.target.value, "${fieldName}")}
-  ${required ? validationUi(fieldName)[0] : ""}
+  id="${field.name}"
+  value={entity.${field.name}}
+  onChange={(e) => onInputChange(e.target.value, "${field.name}")}
+  style={{ width: "100%" }}
+  ${field.required ? validationUi(field.name)[0] : ""}
   required
   rows={3}
   cols={20}
 />
-  ${required ? validationUi(fieldName)[1] : ""}
+  ${field.required ? validationUi(field.name)[1] : ""}
 </div>`;
 
-export const Dropdown = (fieldName: string, required = true) => `<div className="field">
+export const Dropdown = (field: KitConfigField) => `<div className="field ${
+  field.inline ? "flex-grow-1" : "w-full"
+}">
 <Dropdown
-  value={entity.${fieldName}}
-  onChange={(e: DropdownChangeEvent) => onInputChange(e.value, "${fieldName}")}
-  options={${fieldName}Options}
+  value={entity.${field.name}}
+  onChange={(e: DropdownChangeEvent) => onInputChange(e.value, "${field.name}")}
+  options={${field.name}Options}
   optionLabel="name"
-  placeholder="Select a ${getLabel(fieldName)}"
-  ${required ? validationUi(fieldName)[0] : ""}
+  placeholder="Select a ${getLabel(field.name)}"
+  style={{ width: "100%" }}
+  ${field.required ? validationUi(field.name)[0] : ""}
 />
-  ${required ? validationUi(fieldName)[1] : ""}
+  ${field.required ? validationUi(field.name)[1] : ""}
 </div>`;
 
 export const RadioButton = (
-  fieldName: string,
-  option: { name: string; value: string },
-  required: boolean
+  field: KitConfigField,
+  option: { name: string; value: string }
 ) => `<div className="flex align-items-center">
       <RadioButton
         value="${option.value}"
-        onChange={(e) => onInputChange(e.value, "${fieldName}")}
-        checked={entity.${fieldName} === "${option.value}"}
-        ${required ? validationUi(fieldName)[0] : ""}
+        onChange={(e) => onInputChange(e.value, "${field.name}")}
+        checked={entity.${field.name} === "${option.value}"}
+        ${field.required ? validationUi(field.name)[0] : ""}
       />
-      <label className="ml-2 text-sm">
+      <p className="ml-2 text-sm">
         ${option.name}
-      </label>
+      </p>
     </div>
 `;
 
 export const RadioButtonField = (
-  fieldName: string,
-  options: KitConfigOptions,
-  required = true
-) => `<div className="field">
-  <p className="mt-5">Choose ${getLabel(fieldName)}</p>
+  field: KitConfigField,
+  options: KitConfigOptions
+) => `<div className="field ${field.inline ? "flex-grow-1" : "w-full"}">
+  <p>Choose ${getLabel(field.name)}</p>
   <div className="flex flex-wrap gap-3">
-    ${options.map((opt) => RadioButton(fieldName, opt, required)).join("\n")}
+    ${options.map((opt) => RadioButton(field, opt)).join("\n")}
   </div>
-  ${required ? validationUi(fieldName)[1] : ""}
+  ${field.required ? validationUi(field.name)[1] : ""}
 </div>
 `;
 
-export const InputSwitch = (fieldName: string) => `<div className="field flex items-center">
-  <p className="mr-2">${getLabel(fieldName)}</p>
-  <InputSwitch checked={entity.${fieldName}} onChange={(e) => onInputChange(e.value, "${fieldName}")} />
+export const InputSwitch = (field: KitConfigField) => `<div className="field ${
+  field.inline ? "flex-grow-1" : "w-full"
+} flex items-center">
+  <p className="mr-2">${getLabel(field.name)}</p>
+  <InputSwitch checked={entity.${field.name}} onChange={(e) => onInputChange(e.value, "${field.name}")} />
 </div>`;
