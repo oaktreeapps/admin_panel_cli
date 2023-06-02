@@ -10,7 +10,7 @@ export const configAsync: () => Promise<KitConfig | null> = async () =>
     };
 
     if (!fs.existsSync("kitconfig")) {
-      console.log(`No 'kitconfig' was found! please make sure the current directory is an adminkit project.`);
+      console.log(`Can't detect the current directory as a valid admin project!`);
       return null;
     }
 

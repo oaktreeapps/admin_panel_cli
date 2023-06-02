@@ -22,26 +22,71 @@ Or the package can be run directly via npx:
 npx <npm-package> [commands...]
 ```
 
-## Usage
+## Commands
 
-The template comes with an example kitconfig setup containing a `Students` entity in the `kitconfig/screens` folder.
+### `scaffold [...options] project-name`
 
-Adding a screen is a 2-step process:
+Creates a new admin project containing the following folders:
 
-1. Define the screen in the `kitconfig/screens` folder creating a new file `<some-generic-name>.json`
-2. run `npx <npm-package> addscreen <screen-name>`
+1. **kitconfig** - folder containing the `.cjs` files for configuring the project (also comes with sample files `screens/products.cjs` & `screens/students.cjs`).
 
-The CLI will create files at Frontend & Backend following the instructions written in the screen file.
+2. **webapp** - React.js project containing the UI.
 
-For removing an accidentally created screen, you can run:
+3. **server** - Express.js (TypeScript) project hooked up to MongoDB database.
+
+#### Usage
 
 ```bash
-npx <npm-package> removescreen <screen-name>
+npx <npm-package> scaffold admin-panel
 ```
 
-This will go ahead & remove any traces of the screen from the Frontend & Backend folders.
+```bash
+npx <npm-package> scaffold --only-webapp admin-panel
+```
 
-## Environment file
+```bash
+npx <npm-package> scaffold --only-server admin-panel
+```
+
+### `add resource`
+
+Creates UI & corresponding backend (models, routes & controllers).
+
+#### Usage
+
+For example, let's say we need to create backend & UI for our "posts" model.
+
+we'll first go into the `kitconfig/screens` folder, create a file named `posts.cjs` and define properties & fields this resource needs. (refer types autocomplete & sample files for defining new fields & other properties),
+
+And then, while we're in the admin directory, we can run the following command:
+
+```bash
+npx <npm-package> add posts
+```
+
+### `remove resource`
+
+Removes the previously created resource in UI & corresponding backend (models, routes & controllers).
+
+> Only removes the resource from codebase, won't remove the config file.
+
+#### Usage
+
+```bash
+npx <npm-package> remove posts
+```
+
+### `sync`
+
+_Adds_ all the resources defined in `kitconfig/screens` folder, without overriding any of the existing resources.
+
+#### Usage
+
+```bash
+npx <npm-package> sync
+```
+
+## .env files
 
 ### Frontend
 
