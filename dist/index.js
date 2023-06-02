@@ -10,18 +10,20 @@ import Oe from 'simple-git';
 import Me from 'node-fetch';
 import { exec } from 'child_process';
 
-var a=(e,n,t)=>new Promise((r,s)=>{var i=y=>{try{p(t.next(y));}catch(X){s(X);}},c=y=>{try{p(t.throw(y));}catch(X){s(X);}},p=y=>y.done?r(y.value):Promise.resolve(y.value).then(i,c);p((t=t.apply(e,n)).next());});var L=e=>{let n=e.replace(/([A-Z])/g," $1");return n.charAt(0).toUpperCase()+n.slice(1)},I=e=>e.charAt(0).toUpperCase()+e.slice(1);var v=e=>[`className={classNames({ "p-invalid": submitted && !entity.${e} })}`,`{submitted && !entity.${e} && <small className="p-invalid">${L(e)} is required.</small>}`],ye=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
-<p>${L(e.name)}</p>
+var a=(e,n,t)=>new Promise((r,s)=>{var i=y=>{try{p(t.next(y));}catch(X){s(X);}},c=y=>{try{p(t.throw(y));}catch(X){s(X);}},p=y=>y.done?r(y.value):Promise.resolve(y.value).then(i,c);p((t=t.apply(e,n)).next());});var D=e=>{let n=e.replace(/([A-Z])/g," $1");return n.charAt(0).toUpperCase()+n.slice(1)},I=e=>e.charAt(0).toUpperCase()+e.slice(1);var v=e=>[`className={classNames({ "p-invalid": submitted && !entity.${e} })}`,`{submitted && !entity.${e} && <small className="p-invalid">${D(e)} is required.</small>}`],ye=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
+<p>${D(e.name)}</p>
 <InputNumber
   id="${e.name}"
   value={entity.${e.name}}
   onValueChange={(e) => onInputNumberChange(e.value, "${e.name}")}
   style={{ width: "100%" }}
+  useGrouping={false}
+  maxFractionDigits={5}
   ${e.required?v(e.name)[0]:""}
   />
   ${e.required?v(e.name)[1]:""}
 </div>`,Xe=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
-<p>${L(e.name)}</p>
+<p>${D(e.name)}</p>
 <InputText
   id="${e.name}"
   value={entity.${e.name}}
@@ -33,7 +35,7 @@ var a=(e,n,t)=>new Promise((r,s)=>{var i=y=>{try{p(t.next(y));}catch(X){s(X);}},
 />
   ${e.required?v(e.name)[1]:""}
 </div>`,fe=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
-<p>${L(e.name)}</p>
+<p>${D(e.name)}</p>
 <InputTextarea
   id="${e.name}"
   value={entity.${e.name}}
@@ -51,7 +53,7 @@ var a=(e,n,t)=>new Promise((r,s)=>{var i=y=>{try{p(t.next(y));}catch(X){s(X);}},
   onChange={(e: DropdownChangeEvent) => onInputChange(e.value, "${e.name}")}
   options={${e.name}Options}
   optionLabel="name"
-  placeholder="Select a ${L(e.name)}"
+  placeholder="Select a ${D(e.name)}"
   style={{ width: "100%" }}
   ${e.required?v(e.name)[0]:""}
 />
@@ -68,7 +70,7 @@ var a=(e,n,t)=>new Promise((r,s)=>{var i=y=>{try{p(t.next(y));}catch(X){s(X);}},
       </p>
     </div>
 `,$e=(e,n)=>`<div className="field ${e.inline?"flex-grow-1":"w-full"}">
-  <p>Choose ${L(e.name)}</p>
+  <p>Choose ${D(e.name)}</p>
   <div className="flex flex-wrap gap-3">
     ${n.map(t=>Ae(e,t)).join(`
 `)}
@@ -76,7 +78,7 @@ var a=(e,n,t)=>new Promise((r,s)=>{var i=y=>{try{p(t.next(y));}catch(X){s(X);}},
   ${e.required?v(e.name)[1]:""}
 </div>
 `,he=e=>`<div className="field ${e.inline?"flex-grow-1":"w-full"} flex items-center">
-  <p className="mr-2">${L(e.name)}</p>
+  <p className="mr-2">${D(e.name)}</p>
   <InputSwitch checked={entity.${e.name}} onChange={(e) => onInputChange(e.value, "${e.name}")} />
 </div>`;var j=e=>`<Column
   field="${e}"
@@ -84,7 +86,7 @@ var a=(e,n,t)=>new Promise((r,s)=>{var i=y=>{try{p(t.next(y));}catch(X){s(X);}},
   sortable
   body={(rowData) => textBodyTemplate(rowData, "${e}")}
   headerStyle={{ minWidth: "15rem" }}
-></Column>`;var T={tableColumns:"{/*TABLE_COLUMNS*/}",initialState:"/*INITIAL_STATE_FIELDS*/",interface:"/*INTERFACE_FIELDS*/",input:"{/*INPUT_FIELDS*/}",validate:"/*VALIDATE_FIELDS*/"};function ne(e,n){return a(this,null,function*(){let t="",r="",s=[],i=[],c=[],p=[],y=["InputSwitch"];n.crudFields.forEach((o,D)=>{let w="",R="";o.required&&!y.includes(o.type)&&s.push(o.name),o.type==="InputText"||o.type==="String"?(o.tableDisplay&&c.push(j(o.name)),i.push(Xe(o)),w="string",R='""'):o.type==="InputTextarea"?(o.tableDisplay&&c.push(j(o.name)),i.push(fe(o)),w="string",R='""'):o.type==="InputNumber"||o.type==="Number"?(o.tableDisplay&&c.push(j(o.name)),i.push(ye(o)),w="number",R="0"):o.type==="Dropdown"?(o.tableDisplay&&c.push(j(o.name)),i.push(ge(o)),p.push({fieldName:o.name,options:o.options||[]}),w="string",R='""'):o.type==="RadioButton"?(o.tableDisplay&&c.push(j(o.name)),i.push($e(o,o.options||[])),w="string",R='""'):(o.type==="InputSwitch"||o.type==="Boolean")&&(o.tableDisplay&&c.push(j(o.name)),i.push(he(o)),w="boolean",R="false"),D===0&&(t+=`id?: string;
+></Column>`;var T={tableColumns:"{/*TABLE_COLUMNS*/}",initialState:"/*INITIAL_STATE_FIELDS*/",interface:"/*INTERFACE_FIELDS*/",input:"{/*INPUT_FIELDS*/}",validate:"/*VALIDATE_FIELDS*/"};function ne(e,n){return a(this,null,function*(){let t="",r="",s=[],i=[],c=[],p=[],y=["InputSwitch"];n.crudFields.forEach((o,L)=>{let w="",R="";o.required&&!y.includes(o.type)&&s.push(o.name),o.type==="InputText"||o.type==="String"?(o.tableDisplay&&c.push(j(o.name)),i.push(Xe(o)),w="string",R='""'):o.type==="InputTextarea"?(o.tableDisplay&&c.push(j(o.name)),i.push(fe(o)),w="string",R='""'):o.type==="InputNumber"||o.type==="Number"?(o.tableDisplay&&c.push(j(o.name)),i.push(ye(o)),w="number",R="0"):o.type==="Dropdown"?(o.tableDisplay&&c.push(j(o.name)),i.push(ge(o)),p.push({fieldName:o.name,options:o.options||[]}),w="string",R='""'):o.type==="RadioButton"?(o.tableDisplay&&c.push(j(o.name)),i.push($e(o,o.options||[])),w="string",R='""'):(o.type==="InputSwitch"||o.type==="Boolean")&&(o.tableDisplay&&c.push(j(o.name)),i.push(he(o)),w="boolean",R="false"),L===0&&(t+=`id?: string;
 `,r+=`id: undefined,
 `),t+=`${o.name}: ${w};
 `,r+=`${o.name}: ${R},
@@ -92,14 +94,14 @@ var a=(e,n,t)=>new Promise((r,s)=>{var i=y=>{try{p(t.next(y));}catch(X){s(X);}},
 `).forEach(o=>{o.includes(T.tableColumns)&&g.push(...c),g.push(o);}),f.writeFileSync(E,g.join(`
 `));let C=z.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(T.input,i.join(`
 `)).replace(T.validate,`if (${s.map(o=>`entity.${o}`).join(" && ")}) `),S=[];C.split(`
-`).forEach(o=>{o.includes("const saveEntity = async () => {")?(p.forEach(({fieldName:D,options:w})=>{S.push(`const ${D}Options = ${JSON.stringify(w,null,2)};
+`).forEach(o=>{o.includes("const saveEntity = async () => {")?(p.forEach(({fieldName:L,options:w})=>{S.push(`const ${L}Options = ${JSON.stringify(w,null,2)};
 `);}),S.push(o)):(o.includes(T.initialState)&&S.push(r),S.push(o));}),f.writeFileSync(b,S.join(`
 `));let Te=ee.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(T.input,i.join(`
 `)).replace(T.validate,`if (${s.map(o=>`entity.${o}`).join(" && ")}) `),K=[];Te.split(`
-`).forEach(o=>{o.includes("const saveEntity = async () => {")?(p.forEach(({fieldName:D,options:w})=>{K.push(`const ${D}Options = ${JSON.stringify(w,null,2)};
+`).forEach(o=>{o.includes("const saveEntity = async () => {")?(p.forEach(({fieldName:L,options:w})=>{K.push(`const ${L}Options = ${JSON.stringify(w,null,2)};
 `);}),K.push(o)):(o.includes(T.initialState)&&K.push(r),K.push(o));}),f.writeFileSync(U,K.join(`
-`));let Pe=f.readFileSync(V),de=JSON.parse(Pe.toString());de[0].items.push({label:e,to:`/${e.toLowerCase()}`}),f.writeFileSync(V,JSON.stringify(de,null,2));let Le=te.replace(/XXXXX/g,e).replace(T.interface,t);f.writeFileSync(`./src/types/${e.toLowerCase()}.d.ts`,Le);let De=f.readFileSync("./src/main.tsx").toString().split(`
-`),Re=[`<Route path="${e.toLowerCase()}" element={<${e}Page />} />`,`<Route path="${e.toLowerCase()}/create" element={<Create${e}Page />} />`,`<Route path="${e.toLowerCase()}/edit/:id" element={<Edit${e}Page />} />`],je=[`import ${e}Page from "./screens/${e}/${e}"`,`import Edit${e}Page from "./screens/${e}/Edit${e}"`,`import Create${e}Page from "./screens/${e}/Create${e}"`],J=[];J.push(...je),De.forEach(o=>{o.includes("{/* --ROUTES-- */}")&&Re.forEach(D=>{J.push(D);}),J.push(o);}),f.writeFileSync("./src/main.tsx",J.join(`
+`));let Pe=f.readFileSync(V),de=JSON.parse(Pe.toString());de[0].items.push({label:e,to:`/${e.toLowerCase()}`}),f.writeFileSync(V,JSON.stringify(de,null,2));let De=te.replace(/XXXXX/g,e).replace(T.interface,t);f.writeFileSync(`./src/types/${e.toLowerCase()}.d.ts`,De);let Le=f.readFileSync("./src/main.tsx").toString().split(`
+`),Re=[`<Route path="${e.toLowerCase()}" element={<${e}Page />} />`,`<Route path="${e.toLowerCase()}/create" element={<Create${e}Page />} />`,`<Route path="${e.toLowerCase()}/edit/:id" element={<Edit${e}Page />} />`],je=[`import ${e}Page from "./screens/${e}/${e}"`,`import Edit${e}Page from "./screens/${e}/Edit${e}"`,`import Create${e}Page from "./screens/${e}/Create${e}"`],J=[];J.push(...je),Le.forEach(o=>{o.includes("{/* --ROUTES-- */}")&&Re.forEach(L=>{J.push(L);}),J.push(o);}),f.writeFileSync("./src/main.tsx",J.join(`
 `));})}var re=z.object({name:z.string(),url:z.string(),collectionName:z.string(),crudFields:z.array(z.object({name:z.string(),required:z.boolean().optional().default(!0),unique:z.boolean().optional().default(!1),tableDisplay:z.boolean().optional().default(!0),inline:z.boolean().optional().default(!1),type:z.union([z.literal("InputText"),z.literal("InputTextarea"),z.literal("RadioButton"),z.literal("Dropdown"),z.literal("String"),z.literal("InputSwitch"),z.literal("Boolean"),z.literal("InputNumber"),z.literal("Number")]),options:z.array(z.object({name:z.string(),value:z.string()})).optional()}))}),xe=z.object({resources:z.array(re)});var W=(e=process.cwd())=>f.readdirSync(e).includes("kitconfig"),F=(e,n)=>a(void 0,null,function*(){let t=process.cwd().split("/").at(-1),r;return t===e||W()&&e==="root"?r=yield n():W()?(process.chdir(e),r=yield n(),process.chdir("..")):e==="root"?(process.chdir(".."),r=yield n(),process.chdir(t)):(process.chdir(".."),process.chdir(e),r=yield n(),process.chdir(".."),process.chdir(t)),r}),k=(e,n)=>{let t=process.cwd().split("/").at(-1),r;return t===e||W()&&e==="root"?r=n():W()?(process.chdir(e),r=n(),process.chdir("..")):e==="root"?(process.chdir(".."),r=n(),process.chdir(t)):(process.chdir(".."),process.chdir(e),r=n(),process.chdir(".."),process.chdir(t)),r},H=()=>k("root",()=>{let e,n=f.readdirSync(".");return n.includes("webapp")&&n.includes("server")?e="both":n.includes("webapp")?e="webapp":n.includes("server")?e="server":e="INVALID_STATE",e});var G=()=>a(void 0,null,function*(){return F("root",()=>a(void 0,null,function*(){let e={resources:[]};if(!f.existsSync("kitconfig"))return console.log("Can't detect the current directory as a valid admin project!"),null;let n=Ke.join(process.cwd(),"kitconfig"),t=f.readdirSync("kitconfig/resources");yield Promise.all(t.map(s=>a(void 0,null,function*(){let i=yield import(`${n}/resources/${s}`),c=re.safeParse(i.default);c.success?e.resources.push(c.data):console.log(`Couldn't parse screen '${s}':`,c.error.format());})));let r=xe.safeParse(e);return r.success?r.data:(console.error("Config parsing error",r.error),null)}))});var _=(e,n)=>{let t="";return n.filter(r=>!!r).forEach(r=>{t+=`const existing${I(r)}UpdateEntity: I${e}Entity | null =
 await ${e}Model().findOne({
   ${r},

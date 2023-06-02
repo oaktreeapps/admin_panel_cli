@@ -17,6 +17,8 @@ export const InputNumber = (field: KitConfigField) => `<div className="field ${
   value={entity.${field.name}}
   onValueChange={(e) => onInputNumberChange(e.value, "${field.name}")}
   style={{ width: "100%" }}
+  useGrouping={false}
+  maxFractionDigits={5}
   ${field.required ? validationUi(field.name)[0] : ""}
   />
   ${field.required ? validationUi(field.name)[1] : ""}
