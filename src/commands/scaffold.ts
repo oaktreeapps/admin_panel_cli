@@ -6,7 +6,7 @@ import performCleanupWebapp from "src/helpers/webapp/performCleanupWebapp";
 import { runInFolderAsync, runInFolderSync } from "src/helpers/folders";
 import performCleanupServer from "src/helpers/server/performCleanupServer";
 import execAsync from "src/helpers/exec";
-import { getServerEnvFile } from "src/templates";
+import { getServerEnvFile } from "src/templateStrings/server/env";
 
 const spinner = ora({
   color: "blue",

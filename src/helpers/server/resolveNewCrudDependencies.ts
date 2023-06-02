@@ -1,10 +1,7 @@
 import fs from "fs-extra";
 import { adminKitPath } from "src";
 import { KitConfigScreen } from "src/schemas";
-import {
-  checkExistingCreateEntity,
-  checkExistingUpdateEntity,
-} from "src/templateStrings/server/codeTemplates";
+import { checkExistingCreateEntity, checkExistingUpdateEntity } from "src/templateStrings/server/code";
 
 const templatePlaceholders = {
   interface: "/*INTERFACE_FIELDS*/",

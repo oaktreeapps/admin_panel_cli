@@ -157,19 +157,7 @@ import { ${e}Router } from "./${e}/${e}Router";`:u).join(`
 `).filter(X=>!X.includes(`${t}Router`)).join(`
 `);g.writeFileSync(s,y),g.writeFileSync(c,p),N.succeed(`Removed CRUD: ${t}`);})));})}function ce(){let e=['import XXXXXPage from "./screens/XXXXX/XXXXX"','import EditXXXXXPage from "./screens/XXXXX/EditXXXXX"','import CreateXXXXXPage from "./screens/XXXXX/CreateXXXXX"','<Route path="xxxxx" element={<XXXXXPage />} />','<Route path="xxxxx/create" element={<CreateXXXXXPage />} />','<Route path="xxxxx/edit/:id" element={<EditXXXXXPage />} />'];g.removeSync("./.git"),g.removeSync("./src/screens/XXXXX"),g.removeSync("./src/types/xxxxx.d.ts");let n=g.readFileSync("./src/main.tsx").toString().split(`
 `).filter(i=>e.filter(s=>i.includes(s)).length===0);g.writeFileSync("./src/main.tsx",n.join(`
-`));}function pe(){g.removeSync("./.git"),g.removeSync("./src/Microservices/XXXXX"),g.removeSync("./src/Database/Entities/XXXXXEntity.ts");}function Y(e){return a(this,null,function*(){return new Promise((r,t)=>{exec(e,()=>{r(null);});})})}var ve=e=>{let r=e.toLowerCase();return `/**
- * @typedef {import('../types').Screen} Screen
- */
-const screen = {
-  name: "${I(r)}",
-  url: "/${r}",
-  collectionName: "${r}",
-  crudFields: [
-    // ...
-  ],
-};
-
-module.exports = screen;`},be=()=>`REST_API_PORT=3005
+`));}function pe(){g.removeSync("./.git"),g.removeSync("./src/Microservices/XXXXX"),g.removeSync("./src/Database/Entities/XXXXXEntity.ts");}function Y(e){return a(this,null,function*(){return new Promise((r,t)=>{exec(e,()=>{r(null);});})})}var ve=()=>`REST_API_PORT=3005
 MONGO_CONNECTION_URL=
 
 #REDIS_PORT=6379
@@ -193,6 +181,18 @@ S3_BUCKET_NAME=
 
 STATIC_S3_REGION=
 STATIC_S3_BUCKET_NAME=
-`;var Q=Ee({color:"blue",indent:2});function ue(e,r){return a(this,null,function*(){let t=e.toLowerCase();Q.start("Scaffolding project..."),yield ke().clone("https://github.com/kuvamdazeus/adminkit-template",t),process.chdir(t),g.ensureDirSync(`${d}`),g.ensureDirSync(`${d}/webapp`),g.ensureDirSync(`${d}/server`),g.removeSync("./.git"),O("webapp",()=>{g.copyFileSync("./src/screens/XXXXX/XXXXX.tsx",`${d}/webapp/XXXXX.tsx`),g.copyFileSync("./src/screens/XXXXX/CreateXXXXX.tsx",`${d}/webapp/CreateXXXXX.tsx`),g.copyFileSync("./src/screens/XXXXX/EditXXXXX.tsx",`${d}/webapp/EditXXXXX.tsx`),g.copyFileSync("./src/types/xxxxx.d.ts",`${d}/webapp/xxxxx.d.ts`),g.writeFileSync("./.env",'VITE_BASE_URL = "http://localhost:3005/api"'),ce();}),O("server",()=>{g.copyFileSync("./src/Microservices/XXXXX/XXXXXRouter.ts",`${d}/server/XXXXXRouter.ts`),g.copyFileSync("./src/Microservices/XXXXX/XXXXXController.ts",`${d}/server/XXXXXController.ts`),g.copyFileSync("./src/Microservices/XXXXX/XXXXX.dto.ts",`${d}/server/XXXXX.dto.ts`),g.copyFileSync("./src/Database/Entities/XXXXXEntity.ts",`${d}/server/XXXXXEntity.ts`),g.writeFileSync("./.env",be()),pe();}),Q.succeed(`Created "${t}" successfully!`),r.onlyServer&&g.removeSync("webapp"),r.onlyWebapp&&g.removeSync("server"),Q.start("Installing dependencies..."),r.onlyServer||(yield w("webapp",()=>a(this,null,function*(){yield Y("yarn install");}))),r.onlyWebapp||(yield w("server",()=>a(this,null,function*(){yield Y("yarn install");}))),Q.succeed("Installed dependencies successfully!");})}var Te=Ee({color:"blue",indent:2});function de(e){return a(this,null,function*(){if(!/^[a-z]+$/.test(e.trim())){console.log(`${U.red("Error:")} "${e}" is invalid, names with only alphabets are valid.`);return}let t=e.toLowerCase(),n=ve(t);Te.start(`Creating config template for ${U.cyan(t)}`),O("root",()=>{let i=`kitconfig/resources/${t}.cjs`;g.ensureFileSync(i),g.writeFileSync(i,n);}),Te.succeed(`Created config template for ${U.cyan(t)}`);})}var d=He.homedir()+"/.adminkit",j=new Command;j.name("admin-starter").description("CLI to setup & manager admin UIs").version("0.1.0");j.command("scaffold").option("--only-webapp","Only scaffold the webapp").option("--only-server","Only scaffold the server").description("Scaffold a new admin project by using templates").argument("<projectName>","Name of the project").action(ue);j.command("add").description("Add a new resource").argument("resourceName","Name of the resource").action(B);j.command("addconfig").description("").argument("resourceName","Name of the resource you want to add config file for.").action(de);j.command("remove").description("Removes an existing resource").argument("resourceName","Name of the resource").action(ae);j.command("sync").description('Add resources defined in "kitconfig" to the project').action(ie);j.parse();
+`;var Q=Ee({color:"blue",indent:2});function ue(e,r){return a(this,null,function*(){let t=e.toLowerCase();Q.start("Scaffolding project..."),yield ke().clone("https://github.com/kuvamdazeus/adminkit-template",t),process.chdir(t),g.ensureDirSync(`${d}`),g.ensureDirSync(`${d}/webapp`),g.ensureDirSync(`${d}/server`),g.removeSync("./.git"),O("webapp",()=>{g.copyFileSync("./src/screens/XXXXX/XXXXX.tsx",`${d}/webapp/XXXXX.tsx`),g.copyFileSync("./src/screens/XXXXX/CreateXXXXX.tsx",`${d}/webapp/CreateXXXXX.tsx`),g.copyFileSync("./src/screens/XXXXX/EditXXXXX.tsx",`${d}/webapp/EditXXXXX.tsx`),g.copyFileSync("./src/types/xxxxx.d.ts",`${d}/webapp/xxxxx.d.ts`),g.writeFileSync("./.env",'VITE_BASE_URL = "http://localhost:3005/api"'),ce();}),O("server",()=>{g.copyFileSync("./src/Microservices/XXXXX/XXXXXRouter.ts",`${d}/server/XXXXXRouter.ts`),g.copyFileSync("./src/Microservices/XXXXX/XXXXXController.ts",`${d}/server/XXXXXController.ts`),g.copyFileSync("./src/Microservices/XXXXX/XXXXX.dto.ts",`${d}/server/XXXXX.dto.ts`),g.copyFileSync("./src/Database/Entities/XXXXXEntity.ts",`${d}/server/XXXXXEntity.ts`),g.writeFileSync("./.env",ve()),pe();}),Q.succeed(`Created "${t}" successfully!`),r.onlyServer&&g.removeSync("webapp"),r.onlyWebapp&&g.removeSync("server"),Q.start("Installing dependencies..."),r.onlyServer||(yield w("webapp",()=>a(this,null,function*(){yield Y("yarn install");}))),r.onlyWebapp||(yield w("server",()=>a(this,null,function*(){yield Y("yarn install");}))),Q.succeed("Installed dependencies successfully!");})}var be=e=>{let r=e.toLowerCase();return `/**
+ * @typedef {import('../types').Screen} Screen
+ */
+const screen = {
+  name: "${I(r)}",
+  url: "/${r}",
+  collectionName: "${r}",
+  crudFields: [
+    // ...
+  ],
+};
+
+module.exports = screen;`};var Te=Ee({color:"blue",indent:2});function de(e){return a(this,null,function*(){if(!/^[a-z]+$/.test(e.trim())){console.log(`${U.red("Error:")} "${e}" is invalid, names with only alphabets are valid.`);return}let t=e.toLowerCase(),n=be(t);Te.start(`Creating config template for ${U.cyan(t)}`),O("root",()=>{let i=`kitconfig/resources/${t}.cjs`;g.ensureFileSync(i),g.writeFileSync(i,n);}),Te.succeed(`Created config template for ${U.cyan(t)}`);})}var d=He.homedir()+"/.adminkit",j=new Command;j.name("admin-starter").description("CLI to setup & manager admin UIs").version("0.1.0");j.command("scaffold").option("--only-webapp","Only scaffold the webapp").option("--only-server","Only scaffold the server").description("Scaffold a new admin project by using templates").argument("<projectName>","Name of the project").action(ue);j.command("add").description("Add a new resource").argument("resourceName","Name of the resource").action(B);j.command("addconfig").description("").argument("resourceName","Name of the resource you want to add config file for.").action(de);j.command("remove").description("Removes an existing resource").argument("resourceName","Name of the resource").action(ae);j.command("sync").description('Add resources defined in "kitconfig" to the project').action(ie);j.parse();
 
 export { d as adminKitPath };
