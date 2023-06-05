@@ -2,13 +2,14 @@ import fs from "fs-extra";
 import { adminKitPath } from "src/index";
 import {
   Dropdown,
+  FileUpload,
   InputNumber,
   InputSwitch,
   InputText,
   InputTextarea,
   RadioButtonField,
 } from "src/templateStrings/formFields";
-import { TextColumn } from "src/templateStrings/mainFileColumns";
+import { ImageColumn, TextColumn } from "src/templateStrings/mainFileColumns";
 import { KitConfigScreen } from "src/schemas";
 
 const templatePlaceholders = {
@@ -65,6 +66,11 @@ export default async function resolveNewScreenDependencies(
     } else if (type === "RadioButton") {
       if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
       jsxFields.push(RadioButtonField(field, field.options || []));
+      interfacePropertyType = "string";
+      initialValue = `""`;
+    } else if (type === "ImageFileUpload") {
+      if (field.tableDisplay) tableColumns.push(ImageColumn(field.name));
+      jsxFields.push(FileUpload(field, screen.name.toLowerCase()));
       interfacePropertyType = "string";
       initialValue = `""`;
     } else if (type === "InputSwitch" || type === "Boolean") {

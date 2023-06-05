@@ -106,3 +106,58 @@ export const InputSwitch = (field: KitConfigField) => `<div className="field ${
   <p className="mr-2">${getLabel(field.name)}</p>
   <InputSwitch checked={entity.${field.name}} onChange={(e) => onInputChange(e.value, "${field.name}")} />
 </div>`;
+
+const fetchUrl = "`${BASE_URL}/s3/upload`";
+export const FileUpload = (field: KitConfigField, screenName: string) => `<div className="field w-full">
+  <p>${getLabel(field.name)}</p>
+  <FileUpload
+    className={classNames({ "p-invalid": submitted && !entity.${field.name}, "-mt-3 w-full": true })}
+    accept="image/*"
+    mode="advanced"
+    customUpload
+    uploadHandler={async (e) => {
+      const fileString = await getBase64Url(e.files[0]);
+      const folderName = "${screenName}";
+
+      const res = await fetch(${fetchUrl}, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("auth_token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fileString,
+          folderName,
+        }),
+      });
+
+      const response = await res.json();
+
+      if (!res.statusText.startsWith("2")) {
+        return toast?.current?.show({
+          severity: "error",
+          summary: "Error occured",
+          detail: response.message,
+        });
+      }
+
+      onInputChange(response.data.url, "${field.name}");
+    }}
+    chooseOptions={{
+      icon: "pi pi-fw pi-images",
+      iconOnly: true,
+      className: "custom-choose-btn p-button-rounded p-button-outlined",
+    }}
+    uploadOptions={{
+      icon: "pi pi-fw pi-cloud-upload",
+      iconOnly: true,
+      className: "custom-upload-btn p-button-success p-button-rounded p-button-outlined",
+    }}
+    cancelOptions={{
+      icon: "pi pi-fw pi-times",
+      iconOnly: true,
+      className: "custom-cancel-btn p-button-danger p-button-rounded p-button-outlined",
+    }}
+  />
+  ${field.required ? validationUi(field.name)[1] : ""}
+</div>`;

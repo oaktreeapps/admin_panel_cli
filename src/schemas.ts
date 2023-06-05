@@ -23,7 +23,7 @@ export const kitScreenSchema = z.object({
           z.literal("Dropdown"),
           z.literal("InputSwitch"),
           z.literal("InputNumber"),
-          z.literal("Number"),
+          z.literal("ImageFileUpload"),
         ])
         .default("InputText")
         .optional(),
