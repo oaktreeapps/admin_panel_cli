@@ -23,7 +23,7 @@ export default async function scaffold(argProjectName: string, opts: Opts) {
 
   spinner.start("Scaffolding project...");
 
-  await simpleGit().clone("https://github.com/kuvamdazeus/adminkit-template", projectName);
+  await simpleGit().clone("https://github.com/oaktreeapps/admin_panel", projectName);
 
   process.chdir(projectName);
 

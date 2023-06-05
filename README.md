@@ -48,6 +48,20 @@ npx <npm-package> scaffold --only-webapp admin-panel
 npx <npm-package> scaffold --only-server admin-panel
 ```
 
+### `addconfig resourcename`
+
+Creates a `.cjs` config file for the resource to be added in project's kitconfig folder.
+
+This file contains the properties & fields that the resource needs.
+
+#### Usage
+
+```bash
+npx <npm-package> addconfig products
+```
+
+It can be edited to add fields & properties describing backend & frontend requirements.
+
 ### `add resource`
 
 Creates UI & corresponding backend (models, routes & controllers).

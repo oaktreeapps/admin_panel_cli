@@ -16,14 +16,6 @@ const serverSpinner = ora({
 });
 
 export default async function add(screenNameArg: string) {
-  const isValidScreenName = /^[a-z]+$/.test(screenNameArg.trim());
-  if (!isValidScreenName) {
-    console.log(
-      `${chalk.red("Error:")} "${screenNameArg}" is invalid, names consisting of only alphabets are valid.`
-    );
-    return;
-  }
-
   const activeFolderState = getActiveFolderState();
 
   const screenName = screenNameArg.toLowerCase();
