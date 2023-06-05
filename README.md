@@ -144,12 +144,83 @@ STATIC_S3_BUCKET_NAME=
 
 ```
   |-kitconfig
-    |-index.json
     |-resources
-      |-<screen-name>.json
-      |-<screen-name>.json
+      |-resource1.cjs
+      |-resource2.cjs
       ...
+    |-types.d.ts
 
   |-webapp
   |-backend
 ```
+
+The `kitconfig/resources` folder contains the `.cjs` files for configuring the project.
+
+The `kitconfig/types.d.ts` file contains the types for the resource JS object defined in the `kitconfig/resources/resource.cjs` folder.
+
+### `resource.cjs`
+
+Here's a sample file that covers all of the properties & fields that can be defined in the resource config file.
+
+```javascript
+/**
+ * @type {import('../types').Resource}
+ */
+const resource = {
+  name: "Students",
+  url: "/students",
+  collectionName: "students",
+  crudFields: [
+    { name: "fullName", datatype: "String", widget: "InputText" },
+    { name: "bio", datatype: "String", widget: "InputTextarea", required: false },
+    { name: "password", datatype: "String", widget: "InputText", tableDisplay: false },
+    { name: "rollNo", datatype: "Number", widget: "InputNumber", inline: true, unique: true },
+    {
+      name: "city",
+      datatype: "String",
+      widget: "Dropdown",
+      inline: true,
+      options: [
+        { name: "New York", value: "NY" },
+        { name: "Rome", value: "RM" },
+        { name: "London", value: "LDN" },
+        { name: "Istanbul", value: "IST" },
+        { name: "Paris", value: "PRS" },
+      ],
+    },
+    { name: "isPublic", widget: "InputSwitch", datatype: "Boolean" },
+    {
+      name: "gender",
+      datatype: "String",
+      widget: "RadioButton",
+      options: [
+        { name: "Male", value: "M" },
+        { name: "Female", value: "F" },
+        { name: "Other", value: "O" },
+      ],
+    },
+  ],
+};
+
+module.exports = resource;
+```
+
+> Quicknote: The boilerplate containing `name`, `collectionName` & `url` can be generated with `addconfig resourcename` command.
+
+For the `resource` object, the following properties are supported:
+
+- `name` (required) - name of the resource
+- `url` (required) - url of the resource where the resource data will be avaiable in the admin panel UI
+- `collectionName` (required) - name of the collection in the MongoDB database
+- `crudFields` (required) - the fields that the resource needs defined in an array of objects (refer below for more info)
+
+For the `crudFields` property, the following properties are supported:
+
+- `name` (required) - name of the field
+- `datatype` (required, optional if `widget` is given) - the datatype of the field - is of type: `String`, `Number` or `Boolean`
+- `widget` (required, optional if `datatype` is given) - the widget name to be used for the field - is of type: `InputText`, `InputNumber`, `InputTextarea`, `InputSwitch`, `Dropdown` or `RadioButton`
+- `options` - the options for the field (for dropdown, radio button, etc.) - is of type: `[{ name: string, value: string }, ...]`
+- `unique` (optional, default = false) - whether the field is unique or not - is of type: `true` or `false`
+- `required` (optional, default = true) - whether the field is required or not - is of type: `true` or `false`
+- `tableDisplay` (optional) - whether the field should be displayed in the table or not: is of type: `true` or `false`
+- `inline` (optional, default = false) - consecutive fields marked as inline are grouped and displayed in a row in UI - is of type: `true` or `false`

@@ -24,7 +24,7 @@ export default async function add(screenNameArg: string) {
     (screen) => screen.name.toLowerCase() === screenName.toLowerCase()
   );
   if (!screen) {
-    webappSpinner.fail(`Screen ${chalk.cyan(screenName)} not found in config file`);
+    webappSpinner.fail(`Resource ${chalk.cyan(screenName)} not found in config file`);
     return;
   }
 
