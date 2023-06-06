@@ -2,7 +2,7 @@ import chalk from "chalk";
 import fs from "fs-extra";
 import ora from "ora";
 import { runInFolderSync } from "src/helpers/folders";
-import { getConfigFile } from "src/templates";
+import { getConfigFile } from "src/templateStrings/server/config";
 
 const spinner = ora({
   color: "blue",

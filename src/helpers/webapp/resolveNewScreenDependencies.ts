@@ -2,13 +2,14 @@ import fs from "fs-extra";
 import { adminKitPath } from "src/index";
 import {
   Dropdown,
+  FileUpload,
   InputNumber,
   InputSwitch,
   InputText,
   InputTextarea,
   RadioButtonField,
 } from "src/templateStrings/formFields";
-import { TextColumn } from "src/templateStrings/mainFileColumns";
+import { ImageColumn, TextColumn } from "src/templateStrings/mainFileColumns";
 import { KitConfigScreen } from "src/schemas";
 
 const templatePlaceholders = {
@@ -33,38 +34,46 @@ export default async function resolveNewScreenDependencies(
   const neverRequiredInputTypes = ["InputSwitch"];
 
   screen.crudFields.forEach((field, index) => {
+    const type = field.widget || field.datatype;
+
     let interfacePropertyType = "";
     let initialValue = "";
 
-    if (field.required && !neverRequiredInputTypes.includes(field.type)) requiredFields.push(field.name);
+    if (field.required && !neverRequiredInputTypes.includes(field.widget || field.datatype || ""))
+      requiredFields.push(field.name);
 
-    if (field.type === "InputText" || field.type === "String") {
+    if (type === "InputText" || type === "String") {
       if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
       jsxFields.push(InputText(field));
       interfacePropertyType = "string";
       initialValue = `""`;
-    } else if (field.type === "InputTextarea") {
+    } else if (type === "InputTextarea") {
       if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
       jsxFields.push(InputTextarea(field));
       interfacePropertyType = "string";
       initialValue = `""`;
-    } else if (field.type === "InputNumber" || field.type === "Number") {
+    } else if (type === "InputNumber" || type === "Number") {
       if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
       jsxFields.push(InputNumber(field));
       interfacePropertyType = "number";
       initialValue = `0`;
-    } else if (field.type === "Dropdown") {
+    } else if (type === "Dropdown") {
       if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
       jsxFields.push(Dropdown(field));
       dropdownOptions.push({ fieldName: field.name, options: field.options || [] });
       interfacePropertyType = "string";
       initialValue = `""`;
-    } else if (field.type === "RadioButton") {
+    } else if (type === "RadioButton") {
       if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
       jsxFields.push(RadioButtonField(field, field.options || []));
       interfacePropertyType = "string";
       initialValue = `""`;
-    } else if (field.type === "InputSwitch" || field.type === "Boolean") {
+    } else if (type === "ImageFileUpload") {
+      if (field.tableDisplay) tableColumns.push(ImageColumn(field.name));
+      jsxFields.push(FileUpload(field, screen.name.toLowerCase()));
+      interfacePropertyType = "string";
+      initialValue = `""`;
+    } else if (type === "InputSwitch" || type === "Boolean") {
       if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
       jsxFields.push(InputSwitch(field));
       interfacePropertyType = "boolean";

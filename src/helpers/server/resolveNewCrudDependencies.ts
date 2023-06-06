@@ -1,10 +1,7 @@
 import fs from "fs-extra";
 import { adminKitPath } from "src";
 import { KitConfigScreen } from "src/schemas";
-import {
-  checkExistingCreateEntity,
-  checkExistingUpdateEntity,
-} from "src/templateStrings/server/codeTemplates";
+import { checkExistingCreateEntity, checkExistingUpdateEntity } from "src/templateStrings/server/code";
 
 const templatePlaceholders = {
   interface: "/*INTERFACE_FIELDS*/",
@@ -26,24 +23,25 @@ export default async function resolveNewCrudDependencies(
   const schemafields: string[] = [];
   const zodFields: string[] = [];
 
-  screen.crudFields.forEach(({ name, type, required, unique }) => {
+  screen.crudFields.forEach(({ name, widget, datatype, required, unique }) => {
     entityFields.push(`${name}: entity.${name},`);
 
     if (
-      type === "InputText" ||
-      type === "InputTextarea" ||
-      type === "Dropdown" ||
-      type === "RadioButton" ||
-      type === "String"
+      widget === "InputText" ||
+      widget === "InputTextarea" ||
+      widget === "Dropdown" ||
+      widget === "RadioButton" ||
+      widget === "ImageFileUpload" ||
+      datatype === "String"
     ) {
       interfaceFields.push(`${name}${required ? "" : "?"}: string;`);
       schemafields.push(`${name}: { type: String, required: ${required}, unique: ${unique} },`);
       zodFields.push(`${name}: z.string()${required ? ".nonempty()" : ".optional().nullable()"},`);
-    } else if (type === "InputNumber" || type === "Number") {
+    } else if (widget === "InputNumber" || datatype === "Number") {
       interfaceFields.push(`${name}${required ? "" : "?"}: number;`);
       schemafields.push(`${name}: { type: Number, required: ${required}, unique: ${unique} },`);
       zodFields.push(`${name}: z.number()${required ? "" : ".optional().nullable()"},`);
-    } else if (type === "InputSwitch" || type === "Boolean") {
+    } else if (widget === "InputSwitch" || datatype === "Boolean") {
       interfaceFields.push(`${name}${required ? "" : "?"}: boolean;`);
       schemafields.push(`${name}: { type: Boolean, required: ${required}, unique: ${unique} },`);
       zodFields.push(`${name}: z.boolean()${required ? "" : ".optional().nullable()"},`);
