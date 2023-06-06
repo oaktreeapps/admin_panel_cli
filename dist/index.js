@@ -234,17 +234,18 @@ S3_BUCKET_NAME=
 STATIC_S3_REGION=
 STATIC_S3_BUCKET_NAME=
 `;var z=Ie({color:"blue",indent:2});function de(e,n){return c(this,null,function*(){let t=e.toLowerCase();z.start("Scaffolding project..."),yield He().clone("https://github.com/oaktreeapps/admin_panel",t),process.chdir(t),X.ensureDirSync(`${d}`),X.ensureDirSync(`${d}/webapp`),X.ensureDirSync(`${d}/server`),X.removeSync("./.git"),U("webapp",()=>{X.copyFileSync("./src/screens/XXXXX/XXXXX.tsx",`${d}/webapp/XXXXX.tsx`),X.copyFileSync("./src/screens/XXXXX/CreateXXXXX.tsx",`${d}/webapp/CreateXXXXX.tsx`),X.copyFileSync("./src/screens/XXXXX/EditXXXXX.tsx",`${d}/webapp/EditXXXXX.tsx`),X.copyFileSync("./src/types/xxxxx.d.ts",`${d}/webapp/xxxxx.d.ts`),X.writeFileSync("./.env",'VITE_BASE_URL = "http://localhost:3005/api"'),pe();}),U("server",()=>{X.copyFileSync("./src/Microservices/XXXXX/XXXXXRouter.ts",`${d}/server/XXXXXRouter.ts`),X.copyFileSync("./src/Microservices/XXXXX/XXXXXController.ts",`${d}/server/XXXXXController.ts`),X.copyFileSync("./src/Microservices/XXXXX/XXXXX.dto.ts",`${d}/server/XXXXX.dto.ts`),X.copyFileSync("./src/Database/Entities/XXXXXEntity.ts",`${d}/server/XXXXXEntity.ts`),X.writeFileSync("./.env",Te()),me();}),z.succeed(`Created "${t}" successfully!`),n.onlyServer&&X.removeSync("webapp"),n.onlyWebapp&&X.removeSync("server"),z.start("Installing dependencies..."),n.onlyServer||(yield w("webapp",()=>c(this,null,function*(){yield Z("yarn install");}))),n.onlyWebapp||(yield w("server",()=>c(this,null,function*(){yield Z("yarn install");}))),z.succeed("Installed dependencies successfully!");})}var Pe=e=>{let n=e.toLowerCase();return `/**
- * @typedef {import('../types').Screen} Screen
- */
-const screen = {
-  name: "${E(n)}",
-  url: "/${n}",
-  collectionName: "${n}",
-  crudFields: [
-    // ...
-  ],
-};
-
-module.exports = screen;`};var Le=Ie({color:"blue",indent:2});function ye(e){return c(this,null,function*(){let n=e.toLowerCase(),t=Pe(n);Le.start(`Creating config template for ${q.cyan(n)}`),U("root",()=>{let r=`kitconfig/resources/${n}.cjs`;X.ensureFileSync(r),X.writeFileSync(r,t);}),Le.succeed(`Created config template for ${q.cyan(n)}`);})}var d=Ge.homedir()+"/.adminkit",_=new Command;_.name("admin-starter").description("CLI to setup & manager admin UIs").version("0.1.0");_.command("scaffold").option("--only-webapp","Only scaffold the webapp").option("--only-server","Only scaffold the server").description("Scaffold a new admin project by using templates").argument("<projectName>","Name of the project").action(de);_.command("add").description("Add a new resource").argument("resourceName","Name of the resource").action(N);_.command("addconfig").description("").argument("resourceName","Name of the resource you want to add config file for.").action(ye);_.command("remove").description("Removes an existing resource").argument("resourceName","Name of the resource").action(le);_.command("sync").description('Add resources defined in "kitconfig" to the project').action(ce);_.parse();
+  * @type {import('../types').Resource}
+  */
+ const resource = {
+   name: "${E(n)}",
+   url: "/${n}",
+   collectionName: "${n}",
+   crudFields: [
+     // ...
+   ],
+ };
+ 
+ module.exports = resource;
+ `};var Le=Ie({color:"blue",indent:2});function ye(e){return c(this,null,function*(){let n=e.toLowerCase(),t=Pe(n);Le.start(`Creating config template for ${q.cyan(n)}`),U("root",()=>{let r=`kitconfig/resources/${n}.cjs`;X.ensureFileSync(r),X.writeFileSync(r,t);}),Le.succeed(`Created config template for ${q.cyan(n)}`);})}var d=Ge.homedir()+"/.adminkit",_=new Command;_.name("admin-starter").description("CLI to setup & manager admin UIs").version("0.1.0");_.command("scaffold").option("--only-webapp","Only scaffold the webapp").option("--only-server","Only scaffold the server").description("Scaffold a new admin project by using templates").argument("<projectName>","Name of the project").action(de);_.command("add").description("Add a new resource").argument("resourceName","Name of the resource").action(N);_.command("addconfig").description("").argument("resourceName","Name of the resource you want to add config file for.").action(ye);_.command("remove").description("Removes an existing resource").argument("resourceName","Name of the resource").action(le);_.command("sync").description('Add resources defined in "kitconfig" to the project').action(ce);_.parse();
 
 export { d as adminKitPath };
