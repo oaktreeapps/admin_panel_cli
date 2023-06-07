@@ -1,11 +1,15 @@
 import fs from "fs-extra";
 import {
+  Calendar,
+  ColorPicker,
   Dropdown,
+  Editor,
   FileUpload,
   InputNumber,
   InputSwitch,
   InputText,
   InputTextarea,
+  Password,
   RadioButtonField,
 } from "src/templateStrings/formFields";
 import { ImageColumn, TextColumn } from "src/templateStrings/mainFileColumns";
@@ -80,6 +84,26 @@ export default async function resolveNewScreenDependencies(
       jsxFields.push(InputSwitch(field));
       interfacePropertyType = "boolean";
       initialValue = `false`;
+    } else if (type === "Calendar") {
+      if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+      jsxFields.push(Calendar(field));
+      interfacePropertyType = "string";
+      initialValue = `""`;
+    } else if (type === "Password") {
+      if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+      jsxFields.push(Password(field));
+      interfacePropertyType = "string";
+      initialValue = `""`;
+    } else if (type === "ColorPicker") {
+      if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+      jsxFields.push(ColorPicker(field));
+      interfacePropertyType = "string";
+      initialValue = `""`;
+    } else if (type === "Editor") {
+      if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+      jsxFields.push(Editor(field));
+      interfacePropertyType = "string";
+      initialValue = `""`;
     }
 
     if (index === 0) {
