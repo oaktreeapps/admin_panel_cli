@@ -32,6 +32,10 @@ export default async function resolveNewCrudDependencies(
       widget === "Dropdown" ||
       widget === "RadioButton" ||
       widget === "ImageFileUpload" ||
+      widget === "Calendar" ||
+      widget === "Password" ||
+      widget === "ColorPicker" ||
+      widget === "Editor" ||
       datatype === "String"
     ) {
       interfaceFields.push(`${name}${required ? "" : "?"}: string;`);

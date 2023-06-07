@@ -107,6 +107,68 @@ export const InputSwitch = (field: KitConfigField) => `<div className="field ${
   <InputSwitch checked={entity.${field.name}} onChange={(e) => onInputChange(e.value, "${field.name}")} />
 </div>`;
 
+
+export const Calendar = (field: KitConfigField) => `<div className="field ${
+    field.inline ? "flex-grow-1" : "w-full"
+}">
+<p>${getLabel(field.name)}</p>
+<Calendar
+  id="${field.name}"
+  value={entity.${field.name}}
+  onChange={(e) => onInputChange(e.target.value, "${field.name}")}
+  required
+  style={{ width: "100%" }}
+  ${field.required ? validationUi(field.name)[0] : ""}
+/>
+  ${field.required ? validationUi(field.name)[1] : ""}
+</div>`;
+
+export const Password = (field: KitConfigField) => `<div className="field ${
+    field.inline ? "flex-grow-1" : "w-full"
+}">
+<p>${getLabel(field.name)}</p>
+<Password
+  id="${field.name}"
+  value={entity.${field.name}}
+  onChange={(e) => onInputChange(e.target.value, "${field.name}")}
+  required
+  style={{ width: "100%" }}
+  feedback={false}
+  ${field.required ? validationUi(field.name)[0] : ""}
+/>
+  ${field.required ? validationUi(field.name)[1] : ""}
+</div>`;
+
+export const ColorPicker = (field: KitConfigField) => `<div className="field ${
+    field.inline ? "flex-grow-1" : "w-full"
+}">
+<p>${getLabel(field.name)}</p>
+<ColorPicker
+  id="${field.name}"
+  value={entity.${field.name}}
+  onChange={(e) => onInputChange(e.target.value, "${field.name}")}
+  required
+  ${field.required ? validationUi(field.name)[0] : ""}
+/>
+  ${field.required ? validationUi(field.name)[1] : ""}
+</div>`;
+
+export const Editor = (field: KitConfigField) => `<div className="field ${
+    field.inline ? "flex-grow-1" : "w-full"
+}">
+<p>${getLabel(field.name)}</p>
+<Editor
+  id="${field.name}"
+  value={entity.${field.name}}
+  onChange={(e) => onTextChange(e.target.value, "${field.name}")}
+  required
+  style={{ height: '320px' }}
+  style={{ width: "100%" }}
+  ${field.required ? validationUi(field.name)[0] : ""}
+/>
+  ${field.required ? validationUi(field.name)[1] : ""}
+</div>`;
+
 const fetchUrl = "`${BASE_URL}/s3/upload`";
 export const FileUpload = (field: KitConfigField, screenName: string) => `<div className="field w-full">
   <p>${getLabel(field.name)}</p>
