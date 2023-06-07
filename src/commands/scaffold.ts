@@ -1,9 +1,8 @@
 import simpleGit from "simple-git";
 import fs from "fs-extra";
 import ora from "ora";
-import { adminKitPath } from "src/index";
 import performCleanupWebapp from "src/helpers/webapp/performCleanupWebapp";
-import { runInFolderAsync, runInFolderSync } from "src/helpers/folders";
+import { getTemplateFolderPath, runInFolderAsync, runInFolderSync } from "src/helpers/folders";
 import performCleanupServer from "src/helpers/server/performCleanupServer";
 import execAsync from "src/helpers/exec";
 import { getServerEnvFile } from "src/templateStrings/server/env";
@@ -27,29 +26,34 @@ export default async function scaffold(argProjectName: string, opts: Opts) {
 
   process.chdir(projectName);
 
-  fs.ensureDirSync(`${adminKitPath}`);
-  fs.ensureDirSync(`${adminKitPath}/webapp`);
-  fs.ensureDirSync(`${adminKitPath}/server`);
+  const templateFolderPath = getTemplateFolderPath();
+
+  fs.ensureDirSync(`${templateFolderPath}`);
+  fs.ensureDirSync(`${templateFolderPath}/webapp`);
+  fs.ensureDirSync(`${templateFolderPath}/server`);
 
   fs.removeSync("./.git");
 
   runInFolderSync("webapp", () => {
-    fs.copyFileSync(`./src/screens/XXXXX/XXXXX.tsx`, `${adminKitPath}/webapp/XXXXX.tsx`);
-    fs.copyFileSync(`./src/screens/XXXXX/CreateXXXXX.tsx`, `${adminKitPath}/webapp/CreateXXXXX.tsx`);
-    fs.copyFileSync(`./src/screens/XXXXX/EditXXXXX.tsx`, `${adminKitPath}/webapp/EditXXXXX.tsx`);
-    fs.copyFileSync(`./src/types/xxxxx.d.ts`, `${adminKitPath}/webapp/xxxxx.d.ts`);
+    fs.copyFileSync(`./src/screens/XXXXX/XXXXX.tsx`, `${templateFolderPath}/webapp/XXXXX.tsx`);
+    fs.copyFileSync(`./src/screens/XXXXX/CreateXXXXX.tsx`, `${templateFolderPath}/webapp/CreateXXXXX.tsx`);
+    fs.copyFileSync(`./src/screens/XXXXX/EditXXXXX.tsx`, `${templateFolderPath}/webapp/EditXXXXX.tsx`);
+    fs.copyFileSync(`./src/types/xxxxx.d.ts`, `${templateFolderPath}/webapp/xxxxx.d.ts`);
     fs.writeFileSync("./.env", `VITE_BASE_URL = "http://localhost:3005/api"`);
     performCleanupWebapp();
   });
 
   runInFolderSync("server", () => {
-    fs.copyFileSync(`./src/Microservices/XXXXX/XXXXXRouter.ts`, `${adminKitPath}/server/XXXXXRouter.ts`);
+    fs.copyFileSync(
+      `./src/Microservices/XXXXX/XXXXXRouter.ts`,
+      `${templateFolderPath}/server/XXXXXRouter.ts`
+    );
     fs.copyFileSync(
       `./src/Microservices/XXXXX/XXXXXController.ts`,
-      `${adminKitPath}/server/XXXXXController.ts`
+      `${templateFolderPath}/server/XXXXXController.ts`
     );
-    fs.copyFileSync(`./src/Microservices/XXXXX/XXXXX.dto.ts`, `${adminKitPath}/server/XXXXX.dto.ts`);
-    fs.copyFileSync(`./src/Database/Entities/XXXXXEntity.ts`, `${adminKitPath}/server/XXXXXEntity.ts`);
+    fs.copyFileSync(`./src/Microservices/XXXXX/XXXXX.dto.ts`, `${templateFolderPath}/server/XXXXX.dto.ts`);
+    fs.copyFileSync(`./src/Database/Entities/XXXXXEntity.ts`, `${templateFolderPath}/server/XXXXXEntity.ts`);
 
     fs.writeFileSync("./.env", getServerEnvFile());
     performCleanupServer();

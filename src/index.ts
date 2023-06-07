@@ -1,14 +1,11 @@
 #! /usr/bin/env node
 
 import { Command } from "commander";
-import os from "os";
 import sync from "./commands/sync";
 import add from "./commands/add";
 import remove from "./commands/remove";
 import scaffold from "./commands/scaffold";
 import addconfig from "./commands/addconfig";
-
-export const adminKitPath = os.homedir() + "/.adminkit";
 
 const program = new Command();
 

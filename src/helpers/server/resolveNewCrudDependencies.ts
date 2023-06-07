@@ -1,7 +1,7 @@
 import fs from "fs-extra";
-import { adminKitPath } from "src";
 import { KitConfigScreen } from "src/schemas";
 import { checkExistingCreateEntity, checkExistingUpdateEntity } from "src/templateStrings/server/code";
+import { getTemplateFolderPath } from "../folders";
 
 const templatePlaceholders = {
   interface: "/*INTERFACE_FIELDS*/",
@@ -17,6 +17,8 @@ export default async function resolveNewCrudDependencies(
   capitalizedScreenName: string,
   screen: KitConfigScreen
 ) {
+  const templateFolderPath = getTemplateFolderPath();
+
   let uniqueFields = screen.crudFields.filter((field) => field.unique).map((field) => field.name);
   const entityFields: string[] = [];
   const interfaceFields: string[] = [];
@@ -51,7 +53,7 @@ export default async function resolveNewCrudDependencies(
   const folderPath = `./src/Microservices/${capitalizedScreenName}`;
 
   const adminKitControllerFileContent = fs
-    .readFileSync(`${adminKitPath}/server/XXXXXController.ts`)
+    .readFileSync(`${templateFolderPath}/server/XXXXXController.ts`)
     .toString()
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
@@ -70,7 +72,7 @@ export default async function resolveNewCrudDependencies(
     );
 
   const adminKitRouterFileContent = fs
-    .readFileSync(`${adminKitPath}/server/XXXXXRouter.ts`)
+    .readFileSync(`${templateFolderPath}/server/XXXXXRouter.ts`)
     .toString()
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
@@ -89,7 +91,7 @@ export default async function resolveNewCrudDependencies(
     );
 
   const adminKitDtoFileContent = fs
-    .readFileSync(`${adminKitPath}/server/XXXXX.dto.ts`)
+    .readFileSync(`${templateFolderPath}/server/XXXXX.dto.ts`)
     .toString()
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
@@ -108,7 +110,7 @@ export default async function resolveNewCrudDependencies(
     );
 
   const adminKitEntityFileContent = fs
-    .readFileSync(`${adminKitPath}/server/XXXXXEntity.ts`)
+    .readFileSync(`${templateFolderPath}/server/XXXXXEntity.ts`)
     .toString()
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())

@@ -77,3 +77,8 @@ export const getActiveFolderState = () =>
 
     return actveFolderState;
   });
+
+export const getTemplateFolderPath = () =>
+  runInFolderSync("root", () => {
+    return process.cwd() + "/.template";
+  });
