@@ -6,7 +6,7 @@ This is a simple CLI application to quickly setup MERN stack admin project with 
 
 The CLI allows you to create resources at the frontend and corresponding routes & models at the backend with one command.
 
-Everything is controlled in the `kitconfig` folder.
+Everything is controlled in the `kitconfig` folder
 
 ## Installation
 
