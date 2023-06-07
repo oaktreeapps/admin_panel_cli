@@ -24,6 +24,10 @@ export const kitScreenSchema = z.object({
           z.literal("InputSwitch"),
           z.literal("InputNumber"),
           z.literal("ImageFileUpload"),
+          z.literal("Calendar"),
+          z.literal("Password"),
+          z.literal("ColorPicker"),
+          z.literal("Editor"),
         ])
         .default("InputText")
         .optional(),
