@@ -1,5 +1,4 @@
 import fs from "fs-extra";
-import { adminKitPath } from "src/index";
 import {
   Calendar,
   ColorPicker,
@@ -15,6 +14,7 @@ import {
 } from "src/templateStrings/formFields";
 import { ImageColumn, TextColumn } from "src/templateStrings/mainFileColumns";
 import { KitConfigScreen } from "src/schemas";
+import { getTemplateFolderPath } from "../folders";
 
 const templatePlaceholders = {
   tableColumns: "{/*TABLE_COLUMNS*/}",
@@ -28,6 +28,8 @@ export default async function resolveNewScreenDependencies(
   capitalizedScreenName: string,
   screen: KitConfigScreen
 ) {
+  const templateFolderPath = getTemplateFolderPath();
+
   let interfaceFields = "";
   let initialStateFields = "";
   const requiredFields: string[] = [];
@@ -119,10 +121,10 @@ export default async function resolveNewScreenDependencies(
   const editFilePath = `${folderPath}/Edit${capitalizedScreenName}.tsx`;
   const appMenuItemsFilePath = `./src/layout/items.json`;
 
-  const mainScreenTemplateFile = fs.readFileSync(`${adminKitPath}/webapp/XXXXX.tsx`).toString();
-  const createScreenTemplateFile = fs.readFileSync(`${adminKitPath}/webapp/CreateXXXXX.tsx`).toString();
-  const editScreenTemplateFile = fs.readFileSync(`${adminKitPath}/webapp/EditXXXXX.tsx`).toString();
-  const typesTemplateFile = fs.readFileSync(`${adminKitPath}/webapp/xxxxx.d.ts`).toString();
+  const mainScreenTemplateFile = fs.readFileSync(`${templateFolderPath}/webapp/XXXXX.tsx`).toString();
+  const createScreenTemplateFile = fs.readFileSync(`${templateFolderPath}/webapp/CreateXXXXX.tsx`).toString();
+  const editScreenTemplateFile = fs.readFileSync(`${templateFolderPath}/webapp/EditXXXXX.tsx`).toString();
+  const typesTemplateFile = fs.readFileSync(`${templateFolderPath}/webapp/xxxxx.d.ts`).toString();
 
   const parsedMainScreenTemplateFile = mainScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)

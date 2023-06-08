@@ -4,9 +4,9 @@ export const getConfigFile = (screenName: string) => {
   const screen = screenName.toLowerCase();
 
   return `/**
- * @typedef {import('../types').Screen} Screen
- */
-const screen = {
+* @type {import('../types').Resource}
+*/
+const resource = {
   name: "${capitalize(screen)}",
   url: "/${screen}",
   collectionName: "${screen}",
@@ -15,5 +15,6 @@ const screen = {
   ],
 };
 
-module.exports = screen;`;
+module.exports = resource;
+`;
 };

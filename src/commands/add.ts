@@ -1,79 +1,29 @@
-import fs from "fs-extra";
-import chalk from "chalk";
-import resolveNewScreenDependencies from "src/helpers/webapp/resolveNewScreenDependencies";
+import inquirer from "inquirer";
 import { configAsync } from "src/config";
-import { getActiveFolderState, runInFolderAsync } from "src/helpers/folders";
-import resolveNewCrudDependencies from "src/helpers/server/resolveNewCrudDependencies";
-import ora from "ora";
+import addResource from "src/helpers/addResource";
 
-const webappSpinner = ora({
-  color: "blue",
-  indent: 2,
-});
-const serverSpinner = ora({
-  color: "blue",
-  indent: 2,
-});
+export default async function add(options?: { all?: boolean }) {
+  const config = await configAsync();
 
-export default async function add(screenNameArg: string) {
-  const activeFolderState = getActiveFolderState();
+  const configResourceNames =
+    config?.resources.map((resource) => ({ name: resource.name.toLowerCase() })) || [];
 
-  const screenName = screenNameArg.toLowerCase();
-
-  const screen = (await configAsync())?.resources?.find(
-    (screen) => screen.name.toLowerCase() === screenName.toLowerCase()
-  );
-  if (!screen) {
-    webappSpinner.fail(`Resource ${chalk.cyan(screenName)} not found in config file`);
-    return;
-  }
-
-  const capitalizedScreenName = screenName.charAt(0).toUpperCase() + screenName.slice(1);
-
-  if (activeFolderState === "both" || activeFolderState === "webapp") {
-    await runInFolderAsync("webapp", async () => {
-      const folderPath = `./src/screens/${capitalizedScreenName}`;
-      if (fs.existsSync(folderPath)) {
-        return;
-      }
-
-      webappSpinner.start(`Creating screen: ${chalk.cyan(capitalizedScreenName)}`);
-
-      const filePath = `${folderPath}/${capitalizedScreenName}.tsx`;
-      const createFilePath = `${folderPath}/Create${capitalizedScreenName}.tsx`;
-      const editFilePath = `${folderPath}/Edit${capitalizedScreenName}.tsx`;
-      const typesFilePath = `./src/types/${capitalizedScreenName.toLowerCase()}.d.ts`;
-      fs.createFileSync(filePath);
-      fs.createFileSync(createFilePath);
-      fs.createFileSync(editFilePath);
-      fs.createFileSync(typesFilePath);
-
-      await resolveNewScreenDependencies(capitalizedScreenName, screen);
-
-      webappSpinner.succeed(`Created screen: ${chalk.cyan(capitalizedScreenName)}`);
+  if (options?.all) {
+    configResourceNames.forEach(async ({ name }) => {
+      await addResource(name);
     });
-  }
+  } else {
+    const answers = await inquirer.prompt([
+      {
+        name: "resourceNames",
+        message: "Please select resources that you want to add to the project:",
+        type: "checkbox",
+        choices: configResourceNames,
+      },
+    ]);
 
-  if (activeFolderState === "both" || activeFolderState === "server") {
-    await runInFolderAsync("server", async () => {
-      const folderPath = `./src/Microservices/${capitalizedScreenName}`;
-      if (fs.existsSync(folderPath)) {
-        return;
-      }
-
-      serverSpinner.start(`Creating CRUD for: ${chalk.cyan(capitalizedScreenName)}`);
-
-      const controllerFilePath = `${folderPath}/${capitalizedScreenName}Controller.ts`;
-      const routerFilePath = `${folderPath}/${capitalizedScreenName}Router.ts`;
-      const dtoFilePath = `${folderPath}/${capitalizedScreenName}.dto.ts`;
-
-      fs.createFileSync(controllerFilePath);
-      fs.createFileSync(routerFilePath);
-      fs.createFileSync(dtoFilePath);
-
-      await resolveNewCrudDependencies(capitalizedScreenName, screen);
-
-      serverSpinner.succeed(`Created CRUD for: ${chalk.cyan(capitalizedScreenName)}`);
+    answers?.resourceNames?.forEach(async (screenNameArg: string) => {
+      await addResource(screenNameArg);
     });
   }
 }
