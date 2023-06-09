@@ -168,10 +168,15 @@ export const Editor = (field: KitConfigField) => `<div className="field ${
   ${field.required ? validationUi(field.name)[1] : ""}
 </div>`;
 
-export const FileUpload = (field: KitConfigField, screenName: string) => `<ImageUpload
+export const FileUpload = (
+  field: KitConfigField,
+  screenName: string
+) => `<div className="field w-full"><ImageUpload
   entity={entity}
   fieldName="${field.name}"
   onUpload={(url) => onInputChange(url, "${field.name}")}
   submitted={submitted}
   folder="${screenName}"
-/>`;
+/>
+${field.required ? validationUi(field.name)[1] : ""}
+</div>`;
