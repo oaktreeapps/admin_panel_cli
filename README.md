@@ -62,42 +62,40 @@ npx <npm-package> addconfig products
 
 It can be edited to add fields & properties describing backend & frontend requirements.
 
-### `add resource`
+### `add`
 
 Creates UI & corresponding backend (models, routes & controllers).
 
 #### Usage
 
-For example, let's say we need to create backend & UI for our "posts" model.
+Displays a menu of all the resources present in `kitconfig/resources` folder.
 
-we'll first go into the `kitconfig/resources` folder, create a file named `posts.cjs` and define properties & fields this resource needs. (refer types autocomplete & sample files for defining new fields & other properties),
-
-And then, while we're in the admin directory, we can run the following command:
+Adds the selected resources to webapp & server.
 
 ```bash
-npx <npm-package> add posts
+npx <npm-package> add
 ```
 
-### `remove resource`
+```bash
+npx <npm-package> add --all
+```
 
-Removes the previously created resource in UI & corresponding backend (models, routes & controllers).
+### `remove`
 
-> Only removes the resource from codebase, won't remove the config file.
+Displays a menu of all the resources present in `kitconfig/resources` folder.
+
+Removes the selected resources from webapp & server.
+
+> Only removes the resource(s) from codebase, won't remove the config file.
 
 #### Usage
 
 ```bash
-npx <npm-package> remove posts
+npx <npm-package> remove
 ```
 
-### `sync`
-
-_Adds_ all the resources defined in `kitconfig/resources` folder, without overriding any of the existing resources.
-
-#### Usage
-
 ```bash
-npx <npm-package> sync
+npx <npm-package> remove --all
 ```
 
 ## .env files
