@@ -20,20 +20,20 @@ program
 
 program
   .command("addconfig")
-  .description("")
-  .argument("resourceName", "Name of the resource you want to add config file for.")
+  .description("Add config file for a resource by passing in the resource name")
+  .argument("<resourceName>", "Name of the resource you want to add config file for")
   .action(addconfig);
 
 program
   .command("add")
   .description("Adds new resources")
-  .option("--all", "All resource will be added")
+  .option("--all", "All resources present in the kitconfig will be added")
   .action(add);
 
 program
   .command("remove")
   .description("Removes existing resources")
-  .option("--all", "All resources will be removed")
+  .option("--all", "All resources present in the kitconfig will be removed")
   .action(remove);
 
 program.parse();
