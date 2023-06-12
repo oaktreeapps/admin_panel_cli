@@ -13,13 +13,13 @@ Everything is controlled in the `kitconfig` folder.
 To install the CLI application, run the following command:
 
 ```bash
-npm i -g <npm-package>
+npm i -g oakadmin
 ```
 
 Or the package can be run directly via npx:
 
 ```bash
-npx <npm-package> [commands...]
+npx oakadmin [commands...]
 ```
 
 ## Commands
@@ -37,15 +37,15 @@ Creates a new admin project containing the following folders:
 #### Usage
 
 ```bash
-npx <npm-package> scaffold admin-panel
+npx oakadmin scaffold admin-panel
 ```
 
 ```bash
-npx <npm-package> scaffold --only-webapp admin-panel
+npx oakadmin scaffold --only-webapp admin-panel
 ```
 
 ```bash
-npx <npm-package> scaffold --only-server admin-panel
+npx oakadmin scaffold --only-server admin-panel
 ```
 
 ### `addconfig resourcename`
@@ -57,7 +57,7 @@ This file contains the properties & fields that the resource needs.
 #### Usage
 
 ```bash
-npx <npm-package> addconfig products
+npx oakadmin addconfig products
 ```
 
 It can be edited to add fields & properties describing backend & frontend requirements.
@@ -73,11 +73,11 @@ Displays a menu of all the resources present in `kitconfig/resources` folder.
 Adds the selected resources to webapp & server.
 
 ```bash
-npx <npm-package> add
+npx oakadmin add
 ```
 
 ```bash
-npx <npm-package> add --all
+npx oakadmin add --all
 ```
 
 ### `remove`
@@ -91,11 +91,11 @@ Removes the selected resources from webapp & server.
 #### Usage
 
 ```bash
-npx <npm-package> remove
+npx oakadmin remove
 ```
 
 ```bash
-npx <npm-package> remove --all
+npx oakadmin remove --all
 ```
 
 ## .env files
