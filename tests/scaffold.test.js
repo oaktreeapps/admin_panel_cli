@@ -5,7 +5,7 @@ afterAll(async () => {
     await execAsync("rm -rf admin");
     await execAsync("rm -rf admin_server");
     await execAsync("rm -rf admin_webapp");
-});
+}, 10_000);
 
 test.concurrent('Creating a new template (default)', async () => {
     const projectName = "admin"
