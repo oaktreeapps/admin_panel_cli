@@ -1,7 +1,13 @@
 {
   "name": "oakadmin",
   "description": "A CLI tool to generate MERN admin panel for your project.",
-  "version": "0.5.3",
+  "homepage": "https://github.com/oaktreeapps/admin_panel_cli",
+  "author": {
+    "email": "hello@oaktreeapps.com",
+    "name": "OakTree Apps",
+    "url": "https://oaktreeapps.com"
+  },
+  "version": "0.5.4",
   "main": "index.js",
   "license": "MIT",
   "type": "module",

@@ -36,7 +36,7 @@ Creates a new admin project containing the following folders:
 
 1. **kitconfig** - folder containing the `.cjs` files for configuring the project (also comes with sample files `resources/products.cjs` & `resources/students.cjs`).
 
-2. **webapp** - React.js project containing the UI.
+2. **webapp** - React.js project containing the UI components (styled UI components & theme provided by [PrimeReact](https://primereact.org/)).
 
 3. **server** - Express.js (TypeScript) project hooked up to MongoDB database.
 
