@@ -16,7 +16,13 @@ To install the CLI application, run the following command:
 npm i -g oakadmin
 ```
 
-Or the package can be run directly via npx:
+And then to run the CLI application, run the following command:
+
+```bash
+oakadmin [commands...]
+```
+
+Or you can run the CLI application directly via `npx`:
 
 ```bash
 npx oakadmin [commands...]
@@ -102,7 +108,7 @@ npx oakadmin remove --all
 
 ### Frontend
 
-The `.env` file in the frontend folder expects only 1 variable i.e base url of the corresponding backend server.
+The `.env` file in the frontend folder expects only 1 variable i.e. base url of the corresponding backend server.
 
 ```python
 VITE_BASE_URL = "http://localhost:3005/api"
@@ -158,7 +164,7 @@ The `kitconfig/types.d.ts` file contains the types for the resource JS object de
 
 ### `resource.cjs`
 
-Here's a sample file that covers all of the properties & fields that can be defined in the resource config file.
+Here's a sample file that covers all the properties & fields that can be defined in the resource config file.
 
 ```javascript
 /**
@@ -203,12 +209,12 @@ const resource = {
 module.exports = resource;
 ```
 
-> Quicknote: The boilerplate containing `name`, `collectionName` & `url` can be generated with `addconfig resourcename` command
+> Quick note: The boilerplate containing `name`, `collectionName` & `url` can be generated with `addconfig resourcename` command
 
 For the `resource` object, the following properties are supported:
 
 - `name` (required) - name of the resource
-- `url` (required) - url of the resource where the resource data will be avaiable in the admin panel UI
+- `url` (required) - url of the resource where the resource data will be available in the admin panel UI
 - `collectionName` (required) - name of the collection in the MongoDB database
 - `crudFields` (required) - the fields that the resource needs defined in an array of objects (refer below for more info)
 
