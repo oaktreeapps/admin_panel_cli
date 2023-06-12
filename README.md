@@ -13,13 +13,19 @@ Everything is controlled in the `kitconfig` folder.
 To install the CLI application, run the following command:
 
 ```bash
-npm i -g <npm-package>
+npm i -g oakadmin
 ```
 
-Or the package can be run directly via npx:
+And then to run the CLI application, run the following command:
 
 ```bash
-npx <npm-package> [commands...]
+oakadmin [commands...]
+```
+
+Or you can run the CLI application directly via `npx`:
+
+```bash
+npx oakadmin [commands...]
 ```
 
 ## Commands
@@ -37,15 +43,15 @@ Creates a new admin project containing the following folders:
 #### Usage
 
 ```bash
-npx <npm-package> scaffold admin-panel
+npx oakadmin scaffold admin-panel
 ```
 
 ```bash
-npx <npm-package> scaffold --only-webapp admin-panel
+npx oakadmin scaffold --only-webapp admin-panel
 ```
 
 ```bash
-npx <npm-package> scaffold --only-server admin-panel
+npx oakadmin scaffold --only-server admin-panel
 ```
 
 ### `addconfig resourcename`
@@ -57,7 +63,7 @@ This file contains the properties & fields that the resource needs.
 #### Usage
 
 ```bash
-npx <npm-package> addconfig products
+npx oakadmin addconfig products
 ```
 
 It can be edited to add fields & properties describing backend & frontend requirements.
@@ -73,11 +79,11 @@ Displays a menu of all the resources present in `kitconfig/resources` folder.
 Adds the selected resources to webapp & server.
 
 ```bash
-npx <npm-package> add
+npx oakadmin add
 ```
 
 ```bash
-npx <npm-package> add --all
+npx oakadmin add --all
 ```
 
 ### `remove`
@@ -91,18 +97,18 @@ Removes the selected resources from webapp & server.
 #### Usage
 
 ```bash
-npx <npm-package> remove
+npx oakadmin remove
 ```
 
 ```bash
-npx <npm-package> remove --all
+npx oakadmin remove --all
 ```
 
 ## .env files
 
 ### Frontend
 
-The `.env` file in the frontend folder expects only 1 variable i.e base url of the corresponding backend server.
+The `.env` file in the frontend folder expects only 1 variable i.e. base url of the corresponding backend server.
 
 ```python
 VITE_BASE_URL = "http://localhost:3005/api"
@@ -158,7 +164,7 @@ The `kitconfig/types.d.ts` file contains the types for the resource JS object de
 
 ### `resource.cjs`
 
-Here's a sample file that covers all of the properties & fields that can be defined in the resource config file.
+Here's a sample file that covers all the properties & fields that can be defined in the resource config file.
 
 ```javascript
 /**
@@ -203,12 +209,12 @@ const resource = {
 module.exports = resource;
 ```
 
-> Quicknote: The boilerplate containing `name`, `collectionName` & `url` can be generated with `addconfig resourcename` command
+> Quick note: The boilerplate containing `name`, `collectionName` & `url` can be generated with `addconfig resourcename` command
 
 For the `resource` object, the following properties are supported:
 
 - `name` (required) - name of the resource
-- `url` (required) - url of the resource where the resource data will be avaiable in the admin panel UI
+- `url` (required) - url of the resource where the resource data will be available in the admin panel UI
 - `collectionName` (required) - name of the collection in the MongoDB database
 - `crudFields` (required) - the fields that the resource needs defined in an array of objects (refer below for more info)
 

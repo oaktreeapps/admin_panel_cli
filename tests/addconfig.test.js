@@ -5,6 +5,8 @@ const projectName = "admin_addconfig_test"
 
 beforeAll(async () => {
     await execAsync(`npx ./ scaffold ${projectName}`)
+    process.chdir(`${projectName}`);
+    await execAsync(`npx ../ addconfig posts`);
 }, 50_000)
 
 afterAll(async () => {
@@ -12,18 +14,12 @@ afterAll(async () => {
 });
 
 test.concurrent('Creating new config file', async () => {
-    process.chdir(`${projectName}`);
-    await execAsync(`npx ../ addconfig posts`);
-
     const checks = [
         fs.existsSync(`webapp`),
         fs.existsSync(`server`),
         fs.existsSync(`kitconfig`),
         fs.existsSync(`kitconfig/resources/posts.cjs`),
     ]
-
-    process.chdir("..");
-    console.log(checks)
 
     expect(checks.filter(dirCheck => !dirCheck).length).toBe(0);
 }, 50_000);
