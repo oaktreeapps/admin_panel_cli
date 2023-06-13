@@ -1,6 +1,9 @@
 import fs from "fs-extra";
 import { KitConfigScreen } from "src/schemas";
-import { checkExistingCreateEntity, checkExistingUpdateEntity } from "src/templateStrings/server/code";
+import {
+  checkExistingCreateEntity,
+  checkExistingUpdateEntity,
+} from "src/templateStrings/server/code";
 import { getTemplateFolderPath } from "../folders";
 
 const templatePlaceholders = {
@@ -15,11 +18,11 @@ const templatePlaceholders = {
 
 export default async function resolveNewCrudDependencies(
   capitalizedScreenName: string,
-  screen: KitConfigScreen
+  screen: KitConfigScreen,
 ) {
   const templateFolderPath = getTemplateFolderPath();
 
-  let uniqueFields = screen.crudFields.filter((field) => field.unique).map((field) => field.name);
+  const uniqueFields = screen.crudFields.filter((field) => field.unique).map((field) => field.name);
   const entityFields: string[] = [];
   const interfaceFields: string[] = [];
   const schemafields: string[] = [];
@@ -68,11 +71,11 @@ export default async function resolveNewCrudDependencies(
     .replace(templatePlaceholders.uniqueFields, uniqueFields.join(", "))
     .replace(
       templatePlaceholders.checkExistingCreateEntity,
-      checkExistingCreateEntity(capitalizedScreenName, uniqueFields)
+      checkExistingCreateEntity(capitalizedScreenName, uniqueFields),
     )
     .replace(
       templatePlaceholders.checkExistingUpdateEntity,
-      checkExistingUpdateEntity(capitalizedScreenName, uniqueFields)
+      checkExistingUpdateEntity(capitalizedScreenName, uniqueFields),
     );
 
   const adminKitRouterFileContent = fs
@@ -87,11 +90,11 @@ export default async function resolveNewCrudDependencies(
     .replace(templatePlaceholders.uniqueFields, uniqueFields.join(", "))
     .replace(
       templatePlaceholders.checkExistingCreateEntity,
-      checkExistingCreateEntity(capitalizedScreenName, uniqueFields)
+      checkExistingCreateEntity(capitalizedScreenName, uniqueFields),
     )
     .replace(
       templatePlaceholders.checkExistingUpdateEntity,
-      checkExistingUpdateEntity(capitalizedScreenName, uniqueFields)
+      checkExistingUpdateEntity(capitalizedScreenName, uniqueFields),
     );
 
   const adminKitDtoFileContent = fs
@@ -106,11 +109,11 @@ export default async function resolveNewCrudDependencies(
     .replace(templatePlaceholders.uniqueFields, uniqueFields.join(", "))
     .replace(
       templatePlaceholders.checkExistingCreateEntity,
-      checkExistingCreateEntity(capitalizedScreenName, uniqueFields)
+      checkExistingCreateEntity(capitalizedScreenName, uniqueFields),
     )
     .replace(
       templatePlaceholders.checkExistingUpdateEntity,
-      checkExistingUpdateEntity(capitalizedScreenName, uniqueFields)
+      checkExistingUpdateEntity(capitalizedScreenName, uniqueFields),
     );
 
   const adminKitEntityFileContent = fs
@@ -125,11 +128,11 @@ export default async function resolveNewCrudDependencies(
     .replace(templatePlaceholders.uniqueFields, uniqueFields.join(", "))
     .replace(
       templatePlaceholders.checkExistingCreateEntity,
-      checkExistingCreateEntity(capitalizedScreenName, uniqueFields)
+      checkExistingCreateEntity(capitalizedScreenName, uniqueFields),
     )
     .replace(
       templatePlaceholders.checkExistingUpdateEntity,
-      checkExistingUpdateEntity(capitalizedScreenName, uniqueFields)
+      checkExistingUpdateEntity(capitalizedScreenName, uniqueFields),
     );
 
   const controllerFilePath = `${folderPath}/${capitalizedScreenName}Controller.ts`;
