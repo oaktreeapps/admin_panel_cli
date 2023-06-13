@@ -22,12 +22,6 @@
     "lint": "eslint src/",
     "prepare": "husky install"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint && yarn prettify",
-      "pre-push": "yarn test"
-    }
-  },
   "dependencies": {
     "chalk": "^5.2.0",
     "commander": "^10.0.1",
