@@ -209,7 +209,7 @@ const resource = {
 module.exports = resource;
 ```
 
-> Quick note: The boilerplate containing `name`, `collectionName` & `url` can be generated with `addconfig resourcename` command.
+> Quick note: The boilerplate containing `name`, `collectionName` & `url` can be generated with `addconfig resourcename` command
 
 For the `resource` object, the following properties are supported:
 
