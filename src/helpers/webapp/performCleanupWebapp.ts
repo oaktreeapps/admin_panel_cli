@@ -21,7 +21,7 @@ export default function performCleanupWebapp() {
   const mainTsxLines = mainTsx.split("\n");
 
   const filteredLines = mainTsxLines.filter(
-    (line) => unwantedLines.filter((unwantedLine) => line.includes(unwantedLine)).length === 0
+    (line) => unwantedLines.filter((unwantedLine) => line.includes(unwantedLine)).length === 0,
   );
 
   fs.writeFileSync("./src/main.tsx", filteredLines.join("\n"));

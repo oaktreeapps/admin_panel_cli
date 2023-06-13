@@ -28,7 +28,7 @@ export default async function removeResource(screenName: string) {
       const menuItemsFile = fs.readFileSync(menuItemsFilePath);
       const menuItems = JSON.parse(menuItemsFile.toString());
       menuItems[0].items = menuItems[0].items.filter(
-        (item: any) => item.label.toLowerCase() !== capitalizedScreenName.toLowerCase()
+        (item: any) => item.label.toLowerCase() !== capitalizedScreenName.toLowerCase(),
       );
       fs.writeFileSync(menuItemsFilePath, JSON.stringify(menuItems, null, 2));
 
@@ -46,7 +46,7 @@ export default async function removeResource(screenName: string) {
 
       const mainTsx = fs.readFileSync("./src/main.tsx").toString().split("\n");
       const filteredLines = mainTsx.filter(
-        (line) => unwantedLines.filter((unwantedLine) => line.includes(unwantedLine)).length === 0
+        (line) => unwantedLines.filter((unwantedLine) => line.includes(unwantedLine)).length === 0,
       );
       fs.writeFileSync("./src/main.tsx", filteredLines.join("\n"));
 

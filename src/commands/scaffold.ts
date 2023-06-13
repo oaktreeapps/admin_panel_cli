@@ -36,8 +36,14 @@ export default async function scaffold(argProjectName: string, opts: Opts) {
 
   runInFolderSync("webapp", () => {
     fs.copyFileSync(`./src/screens/XXXXX/XXXXX.tsx`, `${templateFolderPath}/webapp/XXXXX.tsx`);
-    fs.copyFileSync(`./src/screens/XXXXX/CreateXXXXX.tsx`, `${templateFolderPath}/webapp/CreateXXXXX.tsx`);
-    fs.copyFileSync(`./src/screens/XXXXX/EditXXXXX.tsx`, `${templateFolderPath}/webapp/EditXXXXX.tsx`);
+    fs.copyFileSync(
+      `./src/screens/XXXXX/CreateXXXXX.tsx`,
+      `${templateFolderPath}/webapp/CreateXXXXX.tsx`,
+    );
+    fs.copyFileSync(
+      `./src/screens/XXXXX/EditXXXXX.tsx`,
+      `${templateFolderPath}/webapp/EditXXXXX.tsx`,
+    );
     fs.copyFileSync(`./src/types/xxxxx.d.ts`, `${templateFolderPath}/webapp/xxxxx.d.ts`);
     fs.writeFileSync("./.env", `VITE_BASE_URL = "http://localhost:3005/api"`);
     performCleanupWebapp();
@@ -46,14 +52,20 @@ export default async function scaffold(argProjectName: string, opts: Opts) {
   runInFolderSync("server", () => {
     fs.copyFileSync(
       `./src/Microservices/XXXXX/XXXXXRouter.ts`,
-      `${templateFolderPath}/server/XXXXXRouter.ts`
+      `${templateFolderPath}/server/XXXXXRouter.ts`,
     );
     fs.copyFileSync(
       `./src/Microservices/XXXXX/XXXXXController.ts`,
-      `${templateFolderPath}/server/XXXXXController.ts`
+      `${templateFolderPath}/server/XXXXXController.ts`,
     );
-    fs.copyFileSync(`./src/Microservices/XXXXX/XXXXX.dto.ts`, `${templateFolderPath}/server/XXXXX.dto.ts`);
-    fs.copyFileSync(`./src/Database/Entities/XXXXXEntity.ts`, `${templateFolderPath}/server/XXXXXEntity.ts`);
+    fs.copyFileSync(
+      `./src/Microservices/XXXXX/XXXXX.dto.ts`,
+      `${templateFolderPath}/server/XXXXX.dto.ts`,
+    );
+    fs.copyFileSync(
+      `./src/Database/Entities/XXXXXEntity.ts`,
+      `${templateFolderPath}/server/XXXXXEntity.ts`,
+    );
 
     fs.writeFileSync("./.env", getServerEnvFile());
     performCleanupServer();

@@ -1,13 +1,16 @@
 import { capitalize } from "src/helpers/strings";
 
-export const checkExistingUpdateEntity = (capitalizedScreenName: string, uniqueFieldNames: string[]) => {
+export const checkExistingUpdateEntity = (
+  capitalizedScreenName: string,
+  uniqueFieldNames: string[],
+) => {
   let checkString = ``;
 
   uniqueFieldNames
     .filter((value) => !!value)
     .forEach((uniqueFieldName) => {
       checkString += `const existing${capitalize(
-        uniqueFieldName
+        uniqueFieldName,
       )}UpdateEntity: I${capitalizedScreenName}Entity | null =
 await ${capitalizedScreenName}Model().findOne({
   ${uniqueFieldName},
@@ -26,7 +29,10 @@ if (existing${capitalize(uniqueFieldName)}UpdateEntity) {
   return checkString;
 };
 
-export const checkExistingCreateEntity = (capitalizedScreenName: string, uniqueFieldNames: string[]) => {
+export const checkExistingCreateEntity = (
+  capitalizedScreenName: string,
+  uniqueFieldNames: string[],
+) => {
   let checkString = `const { ${uniqueFieldNames.join(", ")} } = input;\n`;
 
   uniqueFieldNames

@@ -36,10 +36,10 @@ export const kitScreenSchema = z.object({
           z.object({
             name: z.string(),
             value: z.string(),
-          })
+          }),
         )
         .optional(),
-    })
+    }),
   ),
 });
 
