@@ -6,7 +6,7 @@ export const isRootFolder = (absolutePath = process.cwd()) => {
 
 export const runInFolderAsync = async <T>(
   folderName: "webapp" | "server" | "root",
-  callback: () => Promise<T>
+  callback: () => Promise<T>,
 ): Promise<T> => {
   const currentDirName = process.cwd().split("/").at(-1) as string;
 
@@ -33,7 +33,10 @@ export const runInFolderAsync = async <T>(
   return returnValue;
 };
 
-export const runInFolderSync = <T>(folderName: "webapp" | "server" | "root", callback: () => T): T => {
+export const runInFolderSync = <T>(
+  folderName: "webapp" | "server" | "root",
+  callback: () => T,
+): T => {
   const currentDirName = process.cwd().split("/").at(-1) as string;
 
   let returnValue: T;

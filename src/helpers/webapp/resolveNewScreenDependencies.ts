@@ -26,7 +26,7 @@ const templatePlaceholders = {
 
 export default async function resolveNewScreenDependencies(
   capitalizedScreenName: string,
-  screen: KitConfigScreen
+  screen: KitConfigScreen,
 ) {
   const templateFolderPath = getTemplateFolderPath();
 
@@ -66,7 +66,10 @@ export default async function resolveNewScreenDependencies(
     } else if (type === "Dropdown") {
       if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
       jsxFields.push(Dropdown(field));
-      dropdownOptions.push({ fieldName: field.name, options: field.options || [] });
+      dropdownOptions.push({
+        fieldName: field.name,
+        options: field.options || [],
+      });
       interfacePropertyType = "string";
       initialValue = `""`;
     } else if (type === "RadioButton") {
@@ -121,9 +124,15 @@ export default async function resolveNewScreenDependencies(
   const editFilePath = `${folderPath}/Edit${capitalizedScreenName}.tsx`;
   const appMenuItemsFilePath = `./src/layout/items.json`;
 
-  const mainScreenTemplateFile = fs.readFileSync(`${templateFolderPath}/webapp/XXXXX.tsx`).toString();
-  const createScreenTemplateFile = fs.readFileSync(`${templateFolderPath}/webapp/CreateXXXXX.tsx`).toString();
-  const editScreenTemplateFile = fs.readFileSync(`${templateFolderPath}/webapp/EditXXXXX.tsx`).toString();
+  const mainScreenTemplateFile = fs
+    .readFileSync(`${templateFolderPath}/webapp/XXXXX.tsx`)
+    .toString();
+  const createScreenTemplateFile = fs
+    .readFileSync(`${templateFolderPath}/webapp/CreateXXXXX.tsx`)
+    .toString();
+  const editScreenTemplateFile = fs
+    .readFileSync(`${templateFolderPath}/webapp/EditXXXXX.tsx`)
+    .toString();
   const typesTemplateFile = fs.readFileSync(`${templateFolderPath}/webapp/xxxxx.d.ts`).toString();
 
   const parsedMainScreenTemplateFile = mainScreenTemplateFile
@@ -131,7 +140,7 @@ export default async function resolveNewScreenDependencies(
     .replace(/xxxxx/g, capitalizedScreenName.toLowerCase())
     .replace(templatePlaceholders.initialState, initialStateFields);
 
-  let mainScreenTemplateFileLines: string[] = [];
+  const mainScreenTemplateFileLines: string[] = [];
   parsedMainScreenTemplateFile.split("\n").forEach((line) => {
     if (line.includes(templatePlaceholders.tableColumns)) {
       mainScreenTemplateFileLines.push(...tableColumns);
@@ -149,7 +158,7 @@ export default async function resolveNewScreenDependencies(
     .replace(templatePlaceholders.input, jsxFields.join("\n"))
     .replace(
       templatePlaceholders.validate,
-      `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) `
+      `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) `,
     );
 
   const createScreenTemplateFileLines: string[] = [];
@@ -157,7 +166,7 @@ export default async function resolveNewScreenDependencies(
     if (line.includes("const saveEntity = async () => {")) {
       dropdownOptions.forEach(({ fieldName, options }) => {
         createScreenTemplateFileLines.push(
-          `const ${fieldName}Options = ${JSON.stringify(options, null, 2)};\n`
+          `const ${fieldName}Options = ${JSON.stringify(options, null, 2)};\n`,
         );
       });
 
@@ -178,7 +187,7 @@ export default async function resolveNewScreenDependencies(
     .replace(templatePlaceholders.input, jsxFields.join("\n"))
     .replace(
       templatePlaceholders.validate,
-      `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) `
+      `if (${requiredFields.map((name) => `entity.${name}`).join(" && ")}) `,
     );
 
   const editScreenTemplateFileLines: string[] = [];
@@ -186,7 +195,7 @@ export default async function resolveNewScreenDependencies(
     if (line.includes("const saveEntity = async () => {")) {
       dropdownOptions.forEach(({ fieldName, options }) => {
         editScreenTemplateFileLines.push(
-          `const ${fieldName}Options = ${JSON.stringify(options, null, 2)};\n`
+          `const ${fieldName}Options = ${JSON.stringify(options, null, 2)};\n`,
         );
       });
 
@@ -203,14 +212,20 @@ export default async function resolveNewScreenDependencies(
 
   const appMenuItemsFile = fs.readFileSync(appMenuItemsFilePath);
   const appMenuItems = JSON.parse(appMenuItemsFile.toString());
-  appMenuItems[0].items.push({ label: capitalizedScreenName, to: `/${capitalizedScreenName.toLowerCase()}` });
+  appMenuItems[0].items.push({
+    label: capitalizedScreenName,
+    to: `/${capitalizedScreenName.toLowerCase()}`,
+  });
   fs.writeFileSync(appMenuItemsFilePath, JSON.stringify(appMenuItems, null, 2));
 
   const parsedTypesTemplateFile = typesTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)
     .replace(templatePlaceholders.interface, interfaceFields);
 
-  fs.writeFileSync(`./src/types/${capitalizedScreenName.toLowerCase()}.d.ts`, parsedTypesTemplateFile);
+  fs.writeFileSync(
+    `./src/types/${capitalizedScreenName.toLowerCase()}.d.ts`,
+    parsedTypesTemplateFile,
+  );
 
   const mainTsx = fs.readFileSync("./src/main.tsx").toString();
   const mainTsxLines = mainTsx.split("\n");

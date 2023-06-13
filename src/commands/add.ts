@@ -6,7 +6,9 @@ export default async function add(options?: { all?: boolean }) {
   const config = await configAsync();
 
   const configResourceNames =
-    config?.resources.map((resource) => ({ name: resource.name.toLowerCase() })) || [];
+    config?.resources.map((resource) => ({
+      name: resource.name.toLowerCase(),
+    })) || [];
 
   if (options?.all) {
     configResourceNames.forEach(async ({ name }) => {

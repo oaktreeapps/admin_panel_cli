@@ -27,7 +27,7 @@ export const configAsync: () => Promise<KitConfig | null> = async () =>
         } else {
           console.log(`Couldn't parse screen '${screenFile}':`, parsedScreen.error.format());
         }
-      })
+      }),
     );
 
     const parsedConfig = kitSchema.safeParse(config);

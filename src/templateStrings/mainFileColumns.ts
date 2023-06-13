@@ -10,5 +10,5 @@ export const TextColumn = (fieldName: string) => `<Column
 
 export const ImageColumn = (fieldName: string) =>
   `<Column header="${capitalize(
-    fieldName
+    fieldName,
   )}" body={(rowData) => imageBodyTemplate(rowData, "${fieldName}")}></Column>`;

@@ -21,7 +21,7 @@ export default async function addResource(screenNameArg: string) {
   const screenName = screenNameArg.toLowerCase();
 
   const screen = (await configAsync())?.resources?.find(
-    (screen) => screen.name.toLowerCase() === screenName.toLowerCase()
+    (screen) => screen.name.toLowerCase() === screenName.toLowerCase(),
   );
   if (!screen) {
     webappSpinner.fail(`Resource ${chalk.cyan(screenName)} not found in config file`);

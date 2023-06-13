@@ -4,7 +4,7 @@ import { getLabel } from "../helpers/strings";
 const validationUi = (fieldName: string) => [
   `className={classNames({ "p-invalid": submitted && !entity.${fieldName} })}`,
   `{submitted && !entity.${fieldName} && <small className="p-invalid">${getLabel(
-    fieldName
+    fieldName,
   )} is required.</small>}`,
 ];
 
@@ -74,7 +74,7 @@ export const Dropdown = (field: KitConfigField) => `<div className="field ${
 
 export const RadioButton = (
   field: KitConfigField,
-  option: { name: string; value: string }
+  option: { name: string; value: string },
 ) => `<div className="flex align-items-center">
       <RadioButton
         value="${option.value}"
@@ -90,7 +90,7 @@ export const RadioButton = (
 
 export const RadioButtonField = (
   field: KitConfigField,
-  options: KitConfigOptions
+  options: KitConfigOptions,
 ) => `<div className="field ${field.inline ? "flex-grow-1" : "w-full"}">
   <p>Choose ${getLabel(field.name)}</p>
   <div className="flex flex-wrap gap-3">
@@ -104,7 +104,9 @@ export const InputSwitch = (field: KitConfigField) => `<div className="field ${
   field.inline ? "flex-grow-1" : "w-full"
 } flex items-center">
   <p className="mr-2">${getLabel(field.name)}</p>
-  <InputSwitch checked={entity.${field.name}} onChange={(e) => onInputChange(e.value, "${field.name}")} />
+  <InputSwitch checked={entity.${field.name}} onChange={(e) => onInputChange(e.value, "${
+  field.name
+}")} />
 </div>`;
 
 export const Calendar = (field: KitConfigField) => `<div className="field ${
@@ -170,7 +172,7 @@ export const Editor = (field: KitConfigField) => `<div className="field ${
 
 export const FileUpload = (
   field: KitConfigField,
-  screenName: string
+  screenName: string,
 ) => `<div className="field w-full"><ImageUpload
   entity={entity}
   fieldName="${field.name}"
