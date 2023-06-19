@@ -5,6 +5,7 @@ import { configAsync } from "src/config";
 import { getActiveFolderState, runInFolderAsync } from "src/helpers/folders";
 import resolveNewCrudDependencies from "src/helpers/server/resolveNewCrudDependencies";
 import ora from "ora";
+import execAsync from "./exec";
 
 const webappSpinner = ora({
   color: "blue",
@@ -50,6 +51,8 @@ export default async function addResource(screenNameArg: string) {
 
       await resolveNewScreenDependencies(capitalizedScreenName, screen);
 
+      await execAsync(`yarn prettify`);
+
       webappSpinner.succeed(`Created screen: ${chalk.cyan(capitalizedScreenName)}`);
     });
   }
@@ -72,6 +75,8 @@ export default async function addResource(screenNameArg: string) {
       fs.createFileSync(dtoFilePath);
 
       await resolveNewCrudDependencies(capitalizedScreenName, screen);
+
+      await execAsync(`yarn prettify`);
 
       serverSpinner.succeed(`Created CRUD for: ${chalk.cyan(capitalizedScreenName)}`);
     });

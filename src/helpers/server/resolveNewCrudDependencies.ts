@@ -68,7 +68,7 @@ export default async function resolveNewCrudDependencies(
     .replace(templatePlaceholders.schema, schemafields.join("\n"))
     .replace(templatePlaceholders.entity, entityFields.join("\n"))
     .replace(templatePlaceholders.zod, zodFields.join("\n"))
-    .replace(templatePlaceholders.uniqueFields, uniqueFields.join(", "))
+    .replace(templatePlaceholders.uniqueFields, ", " + uniqueFields.join(", "))
     .replace(
       templatePlaceholders.checkExistingCreateEntity,
       checkExistingCreateEntity(capitalizedScreenName, uniqueFields),
@@ -87,7 +87,7 @@ export default async function resolveNewCrudDependencies(
     .replace(templatePlaceholders.schema, schemafields.join("\n"))
     .replace(templatePlaceholders.entity, entityFields.join("\n"))
     .replace(templatePlaceholders.zod, zodFields.join("\n"))
-    .replace(templatePlaceholders.uniqueFields, uniqueFields.join(", "))
+    .replace(templatePlaceholders.uniqueFields, ", " + uniqueFields.join(", "))
     .replace(
       templatePlaceholders.checkExistingCreateEntity,
       checkExistingCreateEntity(capitalizedScreenName, uniqueFields),
@@ -106,7 +106,7 @@ export default async function resolveNewCrudDependencies(
     .replace(templatePlaceholders.schema, schemafields.join("\n"))
     .replace(templatePlaceholders.entity, entityFields.join("\n"))
     .replace(templatePlaceholders.zod, zodFields.join("\n"))
-    .replace(templatePlaceholders.uniqueFields, uniqueFields.join(", "))
+    .replace(templatePlaceholders.uniqueFields, ", " + uniqueFields.join(", "))
     .replace(
       templatePlaceholders.checkExistingCreateEntity,
       checkExistingCreateEntity(capitalizedScreenName, uniqueFields),
@@ -125,7 +125,7 @@ export default async function resolveNewCrudDependencies(
     .replace(templatePlaceholders.schema, schemafields.join("\n"))
     .replace(templatePlaceholders.entity, entityFields.join("\n"))
     .replace(templatePlaceholders.zod, zodFields.join("\n"))
-    .replace(templatePlaceholders.uniqueFields, uniqueFields.join(", "))
+    .replace(templatePlaceholders.uniqueFields, ", " + uniqueFields.join(", "))
     .replace(
       templatePlaceholders.checkExistingCreateEntity,
       checkExistingCreateEntity(capitalizedScreenName, uniqueFields),
