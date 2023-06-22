@@ -13,8 +13,7 @@ export const kitScreenSchema = z.object({
       inline: z.boolean().optional().default(false),
       datatype: z
         .union([z.literal("String"), z.literal("Number"), z.literal("Boolean")])
-        .default("String")
-        .optional(),
+        .default("String"),
       widget: z
         .union([
           z.literal("InputText"),
@@ -29,7 +28,6 @@ export const kitScreenSchema = z.object({
           z.literal("ColorPicker"),
           z.literal("Editor"),
         ])
-        .default("InputText")
         .optional(),
       options: z
         .array(
@@ -38,7 +36,8 @@ export const kitScreenSchema = z.object({
             value: z.string(),
           }),
         )
-        .optional(),
+        .optional()
+        .default([]),
     }),
   ),
 });
@@ -49,7 +48,7 @@ export const kitSchema = z.object({
 
 export type KitConfig = z.infer<typeof kitSchema>;
 
-export type KitConfigOptions = { name: string; value: string }[];
+export type KitConfigOptions = KitConfig["resources"][number]["crudFields"][number]["options"];
 
 export type KitConfigField = KitConfig["resources"][number]["crudFields"][number];
 
