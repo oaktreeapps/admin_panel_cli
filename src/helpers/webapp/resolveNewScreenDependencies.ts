@@ -219,6 +219,7 @@ export default async function resolveNewScreenDependencies(
   appMenuItems[0].items.push({
     label: capitalizedScreenName,
     to: `/${capitalizedScreenName.toLowerCase()}`,
+    icon: "pi pi-box",
   });
   fs.writeFileSync(appMenuItemsFilePath, JSON.stringify(appMenuItems, null, 2));
 
