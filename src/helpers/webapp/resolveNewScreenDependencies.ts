@@ -10,7 +10,7 @@ import {
   InputText,
   InputTextarea,
   Password,
-  RadioButtonField,
+  RadioButton,
 } from "src/templateStrings/formFields";
 import { ImageColumn, TextColumn } from "src/templateStrings/mainFileColumns";
 import { KitConfigScreen } from "src/schemas";
@@ -35,7 +35,7 @@ export default async function resolveNewScreenDependencies(
   const requiredFields: string[] = [];
   const jsxFields: string[] = [];
   const tableColumns: string[] = [];
-  const dropdownOptions: { fieldName: string; options: any[] }[] = [];
+  const fieldOptions: { fieldName: string; options: any[] }[] = [];
 
   const neverRequiredInputTypes = ["InputSwitch"];
 
@@ -66,15 +66,19 @@ export default async function resolveNewScreenDependencies(
     } else if (type === "Dropdown") {
       if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
       jsxFields.push(Dropdown(field));
-      dropdownOptions.push({
+      fieldOptions.push({
         fieldName: field.name,
-        options: field.options || [],
+        options: field.options,
       });
       interfacePropertyType = "string";
       initialValue = `""`;
     } else if (type === "RadioButton") {
       if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
-      jsxFields.push(RadioButtonField(field, field.options || []));
+      jsxFields.push(RadioButton(field));
+      fieldOptions.push({
+        fieldName: field.name,
+        options: field.options,
+      });
       interfacePropertyType = "string";
       initialValue = `""`;
     } else if (type === "ImageFileUpload") {
@@ -163,8 +167,8 @@ export default async function resolveNewScreenDependencies(
 
   const createScreenTemplateFileLines: string[] = [];
   parsedCreateScreenTemplateFile.split("\n").forEach((line) => {
-    if (line.includes("const saveEntity = async () => {")) {
-      dropdownOptions.forEach(({ fieldName, options }) => {
+    if (line.includes("const saveEntity = ")) {
+      fieldOptions.forEach(({ fieldName, options }) => {
         createScreenTemplateFileLines.push(
           `const ${fieldName}Options = ${JSON.stringify(options, null, 2)};\n`,
         );
@@ -192,8 +196,8 @@ export default async function resolveNewScreenDependencies(
 
   const editScreenTemplateFileLines: string[] = [];
   parsedEditScreenTemplateFile.split("\n").forEach((line) => {
-    if (line.includes("const saveEntity = async () => {")) {
-      dropdownOptions.forEach(({ fieldName, options }) => {
+    if (line.includes("const saveEntity = ")) {
+      fieldOptions.forEach(({ fieldName, options }) => {
         editScreenTemplateFileLines.push(
           `const ${fieldName}Options = ${JSON.stringify(options, null, 2)};\n`,
         );
@@ -215,6 +219,7 @@ export default async function resolveNewScreenDependencies(
   appMenuItems[0].items.push({
     label: capitalizedScreenName,
     to: `/${capitalizedScreenName.toLowerCase()}`,
+    icon: "pi pi-box",
   });
   fs.writeFileSync(appMenuItemsFilePath, JSON.stringify(appMenuItems, null, 2));
 
