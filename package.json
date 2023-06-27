@@ -19,8 +19,7 @@
     "watch": "yarn build --watch",
     "prettify": "prettier --write \"src/**/*.ts\"",
     "test": "jest",
-    "lint": "eslint src/",
-    "prepare": "husky install"
+    "lint": "eslint src/"
   },
   "dependencies": {
     "chalk": "^5.2.0",
