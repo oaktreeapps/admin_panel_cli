@@ -83,7 +83,7 @@ rules={{ required: "* ${getLabel(field.name)} is required!" }}
 />
 `;
 
-export const FileUpload = (field: KitConfigField, screenName: string) => `<FormInput
+export const FileUpload = (field: KitConfigField, screenName: string) => `<FormInputUpload
 folderName="${screenName}"
 fieldName="${field.name}"
 control={control}
