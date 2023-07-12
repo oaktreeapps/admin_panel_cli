@@ -131,9 +131,6 @@ export default async function resolveNewScreenDependencies(
   const mainScreenTemplateFile = fs
     .readFileSync(`${templateFolderPath}/webapp/XXXXX.tsx`)
     .toString();
-  const datatableComponentTemplateFile = fs
-    .readFileSync(`${templateFolderPath}/webapp/src/components/Datatable.tsx`)
-    .toString();
   const createScreenTemplateFile = fs
     .readFileSync(`${templateFolderPath}/webapp/CreateXXXXX.tsx`)
     .toString();
@@ -158,15 +155,6 @@ export default async function resolveNewScreenDependencies(
   });
 
   fs.writeFileSync(mainFilePath, mainScreenTemplateFileLines.join("\n"));
-
-  const parsedDatatableComponentTemplateFile = datatableComponentTemplateFile
-    .replace(/XXXXX/g, capitalizedScreenName)
-    .replace(/xxxxx/g, capitalizedScreenName.toLowerCase());
-
-  fs.writeFileSync(
-    `${templateFolderPath}/webapp/src/components/Datatable.tsx`,
-    parsedDatatableComponentTemplateFile,
-  );
 
   const parsedCreateScreenTemplateFile = createScreenTemplateFile
     .replace(/XXXXX/g, capitalizedScreenName)

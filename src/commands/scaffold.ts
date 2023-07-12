@@ -25,6 +25,7 @@ export default async function scaffold(argProjectName: string, opts: Opts) {
   await simpleGit().clone("https://github.com/oaktreeapps/admin-panel", projectName);
 
   process.chdir(projectName);
+  // await execAsync("git checkout dev");
 
   const templateFolderPath = getTemplateFolderPath();
 
