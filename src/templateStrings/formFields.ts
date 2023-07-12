@@ -17,7 +17,7 @@ rules={{ required: "* ${getLabel(field.name)} is required!" }}
 />
 `;
 
-export const InputTextarea = (field: KitConfigField) => `<FormInputTextArea
+export const InputTextarea = (field: KitConfigField) => `<FormInputTextarea
 fieldName="${field.name}"
 control={control}
 inline={${field.inline}}
