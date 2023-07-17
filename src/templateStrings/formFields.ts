@@ -47,7 +47,6 @@ export const InputSwitch = (field: KitConfigField) => `<FormInputSwitch
 fieldName="${field.name}"
 control={control}
 inline={${field.inline}}
-rules={{ required: ${field.required ? `"* ${getLabel(field.name)} is required!"` : "false"} }}
 />
 `;
 
@@ -87,6 +86,15 @@ export const FileUpload = (field: KitConfigField, screenName: string) => `<FormI
 folderName="${screenName}"
 fieldName="${field.name}"
 control={control}
+inline={${field.inline}}
+rules={{ required: ${field.required ? `"* ${getLabel(field.name)} is required!"` : "false"} }}
+/>
+`;
+
+export const MultiSelect = (field: KitConfigField) => `<FormInputMultiSelect
+control={control}
+fieldName="${field.name}"
+options={${field.name}Options}
 inline={${field.inline}}
 rules={{ required: ${field.required ? `"* ${getLabel(field.name)} is required!"` : "false"} }}
 />

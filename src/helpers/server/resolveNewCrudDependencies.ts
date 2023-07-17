@@ -22,7 +22,12 @@ export default async function resolveNewCrudDependencies(
 ) {
   const templateFolderPath = getTemplateFolderPath();
 
-  const uniqueFields = screen.crudFields.filter((field) => field.unique).map((field) => field.name);
+  const neverUniques = ["MultiSelect", "Boolean", "InputSwitch"];
+
+  const uniqueFields = screen.crudFields
+    .filter((field) => field.unique && !neverUniques.includes(field.name))
+    .map((field) => field.name);
+
   const entityFields: string[] = [];
   const interfaceFields: string[] = [];
   const schemafields: string[] = [];
@@ -30,6 +35,8 @@ export default async function resolveNewCrudDependencies(
 
   screen.crudFields.forEach(({ name, widget, datatype, required, unique }) => {
     entityFields.push(`${name}: entity.${name},`);
+
+    console.log(widget, datatype);
 
     if (
       widget === "InputText" ||
@@ -52,8 +59,14 @@ export default async function resolveNewCrudDependencies(
       zodFields.push(`${name}: z.number()${required ? "" : ".optional().nullable()"},`);
     } else if (widget === "InputSwitch" || datatype === "Boolean") {
       interfaceFields.push(`${name}${required ? "" : "?"}: boolean;`);
-      schemafields.push(`${name}: { type: Boolean, required: ${required}, unique: ${unique} },`);
+      schemafields.push(`${name}: { type: Boolean, required: ${required} },`);
       zodFields.push(`${name}: z.boolean()${required ? "" : ".optional().nullable()"},`);
+    } else if (widget === "MultiSelect") {
+      interfaceFields.push(`${name}${required ? "" : "?"}: string[];`);
+      schemafields.push(`${name}: [{ type: String, required: ${required} }],`);
+      zodFields.push(
+        `${name}: z.array(z.string())${required ? ".nonempty()" : ".optional().nullable()"},`,
+      );
     }
   });
 
