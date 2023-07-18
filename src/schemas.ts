@@ -3,6 +3,7 @@ import { z } from "zod";
 export const kitScreenSchema = z.object({
   name: z.string(),
   url: z.string(),
+  only: z.union([z.literal("webapp"), z.literal("server")]).optional(),
   collectionName: z.string(),
   crudFields: z.array(
     z.object({

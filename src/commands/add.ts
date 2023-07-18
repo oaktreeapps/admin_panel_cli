@@ -2,7 +2,10 @@ import inquirer from "inquirer";
 import { configAsync } from "src/config";
 import addResource from "src/helpers/addResource";
 
-export default async function add(options?: { all?: boolean }) {
+export default async function add(
+  resourceNameArg?: string,
+  options?: { all?: boolean; force?: boolean; onlyServer?: boolean; onlyWebapp?: boolean },
+) {
   const config = await configAsync();
 
   const configResourceNames =
@@ -10,11 +13,15 @@ export default async function add(options?: { all?: boolean }) {
       name: resource.name.toLowerCase(),
     })) || [];
 
+  let places: ("webapp" | "server")[] = ["webapp", "server"];
+  if (options?.onlyServer) places = ["server"];
+  if (options?.onlyWebapp) places = ["webapp"];
+
   if (options?.all) {
     configResourceNames.forEach(async ({ name }) => {
-      await addResource(name);
+      await addResource(name, { force: options?.force, places });
     });
-  } else {
+  } else if (!resourceNameArg) {
     const answers = await inquirer.prompt([
       {
         name: "resourceNames",
@@ -25,7 +32,9 @@ export default async function add(options?: { all?: boolean }) {
     ]);
 
     answers?.resourceNames?.forEach(async (screenNameArg: string) => {
-      await addResource(screenNameArg);
+      await addResource(screenNameArg, { force: options?.force, places });
     });
+  } else if (resourceNameArg) {
+    await addResource(resourceNameArg, { force: options?.force, places });
   }
 }

@@ -26,14 +26,21 @@ program
 
 program
   .command("add")
-  .description("Adds new resources")
+  .argument("[resourceName]", "Name of the resource you want to add")
   .option("--all", "All resources present in the kitconfig will be added")
+  .option("-f, --force", "Forcefully add the resource, overwriting existing files (if any).")
+  .option("--only-webapp", "Only add the resource to webapp")
+  .option("--only-server", "Only add the resource to server")
+  .description("Adds new resources")
   .action(add);
 
 program
   .command("remove")
-  .description("Removes existing resources")
+  .argument("[resourceName]", "Name of the resource you want to remove")
   .option("--all", "All resources present in the kitconfig will be removed")
+  .option("--only-webapp", "Only remove the resource from webapp")
+  .option("--only-server", "Only remove the resource from server")
+  .description("Removes existing resources")
   .action(remove);
 
 program.parse();

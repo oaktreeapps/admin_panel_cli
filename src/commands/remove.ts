@@ -2,17 +2,24 @@ import inquirer from "inquirer";
 import { configAsync } from "src/config";
 import removeResource from "src/helpers/removeResource";
 
-export default async function remove(options?: { all?: boolean }) {
+export default async function remove(
+  resourceNameArg?: string,
+  options?: { all?: boolean; onlyServer?: boolean; onlyWebapp?: boolean },
+) {
   const config = await configAsync();
 
   const configResourceNames =
     config?.resources.map((resource) => ({ name: resource.name.toLowerCase() })) || [];
 
+  let places: ("webapp" | "server")[] = ["webapp", "server"];
+  if (options?.onlyServer) places = ["server"];
+  if (options?.onlyWebapp) places = ["webapp"];
+
   if (options?.all) {
     configResourceNames.forEach(async ({ name }) => {
-      await removeResource(name);
+      await removeResource(name, { places });
     });
-  } else {
+  } else if (!resourceNameArg) {
     const answers = await inquirer.prompt([
       {
         name: "resourceNames",
@@ -22,8 +29,10 @@ export default async function remove(options?: { all?: boolean }) {
       },
     ]);
 
-    answers?.resourceNames?.forEach(async (screenNameArg: string) => {
-      await removeResource(screenNameArg);
+    answers?.resourceNames?.forEach(async (resourceName: string) => {
+      await removeResource(resourceName, { places });
     });
+  } else if (resourceNameArg) {
+    await removeResource(resourceNameArg, { places });
   }
 }

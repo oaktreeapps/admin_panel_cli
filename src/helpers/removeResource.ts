@@ -1,18 +1,21 @@
 import fs from "fs-extra";
 import ora from "ora";
-import { getActiveFolderState, runInFolderAsync } from "src/helpers/folders";
+import { getActiveFolders, runInFolderAsync } from "src/helpers/folders";
 
 const spinner = ora({
   color: "blue",
   indent: 2,
 });
 
-export default async function removeResource(screenName: string) {
-  const activeFolderState = getActiveFolderState();
+export default async function removeResource(
+  screenName: string,
+  options?: { places?: ("webapp" | "server")[] },
+) {
+  const activeFolders = getActiveFolders();
 
   const capitalizedScreenName = screenName.charAt(0).toUpperCase() + screenName.slice(1);
 
-  if (activeFolderState === "both" || activeFolderState === "webapp") {
+  if (activeFolders.includes("webapp") && (!options?.places || options.places.includes("webapp"))) {
     await runInFolderAsync("webapp", async () => {
       const typeFilePath = `./src/types/${screenName}.d.ts`;
       const screensFolderPath = `./src/screens/${capitalizedScreenName}`;
@@ -54,7 +57,7 @@ export default async function removeResource(screenName: string) {
     });
   }
 
-  if (activeFolderState === "both" || activeFolderState === "server") {
+  if (activeFolders.includes("server") && (!options?.places || options.places.includes("server"))) {
     await runInFolderAsync("server", async () => {
       const microserviceFolderPath = `./src/Microservices/${capitalizedScreenName}`;
       const entityFilePath = `./src/Database/Entities/${capitalizedScreenName}Entity.ts`;

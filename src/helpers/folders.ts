@@ -62,24 +62,7 @@ export const runInFolderSync = <T>(
   return returnValue;
 };
 
-export const getActiveFolderState = () =>
-  runInFolderSync("root", () => {
-    let actveFolderState: "webapp" | "server" | "both" | "INVALID_STATE";
-
-    const dirs = fs.readdirSync(".");
-
-    if (dirs.includes("webapp") && dirs.includes("server")) {
-      actveFolderState = "both";
-    } else if (dirs.includes("webapp")) {
-      actveFolderState = "webapp";
-    } else if (dirs.includes("server")) {
-      actveFolderState = "server";
-    } else {
-      actveFolderState = "INVALID_STATE";
-    }
-
-    return actveFolderState;
-  });
+export const getActiveFolders = () => runInFolderSync("root", () => fs.readdirSync("."));
 
 export const getTemplateFolderPath = () =>
   runInFolderSync("root", () => {

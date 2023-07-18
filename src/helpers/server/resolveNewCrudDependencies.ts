@@ -36,8 +36,6 @@ export default async function resolveNewCrudDependencies(
   screen.crudFields.forEach(({ name, widget, datatype, required, unique }) => {
     entityFields.push(`${name}: entity.${name},`);
 
-    console.log(widget, datatype);
-
     if (
       widget === "InputText" ||
       widget === "InputTextarea" ||

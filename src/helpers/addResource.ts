@@ -2,10 +2,11 @@ import fs from "fs-extra";
 import chalk from "chalk";
 import resolveNewScreenDependencies from "src/helpers/webapp/resolveNewScreenDependencies";
 import { configAsync } from "src/config";
-import { getActiveFolderState, runInFolderAsync } from "src/helpers/folders";
+import { getActiveFolders, runInFolderAsync } from "src/helpers/folders";
 import resolveNewCrudDependencies from "src/helpers/server/resolveNewCrudDependencies";
 import ora from "ora";
 import execAsync from "./exec";
+import removeResource from "./removeResource";
 
 const webappSpinner = ora({
   color: "blue",
@@ -16,8 +17,11 @@ const serverSpinner = ora({
   indent: 2,
 });
 
-export default async function addResource(screenNameArg: string) {
-  const activeFolderState = getActiveFolderState();
+export default async function addResource(
+  screenNameArg: string,
+  options?: { force?: boolean; places?: ("webapp" | "server")[] },
+) {
+  const activeFolders = getActiveFolders();
 
   const screenName = screenNameArg.toLowerCase();
 
@@ -29,13 +33,24 @@ export default async function addResource(screenNameArg: string) {
     return;
   }
 
+  let places = options?.places;
+  if (screen.only) {
+    if (screen.only === "server") places = ["server"];
+    if (screen.only === "webapp") places = ["webapp"];
+  }
+
   const capitalizedScreenName = screenName.charAt(0).toUpperCase() + screenName.slice(1);
 
-  if (activeFolderState === "both" || activeFolderState === "webapp") {
+  if (activeFolders.includes("webapp") && (!places || places.includes("webapp"))) {
     await runInFolderAsync("webapp", async () => {
       const folderPath = `./src/screens/${capitalizedScreenName}`;
       if (fs.existsSync(folderPath)) {
-        return;
+        if (!options?.force) {
+          webappSpinner.fail(`Screen for ${chalk.cyan(capitalizedScreenName)} already exists`);
+          return;
+        }
+
+        await removeResource(screenName, { places: ["webapp"] });
       }
 
       webappSpinner.start(`Creating screen: ${chalk.cyan(capitalizedScreenName)}`);
@@ -57,11 +72,16 @@ export default async function addResource(screenNameArg: string) {
     });
   }
 
-  if (activeFolderState === "both" || activeFolderState === "server") {
+  if (activeFolders.includes("server") && (!places || places.includes("server"))) {
     await runInFolderAsync("server", async () => {
       const folderPath = `./src/Microservices/${capitalizedScreenName}`;
       if (fs.existsSync(folderPath)) {
-        return;
+        if (!options?.force) {
+          serverSpinner.fail(`CRUD for ${chalk.cyan(capitalizedScreenName)} already exists`);
+          return;
+        }
+
+        await removeResource(screenName, { places: ["server"] });
       }
 
       serverSpinner.start(`Creating CRUD for: ${chalk.cyan(capitalizedScreenName)}`);
