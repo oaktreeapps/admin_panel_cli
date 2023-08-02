@@ -1,17 +1,20 @@
 #! /usr/bin/env node
 import { Command } from 'commander';
-import Je from 'simple-git';
+import He from 'simple-git';
 import X from 'fs-extra';
-import Me from 'ora';
+import Be from 'ora';
 import { exec } from 'child_process';
-import K from 'chalk';
-import Qe from 'inquirer';
-import Ve from 'path';
-import { z as z$1 } from 'zod';
+import ot from 'open';
+import he from 'express';
+import nt from 'cors';
+import Ze from 'path';
+import { z } from 'zod';
+import M from 'chalk';
+import it from 'inquirer';
 
-var p=(e,t,s)=>new Promise((r,i)=>{var u=m=>{try{a(s.next(m));}catch(y){i(y);}},o=m=>{try{a(s.throw(m));}catch(y){i(y);}},a=m=>m.done?r(m.value):Promise.resolve(m.value).then(u,o);a((s=s.apply(e,t)).next());});function ie(){let e=['import XXXXXPage from "./screens/XXXXX/XXXXX"','import EditXXXXXPage from "./screens/XXXXX/EditXXXXX"','import CreateXXXXXPage from "./screens/XXXXX/CreateXXXXX"','<Route path="xxxxx" element={<XXXXXPage />} />','<Route path="xxxxx/create" element={<CreateXXXXXPage />} />','<Route path="xxxxx/edit/:id" element={<EditXXXXXPage />} />'];X.removeSync("./.git"),X.removeSync("./src/screens/XXXXX"),X.removeSync("./src/types/xxxxx.d.ts");let r=X.readFileSync("./src/main.tsx").toString().split(`
-`).filter(i=>e.filter(u=>i.includes(u)).length===0);X.writeFileSync("./src/main.tsx",r.join(`
-`));}var Y=(e=process.cwd())=>X.readdirSync(e).includes("kitconfig"),I=(e,t)=>p(void 0,null,function*(){let s=process.cwd().split("/").at(-1),r;return s===e||Y()&&e==="root"?r=yield t():Y()?(process.chdir(e),r=yield t(),process.chdir("..")):e==="root"?(process.chdir(".."),r=yield t(),process.chdir(s)):(process.chdir(".."),process.chdir(e),r=yield t(),process.chdir(".."),process.chdir(s)),r}),O=(e,t)=>{let s=process.cwd().split("/").at(-1),r;return s===e||Y()&&e==="root"?r=t():Y()?(process.chdir(e),r=t(),process.chdir("..")):e==="root"?(process.chdir(".."),r=t(),process.chdir(s)):(process.chdir(".."),process.chdir(e),r=t(),process.chdir(".."),process.chdir(s)),r},Q=()=>O("root",()=>X.readdirSync(".")),q=()=>O("root",()=>process.cwd()+"/.template");function ce(){X.removeSync("./.git"),X.removeSync("./src/Microservices/XXXXX"),X.removeSync("./src/Database/Entities/XXXXXEntity.ts");}function M(e){return p(this,null,function*(){return new Promise(t=>{exec(e,()=>{t(null);});})})}var he=()=>`REST_API_PORT=3005
+var a=(e,t,i)=>new Promise((r,s)=>{var c=m=>{try{l(i.next(m));}catch(d){s(d);}},o=m=>{try{l(i.throw(m));}catch(d){s(d);}},l=m=>m.done?r(m.value):Promise.resolve(m.value).then(c,o);l((i=i.apply(e,t)).next());});function le(){let e=['import XXXXXPage from "./screens/XXXXX/XXXXX"','import EditXXXXXPage from "./screens/XXXXX/EditXXXXX"','import CreateXXXXXPage from "./screens/XXXXX/CreateXXXXX"','<Route path="xxxxx" element={<XXXXXPage />} />','<Route path="xxxxx/create" element={<CreateXXXXXPage />} />','<Route path="xxxxx/edit/:id" element={<EditXXXXXPage />} />'];X.removeSync("./.git"),X.removeSync("./src/screens/XXXXX"),X.removeSync("./src/types/xxxxx.d.ts");let r=X.readFileSync("./src/main.tsx").toString().split(`
+`).filter(s=>e.filter(c=>s.includes(c)).length===0);X.writeFileSync("./src/main.tsx",r.join(`
+`));}var N=(e=process.cwd())=>X.readdirSync(e).includes("kitconfig"),we=()=>{let e=process.cwd().split("/").at(-1);return (e==="webapp"||e==="server")&&X.readdirSync("..").includes("kitconfig")?e:N()?"root":null},g=(e,t)=>a(void 0,null,function*(){let i=process.cwd().split("/").at(-1),r;return i===e||N()&&e==="root"?r=yield t():N()?(process.chdir(e),r=yield t(),process.chdir("..")):e==="root"?(process.chdir(".."),r=yield t(),process.chdir(i)):(process.chdir(".."),process.chdir(e),r=yield t(),process.chdir(".."),process.chdir(i)),r}),U=(e,t)=>{let i=process.cwd().split("/").at(-1),r;return i===e||N()&&e==="root"?r=t():N()?(process.chdir(e),r=t(),process.chdir("..")):e==="root"?(process.chdir(".."),r=t(),process.chdir(i)):(process.chdir(".."),process.chdir(e),r=t(),process.chdir(".."),process.chdir(i)),r},ee=()=>U("root",()=>X.readdirSync(".")),W=()=>U("root",()=>process.cwd()+"/.template");function me(){X.removeSync("./.git"),X.removeSync("./src/Microservices/XXXXX"),X.removeSync("./src/Database/Entities/XXXXXEntity.ts");}function K(e){return a(this,null,function*(){return new Promise(t=>{exec(e,()=>{t(null);});})})}var be=()=>`REST_API_PORT=3005
 MONGO_CONNECTION_URL=
 
 #REDIS_PORT=6379
@@ -35,168 +38,169 @@ S3_BUCKET_NAME=
 
 STATIC_S3_REGION=
 STATIC_S3_BUCKET_NAME=
-`;var Z=Me({color:"blue",indent:2});function le(e,t){return p(this,null,function*(){let s=e.toLowerCase();Z.start("Scaffolding project..."),yield Je().clone("https://github.com/oaktreeapps/admin-panel",s),process.chdir(s);let r=q();X.ensureDirSync(`${r}`),X.ensureDirSync(`${r}/webapp`),X.ensureDirSync(`${r}/server`),X.removeSync("./.git"),O("webapp",()=>{X.copyFileSync("./src/screens/XXXXX/XXXXX.tsx",`${r}/webapp/XXXXX.tsx`),X.copyFileSync("./src/screens/XXXXX/CreateXXXXX.tsx",`${r}/webapp/CreateXXXXX.tsx`),X.copyFileSync("./src/screens/XXXXX/EditXXXXX.tsx",`${r}/webapp/EditXXXXX.tsx`),X.copyFileSync("./src/types/xxxxx.d.ts",`${r}/webapp/xxxxx.d.ts`),X.writeFileSync("./.env",'VITE_BASE_URL = "http://localhost:3005/api"'),ie();}),O("server",()=>{X.copyFileSync("./src/Microservices/XXXXX/XXXXXRouter.ts",`${r}/server/XXXXXRouter.ts`),X.copyFileSync("./src/Microservices/XXXXX/XXXXXController.ts",`${r}/server/XXXXXController.ts`),X.copyFileSync("./src/Microservices/XXXXX/XXXXX.dto.ts",`${r}/server/XXXXX.dto.ts`),X.copyFileSync("./src/Database/Entities/XXXXXEntity.ts",`${r}/server/XXXXXEntity.ts`),X.writeFileSync("./.env",he()),ce();}),Z.succeed(`Created "${s}" successfully!`),t.onlyServer&&X.removeSync("webapp"),t.onlyWebapp&&X.removeSync("server"),Z.start("Installing dependencies..."),t.onlyServer||(yield I("webapp",()=>p(this,null,function*(){yield M("yarn install");}))),t.onlyWebapp||(yield I("server",()=>p(this,null,function*(){yield M("yarn install");}))),Z.succeed("Installed dependencies successfully!");})}var S=e=>{let t=e.replace(/([A-Z])/g," $1");return t.charAt(0).toUpperCase()+t.slice(1)},P=e=>e.charAt(0).toUpperCase()+e.slice(1);var xe=e=>{let t=e.toLowerCase();return `/**
-* @type {import('../types').Resource}
-*/
-const resource = {
-  name: "${P(t)}",
-  url: "/${t}",
-  collectionName: "${t}",
+`;var fe=z.object({name:z.string(),url:z.string(),only:z.union([z.literal("webapp"),z.literal("server")]).optional(),collectionName:z.string(),crudFields:z.array(z.object({name:z.string(),required:z.boolean().optional().default(!0),unique:z.boolean().optional().default(!1),tableDisplay:z.boolean().optional().default(!0),inline:z.boolean().optional().default(!1),datatype:z.union([z.literal("String"),z.literal("Number"),z.literal("Boolean")]).optional(),widget:z.union([z.literal("InputText"),z.literal("InputTextarea"),z.literal("RadioButton"),z.literal("Dropdown"),z.literal("InputSwitch"),z.literal("InputNumber"),z.literal("ImageFileUpload"),z.literal("Calendar"),z.literal("Password"),z.literal("ColorPicker"),z.literal("Editor"),z.literal("MultiSelect")]).optional(),options:z.array(z.object({name:z.string(),value:z.string()})).optional().default([])}))}),Ee=z.object({resources:z.array(fe)});var _=()=>a(void 0,null,function*(){return g("root",()=>a(void 0,null,function*(){let config={resources:[]};if(!X.existsSync("kitconfig"))return console.log("Can't detect the current directory as a valid admin project!"),null;let kitConfigAbsolutePath=Ze.join(process.cwd(),"kitconfig"),screenFiles=X.readdirSync("kitconfig/resources");yield Promise.all(screenFiles.map(screenFile=>a(void 0,null,function*(){let configFileStr=X.readFileSync(`${kitConfigAbsolutePath}/resources/${screenFile}`).toString(),configFile=eval(configFileStr),parsedScreen=fe.safeParse(configFile);parsedScreen.success?config.resources.push(parsedScreen.data):console.log(`Couldn't parse screen '${screenFile}':`,parsedScreen.error.format());})));let parsedConfig=Ee.safeParse(config);return parsedConfig.success?parsedConfig.data:(console.error("Config parsing error",parsedConfig.error),null)}))});var w=e=>{let t=e.replace(/([A-Z])/g," $1");return t.charAt(0).toUpperCase()+t.slice(1)},R=e=>e.charAt(0).toUpperCase()+e.slice(1);var te=(e,t)=>{let i=e.toLowerCase(),r=`{
+  name: "${R(i)}",
+  url: "/${i}",
+  collectionName: "${i}",
   crudFields: [
     // ...
   ],
-};
+}`;return t&&(r=JSON.stringify(t,null,2)),`/**
+* @type {import('../types').Resource}
+*/
+const resource = ${r};
 
-module.exports = resource;
-`};var Se=Me({color:"blue",indent:2});function pe(e){return p(this,null,function*(){let t=e.toLowerCase(),s=xe(t);Se.start(`Creating config template for ${K.cyan(t)}`),O("root",()=>{let r=`kitconfig/resources/${t}.cjs`;X.ensureFileSync(r),X.writeFileSync(r,s);}),Se.succeed(`Created config template for ${K.cyan(t)}`);})}var ue=z$1.object({name:z$1.string(),url:z$1.string(),only:z$1.union([z$1.literal("webapp"),z$1.literal("server")]).optional(),collectionName:z$1.string(),crudFields:z$1.array(z$1.object({name:z$1.string(),required:z$1.boolean().optional().default(!0),unique:z$1.boolean().optional().default(!1),tableDisplay:z$1.boolean().optional().default(!0),inline:z$1.boolean().optional().default(!1),datatype:z$1.union([z$1.literal("String"),z$1.literal("Number"),z$1.literal("Boolean")]).optional(),widget:z$1.union([z$1.literal("InputText"),z$1.literal("InputTextarea"),z$1.literal("RadioButton"),z$1.literal("Dropdown"),z$1.literal("InputSwitch"),z$1.literal("InputNumber"),z$1.literal("ImageFileUpload"),z$1.literal("Calendar"),z$1.literal("Password"),z$1.literal("ColorPicker"),z$1.literal("Editor"),z$1.literal("MultiSelect")]).optional(),options:z$1.array(z$1.object({name:z$1.string(),value:z$1.string()})).optional().default([])}))}),we=z$1.object({resources:z$1.array(ue)});var k=()=>p(void 0,null,function*(){return I("root",()=>p(void 0,null,function*(){let e={resources:[]};if(!X.existsSync("kitconfig"))return console.log("Can't detect the current directory as a valid admin project!"),null;let t=Ve.join(process.cwd(),"kitconfig"),s=X.readdirSync("kitconfig/resources");yield Promise.all(s.map(i=>p(void 0,null,function*(){let u=yield import(`${t}/resources/${i}`),o=ue.safeParse(u.default);o.success?e.resources.push(o.data):console.log(`Couldn't parse screen '${i}':`,o.error.format());})));let r=we.safeParse(e);return r.success?r.data:(console.error("Config parsing error",r.error),null)}))});var be=e=>`<FormInputNumber
+resource;
+`};var Pe=Be({color:"blue",indent:2});function G(e){return a(this,null,function*(){let t=e.toLowerCase(),i=te(t);Pe.start(`Creating config template for ${M.cyan(t)}`),U("root",()=>{let r=`kitconfig/resources/${t}.cjs`;X.ensureFileSync(r),X.writeFileSync(r,i);}),Pe.succeed(`Created config template for ${M.cyan(t)}`);})}var H=Be({color:"blue",indent:2});function b(e,t){return a(this,null,function*(){let i=ee(),r=e.charAt(0).toUpperCase()+e.slice(1);i.includes("webapp")&&(!(t!=null&&t.places)||t.places.includes("webapp"))&&(yield g("webapp",()=>a(this,null,function*(){let s=`./src/types/${e}.d.ts`,c=`./src/screens/${r}`,o="./src/layout/items.json";if(!X.existsSync(c)){console.log("  Nothing to remove in webapp.");return}H.start(`Removing screen: ${e}`);let l=X.readFileSync(o),m=JSON.parse(l.toString());m[0].items=m[0].items.filter(P=>P.label.toLowerCase()!==r.toLowerCase()),X.writeFileSync(o,JSON.stringify(m,null,2)),X.removeSync(s),X.removeSync(c);let d=[`<Route path="${r.toLowerCase()}" element={<${r}Page />} />`,`<Route path="${r.toLowerCase()}/create" element={<Create${r}Page />} />`,`<Route path="${r.toLowerCase()}/edit/:id" element={<Edit${r}Page />} />`,`import ${r}Page from "./screens/${r}/${r}"`,`import Edit${r}Page from "./screens/${r}/Edit${r}"`,`import Create${r}Page from "./screens/${r}/Create${r}"`],D=X.readFileSync("./src/main.tsx").toString().split(`
+`).filter(P=>d.filter(k=>P.includes(k)).length===0);X.writeFileSync("./src/main.tsx",D.join(`
+`)),H.succeed(`Removed screen: ${e}`);}))),i.includes("server")&&(!(t!=null&&t.places)||t.places.includes("server"))&&(yield g("server",()=>a(this,null,function*(){let s=`./src/Microservices/${r}`,c=`./src/Database/Entities/${r}Entity.ts`,o="./src/Database/CollectionNames.ts",l="./src/Microservices/ApiRouter.ts";if(!X.existsSync(s)){console.log("  Nothing to remove in server.");return}H.start(`Removing CRUD: ${r}`),X.removeSync(s),X.removeSync(c);let m=X.readFileSync(o).toString().split(`
+`).filter($=>!$.includes(`${r}Collection`)).join(`
+`),d=X.readFileSync(l).toString().split(`
+`).filter($=>!$.includes(`${r}Router`)).join(`
+`);X.writeFileSync(o,m),X.writeFileSync(l,d),H.succeed(`Removed CRUD: ${r}`);}))),t!=null&&t.config&&(yield g("root",()=>a(this,null,function*(){let s=`./kitconfig/resources/${e}.cjs`;if(!X.existsSync(s)){console.log("  Nothing to remove in config.");return}H.start(`Removing config: ${e}`),X.removeSync(s),H.succeed(`Removed config: ${e}`);})));})}var Te=e=>`<FormInputNumber
 fieldName="${e.name}"
 control={control}
 inline={${e.inline}}
-rules={{ required: ${e.required?`"* ${S(e.name)} is required!"`:"false"} }}
+rules={{ required: ${e.required?`"* ${w(e.name)} is required!"`:"false"} }}
 />
-`,ve=e=>`<FormInputText
+`,Re=e=>`<FormInputText
 fieldName="${e.name}"
 control={control}
 inline={${e.inline}}
-rules={{ required: ${e.required?`"* ${S(e.name)} is required!"`:"false"} }}
+rules={{ required: ${e.required?`"* ${w(e.name)} is required!"`:"false"} }}
 />
-`,Ie=e=>`<FormInputTextarea
+`,De=e=>`<FormInputTextarea
 fieldName="${e.name}"
 control={control}
 inline={${e.inline}}
-rules={{ required: ${e.required?`"* ${S(e.name)} is required!"`:"false"} }}
+rules={{ required: ${e.required?`"* ${w(e.name)} is required!"`:"false"} }}
 />
-`,Te=e=>`<FormInputDropdown
+`,Le=e=>`<FormInputDropdown
 fieldName="${e.name}"
 control={control}
 inline={${e.inline}}
-rules={{ required: ${e.required?`"* ${S(e.name)} is required!"`:"false"} }}
+rules={{ required: ${e.required?`"* ${w(e.name)} is required!"`:"false"} }}
 options={${e.name}Options}
 />
-`,Pe=e=>`<FormInputRadio
+`,je=e=>`<FormInputRadio
 fieldName="${e.name}"
 control={control}
 inline={${e.inline}}
-rules={{ required: ${e.required?`"* ${S(e.name)} is required!"`:"false"} }}
+rules={{ required: ${e.required?`"* ${w(e.name)} is required!"`:"false"} }}
 options={${e.name}Options}
 />
-`,Re=e=>`<FormInputSwitch
+`,Ae=e=>`<FormInputSwitch
 fieldName="${e.name}"
 control={control}
 inline={${e.inline}}
 />
-`,De=e=>`<FormInputCalendar
+`,_e=e=>`<FormInputCalendar
 fieldName="${e.name}"
 control={control}
 inline={${e.inline}}
-rules={{ required: ${e.required?`"* ${S(e.name)} is required!"`:"false"} }}
+rules={{ required: ${e.required?`"* ${w(e.name)} is required!"`:"false"} }}
 />
-`,Le=e=>`<FormInputPassword
+`,ke=e=>`<FormInputPassword
 fieldName="${e.name}"
 control={control}
 inline={${e.inline}}
-rules={{ required: ${e.required?`"* ${S(e.name)} is required!"`:"false"} }}
+rules={{ required: ${e.required?`"* ${w(e.name)} is required!"`:"false"} }}
 />
-`,Ae=e=>`<FormInputColorPicker
+`,Oe=e=>`<FormInputColorPicker
 fieldName="${e.name}"
 control={control}
 inline={${e.inline}}
-rules={{ required: ${e.required?`"* ${S(e.name)} is required!"`:"false"} }}
+rules={{ required: ${e.required?`"* ${w(e.name)} is required!"`:"false"} }}
 />
-`,_e=e=>`<FormInputEditor
+`,Ue=e=>`<FormInputEditor
 fieldName="${e.name}"
 control={control}
 inline={${e.inline}}
-rules={{ required: ${e.required?`"* ${S(e.name)} is required!"`:"false"} }}
+rules={{ required: ${e.required?`"* ${w(e.name)} is required!"`:"false"} }}
 />
-`,je=(e,t)=>`<FormInputUpload
+`,Ke=(e,t)=>`<FormInputUpload
 folderName="${t}"
 fieldName="${e.name}"
 control={control}
 inline={${e.inline}}
-rules={{ required: ${e.required?`"* ${S(e.name)} is required!"`:"false"} }}
+rules={{ required: ${e.required?`"* ${w(e.name)} is required!"`:"false"} }}
 />
-`,Ue=e=>`<FormInputMultiSelect
+`,Me=e=>`<FormInputMultiSelect
 control={control}
 fieldName="${e.name}"
 options={${e.name}Options}
 inline={${e.inline}}
-rules={{ required: ${e.required?`"* ${S(e.name)} is required!"`:"false"} }}
+rules={{ required: ${e.required?`"* ${w(e.name)} is required!"`:"false"} }}
 />
-`;var w=e=>`<Column
+`;var E=e=>`<Column
   field="${e}"
-  header="${P(e)}"
+  header="${R(e)}"
   sortable
   body={(rowData) => textBodyTemplate(rowData, "${e}")}
   headerStyle={{ minWidth: "15rem" }}
-></Column>`,Oe=e=>`<Column header="${P(e)}" body={(rowData) => imageBodyTemplate(rowData, "${e}")}></Column>`;var L={tableColumns:"{/*TABLE_COLUMNS*/}",initialState:"/*INITIAL_STATE_FIELDS*/",interface:"/*INTERFACE_FIELDS*/",input:"{/*INPUT_FIELDS*/}",validate:"/*VALIDATE_FIELDS*/"};function me(e,t){return p(this,null,function*(){let s=q(),r="",i="",u=[],o=[],a=[],m=[],y=["InputSwitch"];t.crudFields.forEach((n,U)=>{let d=n.widget||n.datatype,F="",C="";n.required&&!y.includes(n.widget||n.datatype||"")&&u.push(n.name),d==="InputText"||d==="String"?(n.tableDisplay&&a.push(w(n.name)),o.push(ve(n)),F="string",C='""'):d==="InputTextarea"?(n.tableDisplay&&a.push(w(n.name)),o.push(Ie(n)),F="string",C='""'):d==="InputNumber"||d==="Number"?(n.tableDisplay&&a.push(w(n.name)),o.push(be(n)),F="number",C="0"):d==="Dropdown"?(n.tableDisplay&&a.push(w(n.name)),o.push(Te(n)),m.push({fieldName:n.name,options:n.options}),F="string",C='""'):d==="RadioButton"?(n.tableDisplay&&a.push(w(n.name)),o.push(Pe(n)),m.push({fieldName:n.name,options:n.options}),F="string",C='""'):d==="MultiSelect"?(n.tableDisplay&&a.push(w(n.name)),o.push(Ue(n)),m.push({fieldName:n.name,options:n.options}),F="string[]",C="[]"):d==="ImageFileUpload"?(n.tableDisplay&&a.push(Oe(n.name)),o.push(je(n,t.name.toLowerCase())),F="string",C='""'):d==="InputSwitch"||d==="Boolean"?(n.tableDisplay&&a.push(w(n.name)),o.push(Re(n)),F="boolean",C="false"):d==="Calendar"?(n.tableDisplay&&a.push(w(n.name)),o.push(De(n)),F="string",C='""'):d==="Password"?(n.tableDisplay&&a.push(w(n.name)),o.push(Le(n)),F="string",C='""'):d==="ColorPicker"?(n.tableDisplay&&a.push(w(n.name)),o.push(Ae(n)),F="string",C='""'):d==="Editor"&&(n.tableDisplay&&a.push(w(n.name)),o.push(_e(n)),F="string",C='""'),U===0&&(r+=`id?: string;
-`,i+=`id: undefined,
-`),r+=`${n.name}: ${F};
-`,i+=`${n.name}: ${C},
-`;});let g=`./src/screens/${e}`,R=`${g}/${e}.tsx`,v=`${g}/Create${e}.tsx`,j=`${g}/Edit${e}.tsx`,G="./src/layout/items.json",te=X.readFileSync(`${s}/webapp/XXXXX.tsx`).toString(),re=X.readFileSync(`${s}/webapp/CreateXXXXX.tsx`).toString(),ne=X.readFileSync(`${s}/webapp/EditXXXXX.tsx`).toString(),oe=X.readFileSync(`${s}/webapp/xxxxx.d.ts`).toString(),se=te.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(L.initialState,i),l=[];se.split(`
-`).forEach(n=>{n.includes(L.tableColumns)&&l.push(...a),l.push(n);}),X.writeFileSync(R,l.join(`
-`));let $=re.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(L.input,o.join(`
-`)).replace(L.validate,`if (${u.map(n=>`entity.${n}`).join(" && ")}) `),T=[];$.split(`
-`).forEach(n=>{n.includes("const saveEntity = ")?(m.forEach(({fieldName:U,options:d})=>{T.push(`const ${U}Options = ${JSON.stringify(d,null,2)};
-`);}),T.push(n)):(n.includes(L.initialState)&&T.push(i),T.push(n));}),X.writeFileSync(v,T.join(`
-`));let h=ne.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(L.input,o.join(`
-`)).replace(L.validate,`if (${u.map(n=>`entity.${n}`).join(" && ")}) `),D=[];h.split(`
-`).forEach(n=>{n.includes("const saveEntity = ")?(m.forEach(({fieldName:U,options:d})=>{D.push(`const ${U}Options = ${JSON.stringify(d,null,2)};
-`);}),D.push(n)):(n.includes(L.initialState)&&D.push(i),D.push(n));}),X.writeFileSync(j,D.join(`
-`));let Ke=X.readFileSync(G),ge=JSON.parse(Ke.toString());ge[0].items.push({label:e,to:`/${e.toLowerCase()}`,icon:"pi pi-box"}),X.writeFileSync(G,JSON.stringify(ge,null,2));let qe=oe.replace(/XXXXX/g,e).replace(L.interface,r);X.writeFileSync(`./src/types/${e.toLowerCase()}.d.ts`,qe);let ke=X.readFileSync("./src/main.tsx").toString().split(`
-`),Be=[`<Route path="${e.toLowerCase()}" element={<${e}Page />} />`,`<Route path="${e.toLowerCase()}/create" element={<Create${e}Page />} />`,`<Route path="${e.toLowerCase()}/edit/:id" element={<Edit${e}Page />} />`],We=[`import ${e}Page from "./screens/${e}/${e}"`,`import Edit${e}Page from "./screens/${e}/Edit${e}"`,`import Create${e}Page from "./screens/${e}/Create${e}"`],V=[];V.push(...We),ke.forEach(n=>{n.includes("{/* --ROUTES-- */}")&&Be.forEach(U=>{V.push(U);}),V.push(n);}),X.writeFileSync("./src/main.tsx",V.join(`
-`));})}var H=(e,t)=>{let s="";return t.filter(r=>!!r).forEach(r=>{s+=`const existing${P(r)}UpdateEntity: I${e}Entity | null =
+></Column>`,qe=e=>`<Column header="${R(e)}" body={(rowData) => imageBodyTemplate(rowData, "${e}")}></Column>`;var j={tableColumns:"{/*TABLE_COLUMNS*/}",initialState:"/*INITIAL_STATE_FIELDS*/",interface:"/*INTERFACE_FIELDS*/",input:"{/*INPUT_FIELDS*/}",validate:"/*VALIDATE_FIELDS*/"};function ye(e,t){return a(this,null,function*(){let i=W(),r="",s="",c=[],o=[],l=[],m=[],d=["InputSwitch"];t.crudFields.forEach((n,O)=>{let y=n.widget||n.datatype,C="",S="";n.required&&!d.includes(n.widget||n.datatype||"")&&c.push(n.name),y==="InputText"||y==="String"?(n.tableDisplay&&l.push(E(n.name)),o.push(Re(n)),C="string",S='""'):y==="InputTextarea"?(n.tableDisplay&&l.push(E(n.name)),o.push(De(n)),C="string",S='""'):y==="InputNumber"||y==="Number"?(n.tableDisplay&&l.push(E(n.name)),o.push(Te(n)),C="number",S="0"):y==="Dropdown"?(n.tableDisplay&&l.push(E(n.name)),o.push(Le(n)),m.push({fieldName:n.name,options:n.options}),C="string",S='""'):y==="RadioButton"?(n.tableDisplay&&l.push(E(n.name)),o.push(je(n)),m.push({fieldName:n.name,options:n.options}),C="string",S='""'):y==="MultiSelect"?(n.tableDisplay&&l.push(E(n.name)),o.push(Me(n)),m.push({fieldName:n.name,options:n.options}),C="string[]",S="[]"):y==="ImageFileUpload"?(n.tableDisplay&&l.push(qe(n.name)),o.push(Ke(n,t.name.toLowerCase())),C="string",S='""'):y==="InputSwitch"||y==="Boolean"?(n.tableDisplay&&l.push(E(n.name)),o.push(Ae(n)),C="boolean",S="false"):y==="Calendar"?(n.tableDisplay&&l.push(E(n.name)),o.push(_e(n)),C="string",S='""'):y==="Password"?(n.tableDisplay&&l.push(E(n.name)),o.push(ke(n)),C="string",S='""'):y==="ColorPicker"?(n.tableDisplay&&l.push(E(n.name)),o.push(Oe(n)),C="string",S='""'):y==="Editor"&&(n.tableDisplay&&l.push(E(n.name)),o.push(Ue(n)),C="string",S='""'),O===0&&(r+=`id?: string;
+`,s+=`id: undefined,
+`),r+=`${n.name}: ${C};
+`,s+=`${n.name}: ${S},
+`;});let $=`./src/screens/${e}`,D=`${$}/${e}.tsx`,P=`${$}/Create${e}.tsx`,k=`${$}/Edit${e}.tsx`,Z="./src/layout/items.json",oe=X.readFileSync(`${i}/webapp/XXXXX.tsx`).toString(),se=X.readFileSync(`${i}/webapp/CreateXXXXX.tsx`).toString(),ie=X.readFileSync(`${i}/webapp/EditXXXXX.tsx`).toString(),ae=X.readFileSync(`${i}/webapp/xxxxx.d.ts`).toString(),ce=oe.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(j.initialState,s),u=[];ce.split(`
+`).forEach(n=>{n.includes(j.tableColumns)&&u.push(...l),u.push(n);}),X.writeFileSync(D,u.join(`
+`));let x=se.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(j.input,o.join(`
+`)).replace(j.validate,`if (${c.map(n=>`entity.${n}`).join(" && ")}) `),T=[];x.split(`
+`).forEach(n=>{n.includes("const saveEntity = ")?(m.forEach(({fieldName:O,options:y})=>{T.push(`const ${O}Options = ${JSON.stringify(y,null,2)};
+`);}),T.push(n)):(n.includes(j.initialState)&&T.push(s),T.push(n));}),X.writeFileSync(P,T.join(`
+`));let F=ie.replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(j.input,o.join(`
+`)).replace(j.validate,`if (${c.map(n=>`entity.${n}`).join(" && ")}) `),L=[];F.split(`
+`).forEach(n=>{n.includes("const saveEntity = ")?(m.forEach(({fieldName:O,options:y})=>{L.push(`const ${O}Options = ${JSON.stringify(y,null,2)};
+`);}),L.push(n)):(n.includes(j.initialState)&&L.push(s),L.push(n));}),X.writeFileSync(k,L.join(`
+`));let Je=X.readFileSync(Z),Se=JSON.parse(Je.toString());Se[0].items.push({label:e,to:`/${e.toLowerCase()}`,icon:"pi pi-box"}),X.writeFileSync(Z,JSON.stringify(Se,null,2));let Ne=ae.replace(/XXXXX/g,e).replace(j.interface,r);X.writeFileSync(`./src/types/${e.toLowerCase()}.d.ts`,Ne);let Ge=X.readFileSync("./src/main.tsx").toString().split(`
+`),Ve=[`<Route path="${e.toLowerCase()}" element={<${e}Page />} />`,`<Route path="${e.toLowerCase()}/create" element={<Create${e}Page />} />`,`<Route path="${e.toLowerCase()}/edit/:id" element={<Edit${e}Page />} />`],Ye=[`import ${e}Page from "./screens/${e}/${e}"`,`import Edit${e}Page from "./screens/${e}/Edit${e}"`,`import Create${e}Page from "./screens/${e}/Create${e}"`],z=[];z.push(...Ye),Ge.forEach(n=>{n.includes("{/* --ROUTES-- */}")&&Ve.forEach(O=>{z.push(O);}),z.push(n);}),X.writeFileSync("./src/main.tsx",z.join(`
+`));})}var V=(e,t)=>{let i="";return t.filter(r=>!!r).forEach(r=>{i+=`const existing${R(r)}UpdateEntity: I${e}Entity | null =
 await ${e}Model().findOne({
   ${r},
   _id: { $ne: id },
 });
 
-if (existing${P(r)}UpdateEntity) {
+if (existing${R(r)}UpdateEntity) {
   return {
     status: HttpStatusCodes.BAD_REQUEST,
     message: "Entity with this '${r}' already exists",
   };
 }
-`;}),s},J=(e,t)=>{let s=`const { ${t.join(", ")} } = input;
-`;return t.filter(r=>!!r).forEach(r=>{s+=`
-const existing${P(r)}CreateEntity: I${e}Entity | null =
+`;}),i},Y=(e,t)=>{let i=`const { ${t.join(", ")} } = input;
+`;return t.filter(r=>!!r).forEach(r=>{i+=`
+const existing${R(r)}CreateEntity: I${e}Entity | null =
   await ${e}Model().findOne({
     ${r},
   });
 
-if (existing${P(r)}CreateEntity) {
+if (existing${R(r)}CreateEntity) {
   return {
     status: HttpStatusCodes.BAD_REQUEST,
     message: "Entity with this '${r}' already exists",
   };
 }
-`;}),s};var f={interface:"/*INTERFACE_FIELDS*/",schema:"/*SCHEMA_FIELDS*/",entity:"/*ENTITY_FIELDS*/",zod:"/*ZOD_FIELDS*/",uniqueFields:"/*UNIQUE_FIELDS*/",checkExistingUpdateEntity:"/*CHECK_EXISTING_UPDATE_ENTITY*/",checkExistingCreateEntity:"/*CHECK_EXISTING_CREATE_ENTITY*/"};function fe(e,t){return p(this,null,function*(){let s=q(),r=["MultiSelect","Boolean","InputSwitch"],i=t.crudFields.filter(l=>l.unique&&!r.includes(l.name)).map(l=>l.name),u=[],o=[],a=[],m=[];t.crudFields.forEach(({name:l,widget:$,datatype:T,required:h,unique:D})=>{u.push(`${l}: entity.${l},`),$==="InputText"||$==="InputTextarea"||$==="Dropdown"||$==="RadioButton"||$==="ImageFileUpload"||$==="Calendar"||$==="Password"||$==="ColorPicker"||$==="Editor"||T==="String"?(o.push(`${l}${h?"":"?"}: string;`),a.push(`${l}: { type: String, required: ${h}, unique: ${D} },`),m.push(`${l}: z.string()${h?".nonempty()":".optional().nullable()"},`)):$==="InputNumber"||T==="Number"?(o.push(`${l}${h?"":"?"}: number;`),a.push(`${l}: { type: Number, required: ${h}, unique: ${D} },`),m.push(`${l}: z.number()${h?"":".optional().nullable()"},`)):$==="InputSwitch"||T==="Boolean"?(o.push(`${l}${h?"":"?"}: boolean;`),a.push(`${l}: { type: Boolean, required: ${h} },`),m.push(`${l}: z.boolean()${h?"":".optional().nullable()"},`)):$==="MultiSelect"&&(o.push(`${l}${h?"":"?"}: string[];`),a.push(`${l}: [{ type: String, required: ${h} }],`),m.push(`${l}: z.array(z.string())${h?".nonempty()":".optional().nullable()"},`));});let y=`./src/Microservices/${e}`,g=X.readFileSync(`${s}/server/XXXXXController.ts`).toString().replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(f.interface,o.join(`
-`)).replace(f.schema,a.join(`
-`)).replace(f.entity,u.join(`
+`;}),i};var f={interface:"/*INTERFACE_FIELDS*/",schema:"/*SCHEMA_FIELDS*/",entity:"/*ENTITY_FIELDS*/",zod:"/*ZOD_FIELDS*/",uniqueFields:"/*UNIQUE_FIELDS*/",checkExistingUpdateEntity:"/*CHECK_EXISTING_UPDATE_ENTITY*/",checkExistingCreateEntity:"/*CHECK_EXISTING_CREATE_ENTITY*/"};function ge(e,t){return a(this,null,function*(){let i=W(),r=["MultiSelect","Boolean","InputSwitch"],s=t.crudFields.filter(u=>u.unique&&!r.includes(u.name)).map(u=>u.name),c=[],o=[],l=[],m=[];t.crudFields.forEach(({name:u,widget:x,datatype:T,required:F,unique:L})=>{c.push(`${u}: entity.${u},`),x==="InputText"||x==="InputTextarea"||x==="Dropdown"||x==="RadioButton"||x==="ImageFileUpload"||x==="Calendar"||x==="Password"||x==="ColorPicker"||x==="Editor"||T==="String"?(o.push(`${u}${F?"":"?"}: string;`),l.push(`${u}: { type: String, required: ${F}, unique: ${L} },`),m.push(`${u}: z.string()${F?".nonempty()":".optional().nullable()"},`)):x==="InputNumber"||T==="Number"?(o.push(`${u}${F?"":"?"}: number;`),l.push(`${u}: { type: Number, required: ${F}, unique: ${L} },`),m.push(`${u}: z.number()${F?"":".optional().nullable()"},`)):x==="InputSwitch"||T==="Boolean"?(o.push(`${u}${F?"":"?"}: boolean;`),l.push(`${u}: { type: Boolean, required: ${F} },`),m.push(`${u}: z.boolean()${F?"":".optional().nullable()"},`)):x==="MultiSelect"&&(o.push(`${u}${F?"":"?"}: string[];`),l.push(`${u}: [{ type: String, required: ${F} }],`),m.push(`${u}: z.array(z.string())${F?".nonempty()":".optional().nullable()"},`));});let d=`./src/Microservices/${e}`,$=X.readFileSync(`${i}/server/XXXXXController.ts`).toString().replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(f.interface,o.join(`
+`)).replace(f.schema,l.join(`
+`)).replace(f.entity,c.join(`
 `)).replace(f.zod,m.join(`
-`)).replace(f.uniqueFields,", "+i.join(", ")).replace(f.checkExistingCreateEntity,J(e,i)).replace(f.checkExistingUpdateEntity,H(e,i)),R=X.readFileSync(`${s}/server/XXXXXRouter.ts`).toString().replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(f.interface,o.join(`
-`)).replace(f.schema,a.join(`
-`)).replace(f.entity,u.join(`
+`)).replace(f.uniqueFields,", "+s.join(", ")).replace(f.checkExistingCreateEntity,Y(e,s)).replace(f.checkExistingUpdateEntity,V(e,s)),D=X.readFileSync(`${i}/server/XXXXXRouter.ts`).toString().replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(f.interface,o.join(`
+`)).replace(f.schema,l.join(`
+`)).replace(f.entity,c.join(`
 `)).replace(f.zod,m.join(`
-`)).replace(f.uniqueFields,", "+i.join(", ")).replace(f.checkExistingCreateEntity,J(e,i)).replace(f.checkExistingUpdateEntity,H(e,i)),v=X.readFileSync(`${s}/server/XXXXX.dto.ts`).toString().replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(f.interface,o.join(`
-`)).replace(f.schema,a.join(`
-`)).replace(f.entity,u.join(`
+`)).replace(f.uniqueFields,", "+s.join(", ")).replace(f.checkExistingCreateEntity,Y(e,s)).replace(f.checkExistingUpdateEntity,V(e,s)),P=X.readFileSync(`${i}/server/XXXXX.dto.ts`).toString().replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(f.interface,o.join(`
+`)).replace(f.schema,l.join(`
+`)).replace(f.entity,c.join(`
 `)).replace(f.zod,m.join(`
-`)).replace(f.uniqueFields,", "+i.join(", ")).replace(f.checkExistingCreateEntity,J(e,i)).replace(f.checkExistingUpdateEntity,H(e,i)),j=X.readFileSync(`${s}/server/XXXXXEntity.ts`).toString().replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(f.interface,o.join(`
-`)).replace(f.schema,a.join(`
-`)).replace(f.entity,u.join(`
+`)).replace(f.uniqueFields,", "+s.join(", ")).replace(f.checkExistingCreateEntity,Y(e,s)).replace(f.checkExistingUpdateEntity,V(e,s)),k=X.readFileSync(`${i}/server/XXXXXEntity.ts`).toString().replace(/XXXXX/g,e).replace(/xxxxx/g,e.toLowerCase()).replace(f.interface,o.join(`
+`)).replace(f.schema,l.join(`
+`)).replace(f.entity,c.join(`
 `)).replace(f.zod,m.join(`
-`)).replace(f.uniqueFields,", "+i.join(", ")).replace(f.checkExistingCreateEntity,J(e,i)).replace(f.checkExistingUpdateEntity,H(e,i)),G=`${y}/${e}Controller.ts`,te=`${y}/${e}Router.ts`,re=`${y}/${e}.dto.ts`,ne=`./src/Database/Entities/${e}Entity.ts`;X.writeFileSync(G,g),X.writeFileSync(te,R),X.writeFileSync(re,v),X.writeFileSync(ne,j);let oe=X.readFileSync("./src/Database/CollectionNames.ts").toString().split(`
-`).map(l=>l.includes("export const ")?l+`
-${e}Collection: "${t.collectionName}",`:l).join(`
-`);X.writeFileSync("./src/Database/CollectionNames.ts",oe);let se=X.readFileSync("./src/Microservices/ApiRouter.ts").toString().split(`
-`).map(l=>l.includes("const ApiRouter =")?l+`
-ApiRouter.use("/${e.toLowerCase()}", ${e}Router);`:l.includes('import * as express from "express";')?l+`
-import { ${e}Router } from "./${e}/${e}Router";`:l).join(`
-`);X.writeFileSync("./src/Microservices/ApiRouter.ts",se);})}var z=Me({color:"blue",indent:2});function _(e,t){return p(this,null,function*(){let s=Q(),r=e.charAt(0).toUpperCase()+e.slice(1);s.includes("webapp")&&(!(t!=null&&t.places)||t.places.includes("webapp"))&&(yield I("webapp",()=>p(this,null,function*(){let i=`./src/types/${e}.d.ts`,u=`./src/screens/${r}`,o="./src/layout/items.json";if(!X.existsSync(u)){console.log("  Nothing to remove in webapp.");return}z.start(`Removing screen: ${e}`);let a=X.readFileSync(o),m=JSON.parse(a.toString());m[0].items=m[0].items.filter(v=>v.label.toLowerCase()!==r.toLowerCase()),X.writeFileSync(o,JSON.stringify(m,null,2)),X.removeSync(i),X.removeSync(u);let y=[`<Route path="${r.toLowerCase()}" element={<${r}Page />} />`,`<Route path="${r.toLowerCase()}/create" element={<Create${r}Page />} />`,`<Route path="${r.toLowerCase()}/edit/:id" element={<Edit${r}Page />} />`,`import ${r}Page from "./screens/${r}/${r}"`,`import Edit${r}Page from "./screens/${r}/Edit${r}"`,`import Create${r}Page from "./screens/${r}/Create${r}"`],R=X.readFileSync("./src/main.tsx").toString().split(`
-`).filter(v=>y.filter(j=>v.includes(j)).length===0);X.writeFileSync("./src/main.tsx",R.join(`
-`)),z.succeed(`Removed screen: ${e}`);}))),s.includes("server")&&(!(t!=null&&t.places)||t.places.includes("server"))&&(yield I("server",()=>p(this,null,function*(){let i=`./src/Microservices/${r}`,u=`./src/Database/Entities/${r}Entity.ts`,o="./src/Database/CollectionNames.ts",a="./src/Microservices/ApiRouter.ts";if(!X.existsSync(i)){console.log("  Nothing to remove in server.");return}z.start(`Removing CRUD: ${r}`),X.removeSync(i),X.removeSync(u);let m=X.readFileSync(o).toString().split(`
-`).filter(g=>!g.includes(`${r}Collection`)).join(`
-`),y=X.readFileSync(a).toString().split(`
-`).filter(g=>!g.includes(`${r}Router`)).join(`
-`);X.writeFileSync(o,m),X.writeFileSync(a,y),z.succeed(`Removed CRUD: ${r}`);})));})}var ee=Me({color:"blue",indent:2}),ye=Me({color:"blue",indent:2});function N(e,t){return p(this,null,function*(){var a,m;let s=Q(),r=e.toLowerCase(),i=(m=(a=yield k())==null?void 0:a.resources)==null?void 0:m.find(y=>y.name.toLowerCase()===r.toLowerCase());if(!i){ee.fail(`Resource ${K.cyan(r)} not found in config file`);return}let u=t==null?void 0:t.places;i.only&&(i.only==="server"&&(u=["server"]),i.only==="webapp"&&(u=["webapp"]));let o=r.charAt(0).toUpperCase()+r.slice(1);s.includes("webapp")&&(!u||u.includes("webapp"))&&(yield I("webapp",()=>p(this,null,function*(){let y=`./src/screens/${o}`;if(X.existsSync(y)){if(!(t!=null&&t.force)){ee.fail(`Screen for ${K.cyan(o)} already exists`);return}yield _(r,{places:["webapp"]});}ee.start(`Creating screen: ${K.cyan(o)}`);let g=`${y}/${o}.tsx`,R=`${y}/Create${o}.tsx`,v=`${y}/Edit${o}.tsx`,j=`./src/types/${o.toLowerCase()}.d.ts`;X.createFileSync(g),X.createFileSync(R),X.createFileSync(v),X.createFileSync(j),yield me(o,i),yield M("yarn prettify"),ee.succeed(`Created screen: ${K.cyan(o)}`);}))),s.includes("server")&&(!u||u.includes("server"))&&(yield I("server",()=>p(this,null,function*(){let y=`./src/Microservices/${o}`;if(X.existsSync(y)){if(!(t!=null&&t.force)){ye.fail(`CRUD for ${K.cyan(o)} already exists`);return}yield _(r,{places:["server"]});}ye.start(`Creating CRUD for: ${K.cyan(o)}`);let g=`${y}/${o}Controller.ts`,R=`${y}/${o}Router.ts`,v=`${y}/${o}.dto.ts`;X.createFileSync(g),X.createFileSync(R),X.createFileSync(v),yield fe(o,i),yield M("yarn prettify"),ye.succeed(`Created CRUD for: ${K.cyan(o)}`);})));})}function de(e,t){return p(this,null,function*(){var u;let s=yield k(),r=(s==null?void 0:s.resources.map(o=>({name:o.name.toLowerCase()})))||[],i=["webapp","server"];if(t!=null&&t.onlyServer&&(i=["server"]),t!=null&&t.onlyWebapp&&(i=["webapp"]),t!=null&&t.all)r.forEach(a=>p(this,[a],function*({name:o}){yield N(o,{force:t==null?void 0:t.force,places:i});}));else if(e)e&&(yield N(e,{force:t==null?void 0:t.force,places:i}));else {let o=yield Qe.prompt([{name:"resourceNames",message:"Please select resources that you want to add to the project:",type:"checkbox",choices:r}]);(u=o==null?void 0:o.resourceNames)==null||u.forEach(a=>p(this,null,function*(){yield N(a,{force:t==null?void 0:t.force,places:i});}));}})}function Xe(e,t){return p(this,null,function*(){var u;let s=yield k(),r=(s==null?void 0:s.resources.map(o=>({name:o.name.toLowerCase()})))||[],i=["webapp","server"];if(t!=null&&t.onlyServer&&(i=["server"]),t!=null&&t.onlyWebapp&&(i=["webapp"]),t!=null&&t.all)r.forEach(a=>p(this,[a],function*({name:o}){yield _(o,{places:i});}));else if(e)e&&(yield _(e,{places:i}));else {let o=yield Qe.prompt([{name:"resourceNames",message:"Please select resources that you want to remove from the project:",type:"checkbox",choices:r}]);(u=o==null?void 0:o.resourceNames)==null||u.forEach(a=>p(this,null,function*(){yield _(a,{places:i});}));}})}var B=new Command;B.name("admin-starter").description("CLI to setup & manager admin UIs").version("0.1.0");B.command("scaffold").option("--only-webapp","Only scaffold the webapp").option("--only-server","Only scaffold the server").description("Scaffold a new admin project by using templates").argument("<projectName>","Name of the project").action(le);B.command("addconfig").description("Add config file for a resource by passing in the resource name").argument("<resourceName>","Name of the resource you want to add config file for").action(pe);B.command("add").argument("[resourceName]","Name of the resource you want to add").option("--all","All resources present in the kitconfig will be added").option("-f, --force","Forcefully add the resource, overwriting existing files (if any).").option("--only-webapp","Only add the resource to webapp").option("--only-server","Only add the resource to server").description("Adds new resources").action(de);B.command("remove").argument("[resourceName]","Name of the resource you want to remove").option("--all","All resources present in the kitconfig will be removed").option("--only-webapp","Only remove the resource from webapp").option("--only-server","Only remove the resource from server").description("Removes existing resources").action(Xe);B.parse();
+`)).replace(f.uniqueFields,", "+s.join(", ")).replace(f.checkExistingCreateEntity,Y(e,s)).replace(f.checkExistingUpdateEntity,V(e,s)),Z=`${d}/${e}Controller.ts`,oe=`${d}/${e}Router.ts`,se=`${d}/${e}.dto.ts`,ie=`./src/Database/Entities/${e}Entity.ts`;X.writeFileSync(Z,$),X.writeFileSync(oe,D),X.writeFileSync(se,P),X.writeFileSync(ie,k);let ae=X.readFileSync("./src/Database/CollectionNames.ts").toString().split(`
+`).map(u=>u.includes("export const ")?u+`
+${e}Collection: "${t.collectionName}",`:u).join(`
+`);X.writeFileSync("./src/Database/CollectionNames.ts",ae);let ce=X.readFileSync("./src/Microservices/ApiRouter.ts").toString().split(`
+`).map(u=>u.includes("const ApiRouter =")?u+`
+ApiRouter.use("/${e.toLowerCase()}", ${e}Router);`:u.includes('import * as express from "express";')?u+`
+import { ${e}Router } from "./${e}/${e}Router";`:u).join(`
+`);X.writeFileSync("./src/Microservices/ApiRouter.ts",ce);})}var re=Be({color:"blue",indent:2}),Xe=Be({color:"blue",indent:2});function q(e,t){return a(this,null,function*(){var l,m;let i=ee(),r=e.toLowerCase(),s=(m=(l=yield _())==null?void 0:l.resources)==null?void 0:m.find(d=>d.name.toLowerCase()===r.toLowerCase());if(!s){re.fail(`Resource ${M.cyan(r)} not found in config file`);return}let c=t==null?void 0:t.places;s.only&&(s.only==="server"&&(c=["server"]),s.only==="webapp"&&(c=["webapp"]));let o=r.charAt(0).toUpperCase()+r.slice(1);i.includes("webapp")&&(!c||c.includes("webapp"))&&(yield g("webapp",()=>a(this,null,function*(){let d=`./src/screens/${o}`;if(X.existsSync(d)){if(!(t!=null&&t.force)){re.fail(`Screen for ${M.cyan(o)} already exists`);return}yield b(r,{places:["webapp"]});}re.start(`Creating screen: ${M.cyan(o)}`);let $=`${d}/${o}.tsx`,D=`${d}/Create${o}.tsx`,P=`${d}/Edit${o}.tsx`,k=`./src/types/${o.toLowerCase()}.d.ts`;X.createFileSync($),X.createFileSync(D),X.createFileSync(P),X.createFileSync(k),yield ye(o,s),yield K("yarn prettify"),re.succeed(`Created screen: ${M.cyan(o)}`);}))),i.includes("server")&&(!c||c.includes("server"))&&(yield g("server",()=>a(this,null,function*(){let d=`./src/Microservices/${o}`;if(X.existsSync(d)){if(!(t!=null&&t.force)){Xe.fail(`CRUD for ${M.cyan(o)} already exists`);return}yield b(r,{places:["server"]});}Xe.start(`Creating CRUD for: ${M.cyan(o)}`);let $=`${d}/${o}Controller.ts`,D=`${d}/${o}Router.ts`,P=`${d}/${o}.dto.ts`;X.createFileSync($),X.createFileSync(D),X.createFileSync(P),yield ge(o,s),yield K("yarn prettify"),Xe.succeed(`Created CRUD for: ${M.cyan(o)}`);})));})}var rt=(e,t)=>g("root",()=>a(void 0,null,function*(){let i=`./kitconfig/resources/${e.toLowerCase()}.cjs`;X.writeFileSync(i,te(t.name.toLowerCase(),t)),yield b(t.name.toLowerCase()),yield q(t.name.toLowerCase());})),We=rt;function $e(e){g("root",()=>a(this,null,function*(){let t=he();t.use(he.json()),t.use(nt()),t.use("/",he.static("kitconfig/.app/dist",{index:"index.html"}));let i=t.listen(e||5179,()=>{console.log("Config server is running on port 5179...");});t.post("/api/config/create",(r,s)=>a(this,null,function*(){let{name:c}=r.body;return yield G(c),s.status(201).send(null)})),t.post("/api/config/delete",(r,s)=>a(this,null,function*(){let{name:c}=r.body;return yield b(c,{config:!0}),s.status(200).send(null)})),t.post("/api/config/update",(r,s)=>a(this,null,function*(){let{name:c,resource:o}=r.body;return yield We(c,o),s.status(200).send(null)})),t.get("/api/config",(r,s)=>a(this,null,function*(){let c=yield _();return s.status(200).json(c)})),t.get("/api/close",(r,s)=>{s.status(200).send(null),i.close();});}));}function Q(e){return a(this,null,function*(){if(!we())return console.log("You must be in an admin project folder to run this command...");let t=e?parseInt(e):5179;$e(t),yield ot(`http://localhost:${t}`);})}var ne=Be({color:"blue",indent:2});function xe(e,t){return a(this,null,function*(){let i=e.toLowerCase();ne.start("Scaffolding project..."),yield He().clone("https://github.com/oaktreeapps/admin-panel",i),yield He().clone("https://github.com/kuvam-oaktreeapps/admin-config",`${i}/kitconfig/.app`),process.chdir(i);let r=W();X.ensureDirSync(`${r}`),X.ensureDirSync(`${r}/webapp`),X.ensureDirSync(`${r}/server`),X.removeSync("./.git"),U("webapp",()=>{X.copyFileSync("./src/screens/XXXXX/XXXXX.tsx",`${r}/webapp/XXXXX.tsx`),X.copyFileSync("./src/screens/XXXXX/CreateXXXXX.tsx",`${r}/webapp/CreateXXXXX.tsx`),X.copyFileSync("./src/screens/XXXXX/EditXXXXX.tsx",`${r}/webapp/EditXXXXX.tsx`),X.copyFileSync("./src/types/xxxxx.d.ts",`${r}/webapp/xxxxx.d.ts`),X.writeFileSync("./.env",'VITE_BASE_URL = "http://localhost:3005/api"'),le();}),U("server",()=>{X.copyFileSync("./src/Microservices/XXXXX/XXXXXRouter.ts",`${r}/server/XXXXXRouter.ts`),X.copyFileSync("./src/Microservices/XXXXX/XXXXXController.ts",`${r}/server/XXXXXController.ts`),X.copyFileSync("./src/Microservices/XXXXX/XXXXX.dto.ts",`${r}/server/XXXXX.dto.ts`),X.copyFileSync("./src/Database/Entities/XXXXXEntity.ts",`${r}/server/XXXXXEntity.ts`),X.writeFileSync("./.env",be()),me();}),ne.succeed(`Created "${i}" successfully!`),t.onlyServer&&X.removeSync("webapp"),t.onlyWebapp&&X.removeSync("server"),ne.start("Installing dependencies..."),t.onlyServer||(yield g("webapp",()=>a(this,null,function*(){yield K("yarn install");}))),t.onlyWebapp||(yield g("server",()=>a(this,null,function*(){yield K("yarn install");}))),ne.succeed("Installed dependencies successfully!"),console.log(`
+Opening project configurations...`),setTimeout(()=>Q("5179"),500);})}function Fe(e,t){return a(this,null,function*(){var c;let i=yield _(),r=(i==null?void 0:i.resources.map(o=>({name:o.name.toLowerCase()})))||[],s=["webapp","server"];if(t!=null&&t.onlyServer&&(s=["server"]),t!=null&&t.onlyWebapp&&(s=["webapp"]),t!=null&&t.all)r.forEach(l=>a(this,[l],function*({name:o}){yield q(o,{force:t==null?void 0:t.force,places:s});}));else if(e)e&&(yield q(e,{force:t==null?void 0:t.force,places:s}));else {let o=yield it.prompt([{name:"resourceNames",message:"Please select resources that you want to add to the project:",type:"checkbox",choices:r}]);(c=o==null?void 0:o.resourceNames)==null||c.forEach(l=>a(this,null,function*(){yield q(l,{force:t==null?void 0:t.force,places:s});}));}})}function Ce(e,t){return a(this,null,function*(){var c;let i=yield _(),r=(i==null?void 0:i.resources.map(o=>({name:o.name.toLowerCase()})))||[],s=["webapp","server"];if(t!=null&&t.onlyServer&&(s=["server"]),t!=null&&t.onlyWebapp&&(s=["webapp"]),t!=null&&t.all)r.forEach(l=>a(this,[l],function*({name:o}){yield b(o,{places:s});}));else if(e)e&&(yield b(e,{places:s}));else {let o=yield it.prompt([{name:"resourceNames",message:"Please select resources that you want to remove from the project:",type:"checkbox",choices:r}]);(c=o==null?void 0:o.resourceNames)==null||c.forEach(l=>a(this,null,function*(){yield b(l,{places:s});}));}})}var B=new Command;B.name("admin-starter").description("CLI to setup & manager admin UIs").version("0.1.0");B.command("scaffold").option("--only-webapp","Only scaffold the webapp").option("--only-server","Only scaffold the server").description("Scaffold a new admin project by using templates").argument("<projectName>","Name of the project").action(xe);B.command("addconfig").description("Add config file for a resource by passing in the resource name").argument("<resourceName>","Name of the resource you want to add config file for").action(G);B.command("add").argument("[resourceName]","Name of the resource you want to add").option("--all","All resources present in the kitconfig will be added").option("-f, --force","Forcefully add the resource, overwriting existing files (if any).").option("--only-webapp","Only add the resource to webapp").option("--only-server","Only add the resource to server").description("Adds new resources").action(Fe);B.command("remove").argument("[resourceName]","Name of the resource you want to remove").option("--all","All resources present in the kitconfig will be removed").option("--only-webapp","Only remove the resource from webapp").option("--only-server","Only remove the resource from server").description("Removes existing resources").action(Ce);B.command("configure").argument("[port]","Port number for the config server").description("Starts the config server").action(Q);B.parse();

@@ -9,7 +9,7 @@ const spinner = ora({
 
 export default async function removeResource(
   screenName: string,
-  options?: { places?: ("webapp" | "server")[] },
+  options?: { places?: ("webapp" | "server")[]; config?: boolean },
 ) {
   const activeFolders = getActiveFolders();
 
@@ -93,6 +93,23 @@ export default async function removeResource(
       fs.writeFileSync(apiRouterFilePath, apiRouterFileContent);
 
       spinner.succeed(`Removed CRUD: ${capitalizedScreenName}`);
+    });
+  }
+
+  if (options?.config) {
+    await runInFolderAsync("root", async () => {
+      const configFilePath = `./kitconfig/resources/${screenName}.cjs`;
+
+      if (!fs.existsSync(configFilePath)) {
+        console.log(`  Nothing to remove in config.`);
+        return;
+      }
+
+      spinner.start(`Removing config: ${screenName}`);
+
+      fs.removeSync(configFilePath);
+
+      spinner.succeed(`Removed config: ${screenName}`);
     });
   }
 }

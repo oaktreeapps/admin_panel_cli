@@ -4,6 +4,21 @@ export const isRootFolder = (absolutePath = process.cwd()) => {
   return fs.readdirSync(absolutePath).includes("kitconfig");
 };
 
+export const getCurrentFolderInProject = () => {
+  const currentDirName = process.cwd().split("/").at(-1) as string;
+
+  if (
+    (currentDirName === "webapp" || currentDirName === "server") &&
+    fs.readdirSync("..").includes("kitconfig")
+  ) {
+    return currentDirName;
+  } else if (isRootFolder()) {
+    return "root";
+  } else {
+    return null;
+  }
+};
+
 export const runInFolderAsync = async <T>(
   folderName: "webapp" | "server" | "root",
   callback: () => Promise<T>,

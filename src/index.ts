@@ -5,6 +5,7 @@ import scaffold from "./commands/scaffold";
 import addconfig from "./commands/addconfig";
 import add from "./commands/add";
 import remove from "./commands/remove";
+import configure from "./commands/configure";
 
 const program = new Command();
 
@@ -42,5 +43,11 @@ program
   .option("--only-server", "Only remove the resource from server")
   .description("Removes existing resources")
   .action(remove);
+
+program
+  .command("configure")
+  .argument("[port]", "Port number for the config server")
+  .description("Starts the config server")
+  .action(configure);
 
 program.parse();

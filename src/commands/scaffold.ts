@@ -6,6 +6,7 @@ import { getTemplateFolderPath, runInFolderAsync, runInFolderSync } from "src/he
 import performCleanupServer from "src/helpers/server/performCleanupServer";
 import execAsync from "src/helpers/exec";
 import { getServerEnvFile } from "src/templateStrings/server/env";
+import configure from "./configure";
 
 const spinner = ora({
   color: "blue",
@@ -23,6 +24,10 @@ export default async function scaffold(argProjectName: string, opts: Opts) {
   spinner.start("Scaffolding project...");
 
   await simpleGit().clone("https://github.com/oaktreeapps/admin-panel", projectName);
+  await simpleGit().clone(
+    "https://github.com/kuvam-oaktreeapps/admin-config",
+    `${projectName}/kitconfig/.app`,
+  );
 
   process.chdir(projectName);
   // await execAsync("git checkout dev");
@@ -92,4 +97,7 @@ export default async function scaffold(argProjectName: string, opts: Opts) {
   }
 
   spinner.succeed(`Installed dependencies successfully!`);
+
+  console.log(`\nOpening project configurations...`);
+  setTimeout(() => configure("5179"), 500);
 }

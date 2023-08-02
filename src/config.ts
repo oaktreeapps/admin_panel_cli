@@ -19,8 +19,13 @@ export const configAsync: () => Promise<KitConfig | null> = async () =>
     const screenFiles = fs.readdirSync("kitconfig/resources");
     await Promise.all(
       screenFiles.map(async (screenFile) => {
-        const configFileJsImport = await import(`${kitConfigAbsolutePath}/resources/${screenFile}`);
-        const parsedScreen = kitScreenSchema.safeParse(configFileJsImport.default);
+        const configFileStr = fs
+          .readFileSync(`${kitConfigAbsolutePath}/resources/${screenFile}`)
+          .toString();
+
+        const configFile = eval(configFileStr);
+
+        const parsedScreen = kitScreenSchema.safeParse(configFile);
 
         if (parsedScreen.success) {
           config.resources.push(parsedScreen.data);
