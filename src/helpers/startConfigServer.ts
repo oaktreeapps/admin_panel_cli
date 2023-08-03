@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import fs from "fs-extra";
 import { configAsync } from "src/config";
 import { runInFolderAsync } from "./folders";
 import addconfig from "src/commands/addconfig";
@@ -45,7 +46,19 @@ export default function startConfigServer(portNum: number) {
     configServer.get("/api/config", async (_, res) => {
       const config = await configAsync();
 
-      return res.status(200).json(config);
+      let hasOnly: "webapp" | "server" | undefined = undefined;
+
+      const dirs = fs.readdirSync(".");
+
+      if (dirs.includes("webapp") && dirs.includes("server")) {
+        hasOnly = undefined;
+      } else if (dirs.includes("webapp")) {
+        hasOnly = "webapp";
+      } else if (dirs.includes("server")) {
+        hasOnly = "server";
+      }
+
+      return res.status(200).json({ ...config, hasOnly });
     });
 
     configServer.get("/api/close", (_, res) => {
