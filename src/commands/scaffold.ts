@@ -25,7 +25,7 @@ export default async function scaffold(argProjectName: string, opts: Opts) {
 
   await simpleGit().clone("https://github.com/oaktreeapps/admin-panel", projectName);
   await simpleGit().clone(
-    "https://github.com/kuvam-oaktreeapps/admin-config",
+    "https://github.com/oaktreeapps/admin-config",
     `${projectName}/kitconfig/.app`,
   );
 
