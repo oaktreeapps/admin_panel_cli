@@ -9,6 +9,7 @@ import {
   InputSwitch,
   InputText,
   InputTextarea,
+  MultiSelect,
   Password,
   RadioButton,
 } from "src/templateStrings/formFields";
@@ -81,6 +82,15 @@ export default async function resolveNewScreenDependencies(
       });
       interfacePropertyType = "string";
       initialValue = `""`;
+    } else if (type === "MultiSelect") {
+      if (field.tableDisplay) tableColumns.push(TextColumn(field.name));
+      jsxFields.push(MultiSelect(field));
+      fieldOptions.push({
+        fieldName: field.name,
+        options: field.options,
+      });
+      interfacePropertyType = "string[]";
+      initialValue = `[]`;
     } else if (type === "ImageFileUpload") {
       if (field.tableDisplay) tableColumns.push(ImageColumn(field.name));
       jsxFields.push(FileUpload(field, screen.name.toLowerCase()));

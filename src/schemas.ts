@@ -13,7 +13,7 @@ export const kitScreenSchema = z.object({
       inline: z.boolean().optional().default(false),
       datatype: z
         .union([z.literal("String"), z.literal("Number"), z.literal("Boolean")])
-        .default("String"),
+        .optional(),
       widget: z
         .union([
           z.literal("InputText"),
@@ -27,6 +27,7 @@ export const kitScreenSchema = z.object({
           z.literal("Password"),
           z.literal("ColorPicker"),
           z.literal("Editor"),
+          z.literal("MultiSelect"),
         ])
         .optional(),
       options: z
